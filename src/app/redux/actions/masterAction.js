@@ -1,25 +1,37 @@
 import {
-  ALL_GRADE_MASTER_FAIL,
-  ALL_GRADE_MASTER_REQUEST,
-  ALL_GRADE_MASTER_SUCCESS,
-  ALL_ITEM_CODE_MASTER_FAIL,
-  ALL_ITEM_CODE_MASTER_REQUEST,
-  ALL_ITEM_CODE_MASTER_SUCCESS,
-  ALL_ITEM_NAME_MASTER_FAIL,
-  ALL_ITEM_NAME_MASTER_REQUEST,
-  ALL_ITEM_NAME_MASTER_SUCCESS,
+  ALL_VENDOR_MASTER_FAIL,
+  ALL_VENDOR_MASTER_REQUEST,
+  ALL_VENDOR_MASTER_SUCCESS,
+  ALL_BIN_MASTER_FAIL,
+  ALL_BIN_MASTER_REQUEST,
+  ALL_BIN_MASTER_SUCCESS,
+  ALL_VEHICLE_MASTER_FAIL,
+  ALL_VEHICLE_MASTER_REQUEST,
+  ALL_VEHICLE_MASTER_SUCCESS,
+  ALL_CUSTOMER_MASTER_FAIL,
+  ALL_CUSTOMER_MASTER_REQUEST,
+  ALL_CUSTOMER_MASTER_SUCCESS,
   ALL_PALLETE_MASTER_FAIL,
   ALL_PALLETE_MASTER_REQUEST,
   ALL_PALLETE_MASTER_SUCCESS,
-  ALL_PARTY_MASTER_FAIL,
-  ALL_PARTY_MASTER_REQUEST,
-  ALL_PARTY_MASTER_SUCCESS,
+  ALL_STORAGE_TYPE_MASTER_FAIL,
+  ALL_STORAGE_TYPE_MASTER_REQUEST,
+  ALL_STORAGE_TYPE_MASTER_SUCCESS,
   ALL_SUPPLIER_MASTER_SUCCESS,
   ALL_UNIT_MASTER_FAIL,
   ALL_UNIT_MASTER_REQUEST,
   ALL_UNIT_MASTER_SUCCESS,
+  ALL_STORAGE_SEARCH_MASTER_FAIL,
+  ALL_STORAGE_SEARCH_MASTER_REQUEST,
+  ALL_STORAGE_SEARCH_MASTER_SUCCESS,
   LOAD_SUPPLIER_MASTER_FAIL,
   LOAD_SUPPLIER_MASTER_REQUEST,
+  ALL_LOADING_MASTER_FAIL,
+  ALL_LOADING_MASTER_REQUEST,
+  ALL_LOADING_MASTER_SUCCESS,
+  ALL_UNLOADING_MASTER_REQUEST,
+  ALL_UNLOADING_MASTER_SUCCESS,
+  ALL_UNLOADING_MASTER_FAIL,
 } from "app/utils/constants/masterConstants";
 import axios from "axios";
 
@@ -101,25 +113,11 @@ export const getAllSuppliers =
   };
 
 //grade master
-export const getAllGrade =
+export const getAllVendor =
   (search_value, sort, sortBy, page) => async (dispatch) => {
     try {
       const body = {
         filters: {},
-        // searchFields: {
-        //   string: [
-        //     "Production_Line",
-        //     "SKU_Code",
-        //     "SUT",
-        //     "UOM",
-        //     "Bin",
-        //     "SUT",
-        //     "Assigned_To",
-        //     "Batch",
-        //     "Three_Digit_Codes",
-        //     "status",
-        //   ],
-        // },
       };
       if (!search_value) {
         search_value = "";
@@ -132,7 +130,7 @@ export const getAllGrade =
         sortBy: sortBy,
       });
 
-      dispatch({ type: ALL_GRADE_MASTER_REQUEST });
+      dispatch({ type: ALL_VENDOR_MASTER_REQUEST });
       const config = {
         withCredentials: true,
         headers: {
@@ -143,13 +141,14 @@ export const getAllGrade =
       const data = await axios.post(
         `${
           process.env.REACT_APP_URL
-        }/production/list-production?${urlParams.toString()}`,
+          // }/production/list-production?${urlParams.toString()}`,
+        }/vendor/list-vendor?${urlParams.toString()}`,
         { ...body },
         config
       );
       // console.log(data);
       dispatch({
-        type: ALL_GRADE_MASTER_SUCCESS,
+        type: ALL_VENDOR_MASTER_SUCCESS,
         payload: {
           data: data?.data?.result,
           totalPage: data?.data?.totalPages,
@@ -157,16 +156,17 @@ export const getAllGrade =
       });
     } catch (error) {
       dispatch({
-        type: ALL_GRADE_MASTER_FAIL,
+        type: ALL_VENDOR_MASTER_FAIL,
         payload: error?.response?.data?.message,
       });
     }
   };
 
-//party master
-export const getAllParty =
+//STORAGE_TYPE master
+export const getAllStorageType =
   (search_value, sort, sortBy, page) => async (dispatch) => {
     try {
+      const body = {};
       if (!search_value) {
         search_value = "";
       }
@@ -178,7 +178,7 @@ export const getAllParty =
         sortBy: sortBy,
       });
 
-      dispatch({ type: ALL_PARTY_MASTER_REQUEST });
+      dispatch({ type: ALL_STORAGE_TYPE_MASTER_REQUEST });
       const config = {
         withCredentials: true,
         headers: {
@@ -188,12 +188,13 @@ export const getAllParty =
       const data = await axios.post(
         `${
           process.env.REACT_APP_URL
-        }/production/list-bin?${urlParams.toString()}`,
+        }/storage-type/list-storage-type?${urlParams.toString()}`,
+        body,
         config
       );
 
       dispatch({
-        type: ALL_PARTY_MASTER_SUCCESS,
+        type: ALL_STORAGE_TYPE_MASTER_SUCCESS,
         payload: {
           data: data?.data?.result,
           totalPage: data?.data?.totalPages,
@@ -201,7 +202,7 @@ export const getAllParty =
       });
     } catch (error) {
       dispatch({
-        type: ALL_PARTY_MASTER_FAIL,
+        type: ALL_STORAGE_TYPE_MASTER_FAIL,
         payload: error?.response?.data?.message,
       });
     }
@@ -213,20 +214,6 @@ export const getAllUnit =
     try {
       const body = {
         filters: {},
-        // searchFields: {
-        //   string: [
-        //     "Production_Line",
-        //     "SKU_Code",
-        //     "SUT",
-        //     "UOM",
-        //     "Bin",
-        //     "SUT",
-        //     "Assigned_To",
-        //     "Batch",
-        //     "Three_Digit_Codes",
-        //     "status",
-        //   ],
-        // },
       };
       if (!search_value) {
         search_value = "";
@@ -263,6 +250,51 @@ export const getAllUnit =
     } catch (error) {
       dispatch({
         type: ALL_UNIT_MASTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+export const getAllStorageSearch =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_STORAGE_SEARCH_MASTER_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+        }/storage-search/list-storage-search?${urlParams.toString()}`,
+        { ...body },
+        config
+      );
+
+      dispatch({
+        type: ALL_STORAGE_SEARCH_MASTER_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_STORAGE_SEARCH_MASTER_FAIL,
         payload: error?.response?.data?.message,
       });
     }
@@ -325,19 +357,10 @@ export const getAllPallete =
   };
 
 //Item name master
-export const getAllItemName =
+export const getAllCustomer =
   (search_value, sort, sortBy, page) => async (dispatch) => {
     try {
-      const body = {
-        searchFields: {
-          string: ["item_name", "item_name_remarks", "status"],
-          numbers: ["created_employee_id.employee_id"],
-          arrayField: [
-            "created_employee_id.first_name",
-            "created_employee_id.last_name",
-          ],
-        },
-      };
+      const body = {};
       if (!search_value) {
         search_value = "";
       }
@@ -349,7 +372,7 @@ export const getAllItemName =
         sortBy: sortBy,
       });
 
-      dispatch({ type: ALL_ITEM_NAME_MASTER_REQUEST });
+      dispatch({ type: ALL_CUSTOMER_MASTER_REQUEST });
       const config = {
         withCredentials: true,
         headers: {
@@ -360,13 +383,13 @@ export const getAllItemName =
       const data = await axios.post(
         `${
           process.env.REACT_APP_URL
-        }/item-name-master/list-item-name-master?${urlParams.toString()}`,
+        }/customer/list-customer?${urlParams.toString()}`,
         { ...body },
         config
       );
 
       dispatch({
-        type: ALL_ITEM_NAME_MASTER_SUCCESS,
+        type: ALL_CUSTOMER_MASTER_SUCCESS,
         payload: {
           data: data?.data?.result,
           totalPage: data?.data?.totalPages,
@@ -374,26 +397,17 @@ export const getAllItemName =
       });
     } catch (error) {
       dispatch({
-        type: ALL_ITEM_NAME_MASTER_FAIL,
+        type: ALL_CUSTOMER_MASTER_FAIL,
         payload: error?.response?.data?.message,
       });
     }
   };
 
-//item Type master
-export const getAllItemCode =
+//getAllVehicle master
+export const getAllVehicle =
   (search_value, sort, sortBy, page) => async (dispatch) => {
     try {
-      const body = {
-        searchFields: {
-          string: ["item_code", "item_code_remarks", "status"],
-          numbers: ["created_employee_id._id", "item_code"],
-          arrayField: [
-            "created_employee_id.first_name",
-            "created_employee_id.last_name",
-          ],
-        },
-      };
+      const body = {};
       if (!search_value) {
         search_value = "";
       }
@@ -403,7 +417,7 @@ export const getAllItemCode =
         sort: sort,
         sortBy: sortBy,
       });
-      dispatch({ type: ALL_ITEM_CODE_MASTER_REQUEST });
+      dispatch({ type: ALL_VEHICLE_MASTER_REQUEST });
       const config = {
         withCredentials: true,
         headers: {
@@ -414,13 +428,13 @@ export const getAllItemCode =
       const data = await axios.post(
         `${
           process.env.REACT_APP_URL
-        }/item-code-master/list-item-code-master?${urlParams.toString()}`,
+        }/vehicle/list-vehicle?${urlParams.toString()}`,
         { ...body },
         config
       );
 
       dispatch({
-        type: ALL_ITEM_CODE_MASTER_SUCCESS,
+        type: ALL_VEHICLE_MASTER_SUCCESS,
         payload: {
           data: data?.data?.result,
           totalPage: data?.data?.totalPages,
@@ -428,7 +442,149 @@ export const getAllItemCode =
       });
     } catch (error) {
       dispatch({
-        type: ALL_ITEM_CODE_MASTER_FAIL,
+        type: ALL_VEHICLE_MASTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
+//Bin master
+export const getAllBin =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {};
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_BIN_MASTER_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${process.env.REACT_APP_URL}/bin/list-bin?${urlParams.toString()}`,
+        { ...body },
+        config
+      );
+
+      dispatch({
+        type: ALL_BIN_MASTER_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_BIN_MASTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
+//LOADING master
+export const getAllLoading =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+
+      dispatch({ type: ALL_LOADING_MASTER_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+          // }/production/list-production?${urlParams.toString()}`,
+        }/loading/list-loading?${urlParams.toString()}`,
+        { ...body },
+        config
+      );
+      // console.log(data);
+      dispatch({
+        type: ALL_LOADING_MASTER_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_LOADING_MASTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+//uN LOADING master
+export const getAllUnLoading =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+
+      dispatch({ type: ALL_UNLOADING_MASTER_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+          // }/production/list-production?${urlParams.toString()}`,
+        }/unloading/list-unloading?${urlParams.toString()}`,
+        { ...body },
+        config
+      );
+      // console.log(data);
+      dispatch({
+        type: ALL_UNLOADING_MASTER_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_UNLOADING_MASTER_FAIL,
         payload: error?.response?.data?.message,
       });
     }

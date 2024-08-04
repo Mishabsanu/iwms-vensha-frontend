@@ -111,7 +111,7 @@ export const getAllUsers =
             "created_employee_id.first_name",
             "created_employee_id.last_name",
             "status",
-            "dob"
+            "dob",
           ],
           numbers: ["age", "mobile_no", "employee_id", "pincode"],
         },

@@ -1,28 +1,41 @@
 import Page from "@jumbo/shared/Page";
-import ListBin from "app/pages/Bin/ListBin";
+
 import AddInbound from "app/pages/Inbound/AddInbound";
 import ListInbound from "app/pages/Inbound/ListInbound";
-import AddGrade from "app/pages/Master/GradeMaster/AddGrade";
-import ListGrade from "app/pages/Master/GradeMaster/ListGrade";
-import AddItemCode from "app/pages/Master/ItemCodeMaster/AddItemCode";
-import ListItemCode from "app/pages/Master/ItemCodeMaster/ListItemCode";
-import AddItemName from "app/pages/Master/ItemNameMaster/AddItemName";
-import ListItemName from "app/pages/Master/ItemNameMaster/ListItemName";
+import AddCustomer from "app/pages/Master/CustomerMaster/AddCustomer";
+import ListCustomer from "app/pages/Master/CustomerMaster/ListCustomer";
 import AddMaterial from "app/pages/Master/MaterialMaster/AddMaterial";
 import ListMaterial from "app/pages/Master/MaterialMaster/ListMaterial";
-import AddParty from "app/pages/Master/PartyMaster/AddParty";
-import ListParty from "app/pages/Master/PartyMaster/ListParty";
 import AddPallet from "app/pages/Master/ProductionLineMaster/AddProductionLine";
 import ListPallet from "app/pages/Master/ProductionLineMaster/ListProductionLine";
-import GradeMiddleware from "./middleware/auth/GradeMiddleware";
+import AddStorageType from "app/pages/Master/StorageTypeMaster/AddStorageType";
+import ListStorageType from "app/pages/Master/StorageTypeMaster/ListStorageType";
+import AddVehicle from "app/pages/Master/VehicleMaster/AddVehicle";
+import ListVehicle from "app/pages/Master/VehicleMaster/ListVehicle";
+import AddVendor from "app/pages/Master/VendorMaster/AddVendor";
+import ListVendor from "app/pages/Master/VendorMaster/ListVendor";
 import InboundMiddleware from "./middleware/auth/InboundMiddleware";
-import ItemCodeMiddleware from "./middleware/auth/ItemCodeMiddleware";
-import ItemNameMiddleware from "./middleware/auth/ItemNameMiddleware";
+
+import VendorMiddleware from "./middleware/auth/VendorMiddleware";
 import palletMiddleware from "./middleware/auth/PalletMiddleware";
-import PartyMiddleware from "./middleware/auth/PartyMiddleware";
 import ProductionLineMiddleware from "./middleware/auth/ProductionLineMiddlewarE";
+import StorageTypeMiddleware from "./middleware/auth/StorageTypeMiddleware";
 import MaterialRouteMiddleware from "./middleware/auth/materialMasterValidRoute";
-import BinRouteMiddleware from "./middleware/auth/unitValidRoute";
+
+import VehicleMiddleware from "./middleware/auth/vehicleMiddleware";
+import BinRouteMiddleware from "./middleware/auth/binMiddleware";
+import ListBin from "app/pages/Master/BinMaster/ListBin";
+import AddBin from "app/pages/Master/BinMaster/AddBin";
+import CustomerMiddleware from "./middleware/auth/customerMiddleware";
+import StorageSearchRouteMiddleware from "./middleware/auth/storageSearchValidRoute";
+import ListStorageSearch from "app/pages/Master/StorageSearchMaster/ListStorageSearch";
+import AddStorageSearch from "app/pages/Master/StorageSearchMaster/AddStorageSearch";
+import ListLoading from "app/pages/Master/Loading/ListLoading";
+import AddLoading from "app/pages/Master/Loading/AddLoading";
+import LoadingRouteMiddleware from "./middleware/auth/loadingValidRoute";
+import UnLoadingRouteMiddleware from "./middleware/auth/unLoadingValidRoute";
+import ListUnLoading from "app/pages/Master/Unloading/ListUnLoading";
+import AddUnLoading from "app/pages/Master/Unloading/AddUnLoading";
 
 export const masterRoutes = [
   {
@@ -107,28 +120,6 @@ export const masterRoutes = [
       },
     ],
   },
-  {
-    middleware: [
-      {
-        element: GradeMiddleware,
-        fallbackPath: "/dashboard",
-      },
-    ],
-    routes: [
-      {
-        path: "/dashboard/master/grade",
-        element: <Page component={ListGrade} layout={"vertical-default"} />,
-      },
-      {
-        path: "/master/grade/add",
-        element: <Page component={AddGrade} layout={"vertical-default"} />,
-      },
-      {
-        path: "/master/grade/edit",
-        element: <Page component={AddGrade} layout={"vertical-default"} />,
-      },
-    ],
-  },
 
   {
     middleware: [
@@ -155,22 +146,28 @@ export const masterRoutes = [
   {
     middleware: [
       {
-        element: PartyMiddleware,
+        element: StorageTypeMiddleware,
         fallbackPath: "/dashboard",
       },
     ],
     routes: [
       {
-        path: "/dashboard/master/party",
-        element: <Page component={ListParty} layout={"vertical-default"} />,
+        path: "/dashboard/master/storage-type",
+        element: (
+          <Page component={ListStorageType} layout={"vertical-default"} />
+        ),
       },
       {
-        path: "/master/party/add",
-        element: <Page component={AddParty} layout={"vertical-default"} />,
+        path: "/master/storage-type/add",
+        element: (
+          <Page component={AddStorageType} layout={"vertical-default"} />
+        ),
       },
       {
-        path: "/master/party/edit",
-        element: <Page component={AddParty} layout={"vertical-default"} />,
+        path: "/master/storage-type/edit",
+        element: (
+          <Page component={AddStorageType} layout={"vertical-default"} />
+        ),
       },
     ],
   },
@@ -178,22 +175,22 @@ export const masterRoutes = [
   {
     middleware: [
       {
-        element: ItemNameMiddleware,
+        element: VendorMiddleware,
         fallbackPath: "/dashboard",
       },
     ],
     routes: [
       {
-        path: "/dashboard/master/item-name",
-        element: <Page component={ListItemName} layout={"vertical-default"} />,
+        path: "/dashboard/master/vendor",
+        element: <Page component={ListVendor} layout={"vertical-default"} />,
       },
       {
-        path: "/master/item-name/add",
-        element: <Page component={AddItemName} layout={"vertical-default"} />,
+        path: "/master/vendor/add",
+        element: <Page component={AddVendor} layout={"vertical-default"} />,
       },
       {
-        path: "/master/item-name/edit",
-        element: <Page component={AddItemName} layout={"vertical-default"} />,
+        path: "/master/vendor/edit",
+        element: <Page component={AddVendor} layout={"vertical-default"} />,
       },
     ],
   },
@@ -201,22 +198,138 @@ export const masterRoutes = [
   {
     middleware: [
       {
-        element: ItemCodeMiddleware,
+        element: CustomerMiddleware,
         fallbackPath: "/dashboard",
       },
     ],
     routes: [
       {
-        path: "/dashboard/master/item-code",
-        element: <Page component={ListItemCode} layout={"vertical-default"} />,
+        path: "/dashboard/master/customer",
+        element: <Page component={ListCustomer} layout={"vertical-default"} />,
       },
       {
-        path: "/master/item-code/add",
-        element: <Page component={AddItemCode} layout={"vertical-default"} />,
+        path: "/master/customer/add",
+        element: <Page component={AddCustomer} layout={"vertical-default"} />,
       },
       {
-        path: "/master/item-code/edit",
-        element: <Page component={AddItemCode} layout={"vertical-default"} />,
+        path: "/master/customer/edit",
+        element: <Page component={AddCustomer} layout={"vertical-default"} />,
+      },
+    ],
+  },
+  {
+    middleware: [
+      {
+        element: VehicleMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/master/vehicle",
+        element: <Page component={ListVehicle} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/vehicle/add",
+        element: <Page component={AddVehicle} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/vehicle/edit",
+        element: <Page component={AddVehicle} layout={"vertical-default"} />,
+      },
+    ],
+  },
+  {
+    middleware: [
+      {
+        element: BinRouteMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/master/bin",
+        element: <Page component={ListBin} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/bin/add",
+        element: <Page component={AddBin} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/bin/edit",
+        element: <Page component={AddBin} layout={"vertical-default"} />,
+      },
+    ],
+  },
+  {
+    middleware: [
+      {
+        element: StorageSearchRouteMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/master/storage-search",
+        element: (
+          <Page component={ListStorageSearch} layout={"vertical-default"} />
+        ),
+      },
+      {
+        path: "/master/storage-search/add",
+        element: (
+          <Page component={AddStorageSearch} layout={"vertical-default"} />
+        ),
+      },
+      {
+        path: "/master/storage-search/edit",
+        element: (
+          <Page component={AddStorageSearch} layout={"vertical-default"} />
+        ),
+      },
+    ],
+  },
+  {
+    middleware: [
+      {
+        element: LoadingRouteMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/master/loading",
+        element: <Page component={ListLoading} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/loading/add",
+        element: <Page component={AddLoading} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/loading/edit",
+        element: <Page component={AddLoading} layout={"vertical-default"} />,
+      },
+    ],
+  },
+  {
+    middleware: [
+      {
+        element: UnLoadingRouteMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/master/unloading",
+        element: <Page component={ListUnLoading} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/unloading/add",
+        element: <Page component={AddUnLoading} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/unloading/edit",
+        element: <Page component={AddUnLoading} layout={"vertical-default"} />,
       },
     ],
   },

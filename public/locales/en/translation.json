@@ -19,10 +19,15 @@
         "inbound": "Inbound",
         "outbound": "Outbound",
         "productionLine": "Production Line",
-        "unit": "Units",
-        "itemName": "Item Name",
-        "itemType": "Item Type",
-        "grade": "Grades"
+        "vehicle": "Vehicle",
+        "customer": "Customer",
+        "vendor": "Vendor",
+        "storage_search": "Storage Search",
+        "storage_type": "Storage Type",
+        "employee": "Employee",
+        "bin": "Bin",
+        "loading": "Loading",
+        "unloading": "Unloading"
       },
       "s": {
         "Inbound": "Inbound",

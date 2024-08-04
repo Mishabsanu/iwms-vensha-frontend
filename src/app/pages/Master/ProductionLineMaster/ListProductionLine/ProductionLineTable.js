@@ -1,5 +1,4 @@
 import JumboDdMenu from "@jumbo/components/JumboDdMenu/JumboDdMenu";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
@@ -14,8 +13,6 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
-import { getAllPallete } from "app/redux/actions/masterAction";
-import { updatePallet } from "app/services/apis/updatePallet";
 import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,48 +46,8 @@ export default function ProductionLineTable({
   const handleItemAction = (menuItem) => {
     switch (menuItem.action) {
       case "edit":
-        navigate("/master/pallet/edit", { state: menuItem?.data });
+        navigate("/master/production-line/edit", { state: menuItem?.data });
         break;
-      case "editStatus":
-        Swal.fire({
-          title: `Are you sure you want to ${
-            menuItem.data.status == "active" ? "Deactivate ?" : "Activate ?"
-          }`,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Yes",
-          cancelButtonText: "No",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            handleStatusChange(menuItem.data);
-          }
-        });
-        break;
-    }
-  };
-
-  const handleStatusChange = async (row) => {
-    try {
-      setLoader(true);
-      const data = await updatePallet(
-        {
-          status: row.status == "active" ? "inactive" : "active",
-        },
-        row._id
-      );
-      if (data?.status == 200) {
-        dispatch(getAllPallete("", "desc", "updated_at", 1));
-        Swal.fire({
-          icon: "success",
-          title: "Status Updated",
-          text: "",
-          timer: 1000,
-          showConfirmButton: false,
-        });
-      }
-    } catch (error) {
-    } finally {
-      setLoader(false);
     }
   };
 
@@ -209,7 +166,7 @@ export default function ProductionLineTable({
                 Created Date
               </TableCell>
 
-              {permissions?.pallete_master_edit == true && (
+              {permissions?.production_line_master_edit == true && (
                 <TableCell
                   sx={{
                     textAlign: "left",
@@ -252,7 +209,7 @@ export default function ProductionLineTable({
                 <TableCell sx={{ textAlign: "left" }}>
                   {displayDateFun(row.created_at)}
                 </TableCell>
-                {permissions?.pallete_master_edit == true && (
+                {permissions?.production_line_master_edit == true && (
                   <TableCell sx={{ textAlign: "left" }}>
                     <JumboDdMenu
                       icon={<MoreHorizIcon />}
@@ -261,14 +218,6 @@ export default function ProductionLineTable({
                           icon: <EditIcon />,
                           title: "Edit Pallet Details",
                           action: "edit",
-                          data: row,
-                        },
-                        {
-                          icon: <AutorenewIcon />,
-                          title: `${
-                            row?.status == "active" ? "Deactivate" : "Activate"
-                          }`,
-                          action: "editStatus",
                           data: row,
                         },
                       ]}

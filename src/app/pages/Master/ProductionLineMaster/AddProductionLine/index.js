@@ -2,7 +2,6 @@ import Div from "@jumbo/shared/Div";
 import { LoadingButton } from "@mui/lab";
 import { Button, Grid, Typography } from "@mui/material";
 import FormTextField1 from "app/components/InputField/FormTextField1";
-import { addPallet } from "app/services/apis/addPallet";
 import { addProductionLine } from "app/services/apis/addProductionLine";
 import { updatePallet } from "app/services/apis/updatePallet";
 import { Form, Formik } from "formik";
@@ -17,11 +16,17 @@ export default function AddProductionLine() {
   const { state } = useLocation();
   const [isSubmitting, setSubmitting] = useState(false);
   const pallets = {
-    production_line_name: state?.production_line_name ? state?.production_line_name : "",
-    production_line_description: state?.production_line_description ? state?.production_line_description : "",
+    production_line_name: state?.production_line_name
+      ? state?.production_line_name
+      : "",
+    production_line_description: state?.production_line_description
+      ? state?.production_line_description
+      : "",
   };
   const validationSchema = yup.object({
-    production_line_name: yup.string("Enter Production Line Name").required("Production Line Name is required"),
+    production_line_name: yup
+      .string("Enter Production Line Name")
+      .required("Production Line Name is required"),
   });
   const onPalleteSave = async (values) => {
     const body = { ...values };
@@ -31,17 +36,17 @@ export default function AddProductionLine() {
       }
     }
     setSubmitting(true);
-    if (pathname == "/master/pallet/edit") {
+    if (pathname == "/master/production-line/edit") {
       const data = await updatePallet(body, state._id);
       if (data?.data?.status == true) {
         Swal.fire({
           icon: "success",
-          title: "Pallet Edited Successfully",
+          title: "Production Line Edited Successfully",
           text: "",
           timer: 1000,
           showConfirmButton: false,
         });
-        navigate("/dashboard/master/pallet");
+        navigate("/dashboard/master/production-line");
       } else {
         Swal.fire({
           icon: "error",
@@ -54,12 +59,12 @@ export default function AddProductionLine() {
       if (data?.data?.status == true) {
         Swal.fire({
           icon: "success",
-          title: "Pallet Added Successfully",
+          title: "Production Line Added Successfully",
           text: "",
           timer: 1000,
           showConfirmButton: false,
         });
-        navigate("/dashboard/master/pallet");
+        navigate("/dashboard/master/production-line");
       } else {
         Swal.fire({
           icon: "error",
@@ -73,7 +78,9 @@ export default function AddProductionLine() {
   return (
     <Div sx={{ mt: -4 }}>
       <Typography variant="h1">
-        {pathname == "/master/pallet/add" ? "Add New Production Line" : "Edit Production Line"}
+        {pathname == "/master/production-line/add"
+          ? "Add New Production Line"
+          : "Edit Production Line"}
       </Typography>
       <Div>
         <Formik
@@ -99,11 +106,17 @@ export default function AddProductionLine() {
                 </Div> */}
                 <Grid container rowSpacing={3} columnSpacing={3}>
                   <Grid item xs={4}>
-                    <FormTextField1 name="production_line_name" label="Production Line Name*" />
+                    <FormTextField1
+                      name="production_line_name"
+                      label="Production Line Name*"
+                    />
                   </Grid>
-    
+
                   <Grid item xs={4}>
-                    <FormTextField1 name="production_line_description" label="Production Line Description" />
+                    <FormTextField1
+                      name="production_line_description"
+                      label="Production Line Description"
+                    />
                   </Grid>
                 </Grid>
 
