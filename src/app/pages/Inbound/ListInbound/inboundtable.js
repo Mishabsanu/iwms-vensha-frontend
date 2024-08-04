@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
 import { getAllUnit } from "app/redux/actions/masterAction";
-import { updateItemCode } from "app/services/apis/updateItemCode";
+import { updateBin, updateItemCode } from "app/services/apis/updateBin";
 import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,7 +35,6 @@ export default function ListInboundTable({
     (state) => state.masterReducer
   );
   const [loader, setLoader] = useState(false);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const permissions = useSelector(
@@ -74,7 +73,7 @@ export default function ListInboundTable({
   const handleStatusChange = async (row) => {
     try {
       setLoader(true);
-      const data = await updateItemCode(
+      const data = await updateBin(
         {
           status: row.status == "active" ? "inactive" : "active",
         },
@@ -205,7 +204,7 @@ export default function ListInboundTable({
                   minWidth: "80px",
                   verticalAlign: "middle",
                 }}
-               >
+              >
                 <TableSortLabel
                   active={sortBy === "from_vendor"}
                   direction={sort}
@@ -218,7 +217,9 @@ export default function ListInboundTable({
                       color: "white", // Set the color for the active state
                     },
                   }}
-                > From Vendor
+                >
+                  {" "}
+                  From Vendor
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -228,7 +229,7 @@ export default function ListInboundTable({
                   minWidth: "80px",
                   verticalAlign: "middle",
                 }}
-               >
+              >
                 <TableSortLabel
                   active={sortBy === "truck_type"}
                   direction={sort}
@@ -245,7 +246,7 @@ export default function ListInboundTable({
                   Customer Name
                 </TableSortLabel>
               </TableCell>
-        
+
               <TableCell
                 sx={{
                   textAlign: "left",

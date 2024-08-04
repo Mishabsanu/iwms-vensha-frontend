@@ -5,6 +5,10 @@ const AllApis = {
     productionLine: "/production-line/dropdown-produntion-line-master",
 
     roles: "/role/dropdown-roles-master",
+    vendor: "/inbound/list-vendor-without-permission",
+    storage_type: "/bin/list-storage-type-without-permission",
+    vehicle: "/inbound/list-vehicle-without-permission",
+    customer: "/inbound/list-customer-without-permission",
     assignedTo: "/role/dropdown-forklift-roles",
   },
   bulk: {

@@ -1,13 +1,13 @@
 import Div from "@jumbo/shared/Div";
 import { LoadingButton } from "@mui/lab";
-import { Button, Grid, Typography } from "@mui/material";
-import ListOptions1 from "app/components/Dropdown/ListOptions1";
+import { Button, Grid, MenuItem, Select, Typography } from "@mui/material";
+import AllApis from "app/Apis";
 import FormTextField1 from "app/components/InputField/FormTextField1";
 import { addMaterial } from "app/services/apis/addMaterial";
 import { updateMaterial } from "app/services/apis/updateMaterial";
-import { StorageType } from "app/utils/constants/dropdowns";
-import { Form, Formik } from "formik";
-import { useState } from "react";
+import { ErrorMessage, Form, Formik } from "formik";
+import { Axios } from "index";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import * as yup from "yup";
@@ -22,7 +22,7 @@ export default function AddMaterial() {
     item_type: state?.item_type ? state?.item_type : "",
     storage_type: state?.storage_type ? state?.storage_type : "Select",
     customer_code: state?.customer_code ? state?.customer_code : "",
-    vendor_no: state?.vendor_no ? state?.vendor_no : "",
+    vendor_code: state?.vendor_code ? state?.vendor_code : "",
     sap_code: state?.sap_code ? state?.sap_code : "",
     material_detail: state?.material_detail ? state?.material_detail : "",
     sut: state?.sut ? state?.sut : "",
@@ -31,12 +31,23 @@ export default function AddMaterial() {
     sub_category: state?.sub_category ? state?.sub_category : "",
     sii: state?.sii ? state?.sii : "",
   };
+  const [vendorData, setVendorData] = useState([]);
+  const [storageType, setStorageType] = useState([]);
+
+  useEffect(async () => {
+    const vendors = await Axios.get(`${AllApis.dropdownList.vendor}`);
+    setVendorData(vendors?.data?.result);
+    const response = await Axios.get(AllApis.dropdownList.storage_type);
+    setStorageType(response?.data?.result);
+  }, []);
   const validationSchema = yup.object({
     warehouse_code: yup.string().required("Warehouse code is required"),
     item_type: yup.string("Enter Item Type").required("Item Type is required"),
     storage_type: yup.string().required("Storage Type is required"),
     customer_code: yup.string().required("Customer Code is required"),
-    vendor_no: yup.string("Enter Vendor No").required("Vendor No is required"),
+    vendor_code: yup
+      .string("Enter Vendor Code")
+      .required("Vendor Code is required"),
     sap_code: yup.string("Enter Sap Code").required("Sap Code is required"),
     material_detail: yup
       .string("Enter Material Details")
@@ -79,7 +90,7 @@ export default function AddMaterial() {
       if (data?.data?.status == true) {
         Swal.fire({
           icon: "success",
-          title: "Supplier Edited Successfully",
+          title: "Material Edited Successfully",
           text: "",
           timer: 1000,
           showConfirmButton: false,
@@ -97,7 +108,7 @@ export default function AddMaterial() {
       if (data?.data?.status == true) {
         Swal.fire({
           icon: "success",
-          title: "Supplier Added Successfully",
+          title: "Material Added Successfully",
           text: "",
           timer: 1000,
           showConfirmButton: false,
@@ -144,16 +155,84 @@ export default function AddMaterial() {
                     <FormTextField1 name="item_type" label="Item Type *" />
                   </Grid>
 
-                  <Grid item xs={3}>
+                  {/* <Grid item xs={3}>
                     <ListOptions1
                       name="storage_type"
                       label="Storage Type *"
                       options={StorageType}
                     />
+                  </Grid> */}
+                  <Grid item xs={3}>
+                    <Div
+                      sx={{
+                        marginBottom: 2,
+                        display: "flex",
+                        width: "100%",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Typography variant="h5">Storage Type *</Typography>
+                      <Select
+                        name="storage_type"
+                        value={values.storage_type}
+                        onChange={(event) =>
+                          setFieldValue("storage_type", event.target.value)
+                        }
+                        sx={{
+                          ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
+                            { padding: 1.2 },
+                        }}
+                      >
+                        <MenuItem value="Select">Select</MenuItem>
+                        {storageType.map((item) => (
+                          <MenuItem key={item._id} value={item.storage_type}>
+                            {item.storage_type}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      <ErrorMessage
+                        name="storage_type"
+                        component="div"
+                        style={{ color: "red" }}
+                      />
+                    </Div>
                   </Grid>
                   <Grid item xs={3}>
-                    <FormTextField1 name="vendor_no" label="Vendor No*" />
+                    <Div
+                      sx={{
+                        marginBottom: 2,
+                        display: "flex",
+                        width: "100%",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <Typography variant="h5">Vendor Code*</Typography>
+                      <Select
+                        name="vendor_code"
+                        value={values?.vendor_code}
+                        onChange={(event) =>
+                          setFieldValue("vendor_code", event.target.value)
+                        }
+                        sx={{
+                          ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
+                            { padding: 1.2 },
+                        }}
+                      >
+                        <MenuItem value="Select">Select</MenuItem>
+                        {vendorData.map((item) => (
+                          <MenuItem key={item._id} value={item.vendor_code}>
+                            {item.vendor_code}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      <ErrorMessage
+                        name="vendor_code"
+                        component="div"
+                        style={{ color: "red" }}
+                      />
+                    </Div>
                   </Grid>
+
                   <Grid item xs={3}>
                     <FormTextField1
                       name="customer_code"

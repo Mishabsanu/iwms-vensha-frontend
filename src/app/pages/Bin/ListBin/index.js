@@ -3,7 +3,7 @@ import { Suspense, useEffect, useState } from "react";
 
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, InputAdornment, TextField, Typography } from "@mui/material";
-import { getAllParty } from "app/redux/actions/masterAction";
+import { getAllStorageType } from "app/redux/actions/masterAction";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import ListBinTable from "./bintable";
@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 import { Axios } from "index";
 import AllApis from "app/Apis";
 
-export default function ListBin() {
+export default function ListBins() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
@@ -25,7 +25,7 @@ export default function ListBin() {
   //debouncing for search
   const handleSearch = (value) => {
     setPage(1);
-    dispatch(getAllParty(value, sort, sortBy, 1));
+    dispatch(getAllStorageType(value, sort, sortBy, 1));
   };
 
   const debouncedHandleSearch = debounce(handleSearch, 500);
@@ -40,7 +40,7 @@ export default function ListBin() {
   }, [searchTerm]);
 
   useEffect(() => {
-    dispatch(getAllParty(searchTerm, sort, sortBy, page));
+    dispatch(getAllStorageType(searchTerm, sort, sortBy, page));
   }, [sort, page]);
   const importRawMaterial = async (file) => {
     const config = {
@@ -56,7 +56,7 @@ export default function ListBin() {
       formData.append("excelFile", file); // Append your Excel file to the FormData
       const response = await Axios.post(AllApis.bulk.bin, formData, config);
       if (response?.data?.status === true) {
-        dispatch(getAllParty(searchTerm, sort, sortBy, page, ""));
+        dispatch(getAllStorageType(searchTerm, sort, sortBy, page, ""));
         Swal.fire({
           title: "Uploaded",
           icon: "success",
@@ -105,7 +105,7 @@ export default function ListBin() {
               if (e.target.value == "") {
                 setSort("desc");
                 setSortBy("updated_at");
-                dispatch(getAllParty("", "desc", "updated_at", 1));
+                dispatch(getAllStorageType("", "desc", "updated_at", 1));
               }
             }}
             sx={{ width: 300, mb: 5, mt: 4 }}

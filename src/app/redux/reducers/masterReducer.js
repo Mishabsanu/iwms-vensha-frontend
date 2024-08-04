@@ -1,49 +1,59 @@
 import {
-  ALL_COSTING_MASTER_SUCCESS,
-  ALL_FABRIC_COLOR_MASTER_FAIL,
-  ALL_FABRIC_COLOR_MASTER_REQUEST,
-  ALL_FABRIC_COLOR_MASTER_SUCCESS,
-  ALL_FABRIC_MASTER_FAIL,
-  ALL_FABRIC_MASTER_REQUEST,
-  ALL_FABRIC_MASTER_SUCCESS,
-  ALL_GRADE_MASTER_FAIL,
-  ALL_GRADE_MASTER_REQUEST,
-  ALL_GRADE_MASTER_SUCCESS,
-  ALL_ITEM_CODE_MASTER_FAIL,
-  ALL_ITEM_CODE_MASTER_REQUEST,
-  ALL_ITEM_CODE_MASTER_SUCCESS,
-  ALL_ITEM_NAME_MASTER_FAIL,
-  ALL_ITEM_NAME_MASTER_REQUEST,
-  ALL_ITEM_NAME_MASTER_SUCCESS,
+  ALL_BIN_MASTER_FAIL,
+  ALL_BIN_MASTER_REQUEST,
+  ALL_BIN_MASTER_SUCCESS,
+  ALL_CUSTOMER_MASTER_FAIL,
+  ALL_CUSTOMER_MASTER_REQUEST,
+  ALL_CUSTOMER_MASTER_SUCCESS,
   ALL_PALLETE_MASTER_FAIL,
   ALL_PALLETE_MASTER_REQUEST,
   ALL_PALLETE_MASTER_SUCCESS,
-  ALL_PARTY_MASTER_FAIL,
-  ALL_PARTY_MASTER_REQUEST,
-  ALL_PARTY_MASTER_SUCCESS,
+  ALL_STORAGE_TYPE_MASTER_FAIL,
+  ALL_STORAGE_TYPE_MASTER_REQUEST,
+  ALL_STORAGE_TYPE_MASTER_SUCCESS,
+  ALL_STORAGE_SEARCH_MASTER_FAIL,
+  ALL_STORAGE_SEARCH_MASTER_REQUEST,
+  ALL_STORAGE_SEARCH_MASTER_SUCCESS,
   ALL_PRODUCT_MASTER_SUCCESS,
   ALL_SUPPLIER_MASTER_SUCCESS,
   ALL_UNIT_MASTER_FAIL,
   ALL_UNIT_MASTER_REQUEST,
   ALL_UNIT_MASTER_SUCCESS,
+  ALL_VENDOR_MASTER_FAIL,
+  ALL_VENDOR_MASTER_REQUEST,
+  ALL_VENDOR_MASTER_SUCCESS,
+  ALL_VEHICLE_MASTER_FAIL,
+  ALL_VEHICLE_MASTER_REQUEST,
+  ALL_VEHICLE_MASTER_SUCCESS,
+  ALL_COSTING_MASTER_SUCCESS,
   LOAD_COSTING_MASTER_FAIL,
   LOAD_COSTING_MASTER_REQUEST,
   LOAD_PRODUCT_MASTER_FAIL,
   LOAD_PRODUCT_MASTER_REQUEST,
   LOAD_SUPPLIER_MASTER_FAIL,
   LOAD_SUPPLIER_MASTER_REQUEST,
+  ALL_LOADING_MASTER_FAIL,
+  ALL_LOADING_MASTER_REQUEST,
+  ALL_LOADING_MASTER_SUCCESS,
+  ALL_UNLOADING_MASTER_FAIL,
+  ALL_UNLOADING_MASTER_REQUEST,
+  ALL_UNLOADING_MASTER_SUCCESS,
 } from "app/utils/constants/masterConstants";
 
 const INIT_STATE = {
   loading: false,
   error: null,
   supplierMaster: [],
-  gradeMaster: [],
-  partyMaster: [],
+  binMaster: [],
+  storageTypeMaster: [],
+  storageSearchMaster: [],
+  vendorMaster: [],
   unitMaster: [],
   palleteMaster: [],
-  itemNameMaster: [],
-  itemCodeMaster: [],
+  customerMaster: [],
+  vehicleMaster: [],
+  loadingMaster: [],
+  unLoadingMaster: [],
   TotalPage: null,
 };
 
@@ -111,47 +121,155 @@ export const masterReducer = (state = INIT_STATE, action) => {
         productMaster: [],
         error: action.payload,
       };
-
-    //grade master
-    case ALL_GRADE_MASTER_REQUEST:
+    //LAODING master
+    case ALL_LOADING_MASTER_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case ALL_GRADE_MASTER_SUCCESS:
+    case ALL_LOADING_MASTER_SUCCESS:
       return {
         ...state,
         loading: false,
-        gradeMaster: action.payload.data,
+        loadingMaster: action.payload.data,
         TotalPage: action.payload.totalPage,
       };
 
-    case ALL_GRADE_MASTER_FAIL:
+    case ALL_LOADING_MASTER_FAIL:
       return {
         ...state,
         loading: false,
-        gradeMaster: [],
+        loadingMaster: [],
         error: action.payload,
       };
-    //party master
-    case ALL_PARTY_MASTER_REQUEST:
+    //LAODING master
+    case ALL_UNLOADING_MASTER_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case ALL_PARTY_MASTER_SUCCESS:
+    case ALL_UNLOADING_MASTER_SUCCESS:
       return {
         ...state,
         loading: false,
-        partyMaster: action.payload.data,
+        unLoadingMaster: action.payload.data,
         TotalPage: action.payload.totalPage,
       };
 
-    case ALL_PARTY_MASTER_FAIL:
+    case ALL_UNLOADING_MASTER_FAIL:
       return {
         ...state,
         loading: false,
-        partyMaster: [],
+        unLoadingMaster: [],
+        error: action.payload,
+      };
+    //BIN master
+    case ALL_BIN_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_BIN_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        binMaster: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_BIN_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        binMaster: [],
+        error: action.payload,
+      };
+
+    //vehicleMaster master
+    case ALL_VEHICLE_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_VEHICLE_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        vehicleMaster: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_VEHICLE_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        vehicleMaster: [],
+        error: action.payload,
+      };
+
+    //vendor master
+    case ALL_VENDOR_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_VENDOR_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        vendorMaster: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_VENDOR_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        vendorMaster: [],
+        error: action.payload,
+      };
+
+    //storage Type  master
+    case ALL_STORAGE_TYPE_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_STORAGE_TYPE_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        storageTypeMaster: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_STORAGE_TYPE_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        storageTypeMaster: [],
+        error: action.payload,
+      };
+
+    //storage Search master
+    case ALL_STORAGE_SEARCH_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_STORAGE_SEARCH_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        storageSearchMaster: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_STORAGE_SEARCH_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        storageSearchMaster: [],
         error: action.payload,
       };
 
@@ -199,96 +317,30 @@ export const masterReducer = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-    //fabricColor master
-    case ALL_FABRIC_COLOR_MASTER_REQUEST:
+    // customer Master
+    case ALL_CUSTOMER_MASTER_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case ALL_FABRIC_COLOR_MASTER_SUCCESS:
+    case ALL_CUSTOMER_MASTER_SUCCESS:
       return {
         ...state,
         loading: false,
-        fabricColorMaster: action.payload.data,
+        customerMaster: action.payload.data,
         TotalPage: action.payload.totalPage,
       };
 
-    case ALL_FABRIC_COLOR_MASTER_FAIL:
+    case ALL_CUSTOMER_MASTER_FAIL:
       return {
         ...state,
         loading: false,
-        fabricColorMaster: [],
+        customerMaster: [],
         error: action.payload,
       };
 
-    //item name master
-    case ALL_ITEM_NAME_MASTER_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
-    case ALL_ITEM_NAME_MASTER_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        itemNameMaster: action.payload.data,
-        TotalPage: action.payload.totalPage,
-      };
+    // //item Type  master
 
-    case ALL_ITEM_NAME_MASTER_FAIL:
-      return {
-        ...state,
-        loading: false,
-        itemNameMaster: [],
-        error: action.payload,
-      };
-
-
-    //item Type  master
-    case ALL_ITEM_CODE_MASTER_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
-    case ALL_ITEM_CODE_MASTER_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        itemCodeMaster: action.payload.data,
-        TotalPage: action.payload.totalPage,
-      };
-
-    case ALL_ITEM_CODE_MASTER_FAIL:
-      return {
-        ...state,
-        loading: false,
-        itemCodeMaster: [],
-        error: action.payload,
-      };
-
-
-      
-    //fabric master
-    case ALL_FABRIC_MASTER_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
-    case ALL_FABRIC_MASTER_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        fabricMaster: action.payload.data,
-        TotalPage: action.payload.totalPage,
-      };
-
-    case ALL_FABRIC_MASTER_FAIL:
-      return {
-        ...state,
-        loading: false,
-        fabricMaster: [],
-        error: action.payload,
-      };
     default:
       return state;
   }

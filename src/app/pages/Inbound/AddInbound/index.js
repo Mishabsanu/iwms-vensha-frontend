@@ -4,12 +4,14 @@ import { Button, Grid, MenuItem, Select, Typography } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import AllApis from "app/Apis";
 import FormTextField1 from "app/components/InputField/FormTextField1";
 import { addInbound } from "app/services/apis/addInbound";
 import { updateInbound } from "app/services/apis/updateInbound";
 import dayjs from "dayjs";
 import { ErrorMessage, Form, Formik } from "formik";
-import { useState } from "react";
+import { Axios } from "index";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import * as yup from "yup";
@@ -23,21 +25,16 @@ export default function AddInbound() {
     { _id: 3, truck_type: "Tata Ace" },
     { _id: 4, truck_type: "3 wheeler" },
   ]);
-  const [customerData, setCustomerData] = useState([
-    { _id: 1, customer_name: "Emily White" },
-    { _id: 2, customer_name: "Michael Green" },
-    { _id: 3, customer_name: "Sophia Brown" },
-    { _id: 4, customer_name: "James Taylor" },
-    { _id: 5, customer_name: "Olivia Martinez" },
-  ]);
-  const [vendorData, setVendorData] = useState([
-    { _id: 1, from_vendor: "North Supplies Co." },
-    { _id: 2, from_vendor: "East Equipment Ltd." },
-    { _id: 3, from_vendor: "South Distributors Inc." },
-    { _id: 4, from_vendor: "West Logistics" },
-    { _id: 5, from_vendor: "Central Goods" },
-  ]);
+  const [customerData, setCustomerData] = useState([]);
+  const [vendorData, setVendorData] = useState([]);
+  console.log(vendorData,'vendorData');
 
+  useEffect(async () => {
+    const vendors = await Axios.get(`${AllApis.dropdownList.vendor}`);
+    setVendorData(vendors?.data?.result);
+    const customers = await Axios.get(`${AllApis.dropdownList.customer}`);
+    setCustomerData(customers?.data?.result);
+  }, []);
   const [isSubmitting, setSubmitting] = useState(false);
   const { pathname } = useLocation();
   const data = state;
@@ -235,10 +232,10 @@ export default function AddInbound() {
                     >
                       <Typography variant="h5">From Vendor *</Typography>
                       <Select
-                        name="from_vendor"
-                        value={values?.from_vendor}
+                        name="vendor_name"
+                        value={values?.vendor_name}
                         onChange={(event) =>
-                          setFieldValue("from_vendor", event.target.value)
+                          setFieldValue("vendor_name", event.target.value)
                         }
                         sx={{
                           ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
@@ -247,8 +244,8 @@ export default function AddInbound() {
                       >
                         <MenuItem value="Select">Select</MenuItem>
                         {vendorData.map((item) => (
-                          <MenuItem key={item._id} value={item.from_vendor}>
-                            {item.from_vendor}
+                          <MenuItem key={item._id} value={item.vendor_name}>
+                            {item.vendor_name}
                           </MenuItem>
                         ))}
                       </Select>

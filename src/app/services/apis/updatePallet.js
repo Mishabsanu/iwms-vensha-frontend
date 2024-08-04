@@ -9,7 +9,7 @@ export const updatePallet = async (details, id) => {
             },
         };
         const data = await axios.post(
-            `${process.env.REACT_APP_URL}/pallete-master/update-pallete-master?id=${id}`,
+            `${process.env.REACT_APP_URL}/production-line/update-produntion-line-master?id=${id}`,
             details,
             config
         );

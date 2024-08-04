@@ -89,11 +89,11 @@ export default function ListProductionLine() {
               Log
             </LoadingButton>
           )} */}
-          {permissions?.pallete_master_create == true && (
+          {permissions?.production_line_master_create == true && (
             <Button
               variant="contained"
               sx={{ p: 1, pl: 4, pr: 4 }}
-              onClick={() => navigate("/master/pallet/add")}
+              onClick={() => navigate("/master/production-line/add")}
             >
               Add Production Line
             </Button>

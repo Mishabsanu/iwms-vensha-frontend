@@ -49,6 +49,7 @@ export default function PermissionList() {
           user_view: false,
           user_edit: false,
           user_create: false,
+
           role_view: false,
           role_edit: false,
           role_create: false,
@@ -65,76 +66,41 @@ export default function PermissionList() {
           party_master_edit: false,
           party_master_create: false,
 
-          unit_master_view: false,
-          unit_master_edit: false,
-          unit_master_create: false,
+          vendor_master_view: false,
+          vendor_master_edit: false,
+          vendor_master_create: false,
 
-          item_name_master_view: false,
-          item_name_master_edit: false,
-          item_name_master_create: false,
+          vehicle_master_view: false,
+          vehicle_master_edit: false,
+          vehicle_master_create: false,
 
-          item_code_master_view: false,
-          item_code_master_edit: false,
-          item_code_master_create: false,
+          customer_master_view: false,
+          customer_master_edit: false,
+          customer_master_create: false,
 
-          grade_master_view: false,
-          grade_master_edit: false,
-          grade_master_create: false,
+          storage_search_master_view: false,
+          storage_search_master_edit: false,
+          storage_search_master_create: false,
 
-          grouped_veneer_view: false,
-          grouped_veneer_edit: false,
-          grouped_veneer_create: false,
+          storage_type_master_view: false,
+          storage_type_master_edit: false,
+          storage_type_master_create: false,
 
-          other_goods_view: false,
-          other_goods_edit: false,
-          other_goods_create: false,
+          employee_master_view: false,
+          employee_master_edit: false,
+          employee_master_create: false,
 
-          inventory_view: false,
-          inventory_edit: false,
-          inventory_create: false,
+          bin_master_view: false,
+          bin_master_edit: false,
+          bin_master_create: false,
 
-          grouping_view: false,
-          grouping_edit: false,
-          grouping_create: false,
+          loading_master_view: false,
+          loading_master_edit: false,
+          loading_master_create: false,
 
-          smoking_view: false,
-          smoking_edit: false,
-          smoking_create: false,
-
-          dying_view: false,
-          dying_edit: false,
-          dying_create: false,
-
-          cutting_view: false,
-          cutting_edit: false,
-          cutting_create: false,
-
-          tapping_view: false,
-          tapping_edit: false,
-          tapping_create: false,
-
-          ready_sheet_form_view: false,
-          ready_sheet_form_edit: false,
-          ready_sheet_form_create: false,
-
-          pressing_view: false,
-          pressing_edit: false,
-          pressing_create: false,
-
-          finishing_view: false,
-          finishing_edit: false,
-          finishing_create: false,
-          qc_view: false,
-          qc_edit: false,
-          qc_create: false,
-
-          orders_view: false,
-          orders_edit: false,
-          orders_create: false,
-
-          dispatch_view: false,
-          dispatch_edit: false,
-          dispatch_create: false,
+          unloading_master_view: false,
+          unloading_master_edit: false,
+          unloading_master_create: false,
         }
   );
 
@@ -226,7 +192,6 @@ export default function PermissionList() {
         status: status,
       };
       const data = await updateRole(details);
-
       if (data.status == 200) {
         Swal.fire({
           icon: "success",
@@ -355,6 +320,7 @@ export default function PermissionList() {
           <Typography>Create</Typography>
         </Div>
       </Div>
+
       <Div sx={{ display: "flex", alignItems: "center" }}>
         <Typography sx={headingStyle}>Roles & Permissions</Typography>
         <Div sx={checkboxStyle}>
@@ -409,6 +375,88 @@ export default function PermissionList() {
           <Typography>Create</Typography>
         </Div>
       </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Customer Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.customer_master_view}
+            onChange={handleChange}
+            name="customer_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.customer_master_edit}
+            onChange={handleChange}
+            name="customer_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.customer_master_create}
+            onChange={handleChange}
+            name="customer_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Vehicle Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.vehicle_master_view}
+            onChange={handleChange}
+            name="vehicle_master_view"
+          />
+
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.vehicle_master_edit}
+            onChange={handleChange}
+            name="vehicle_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.vehicle_master_create}
+            onChange={handleChange}
+            name="vehicle_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Vendor Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.vendor_master_view}
+            onChange={handleChange}
+            name="vendor_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.vendor_master_edit}
+            onChange={handleChange}
+            name="vendor_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.vendor_master_create}
+            onChange={handleChange}
+            name="vendor_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
 
       <Div sx={{ display: "flex", alignItems: "center" }}>
         <Typography sx={headingStyle}>Production Line Master</Typography>
@@ -433,6 +481,170 @@ export default function PermissionList() {
             checked={check.production_line_master_create}
             onChange={handleChange}
             name="production_line_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Bin Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.bin_master_view}
+            onChange={handleChange}
+            name="bin_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.bin_master_edit}
+            onChange={handleChange}
+            name="bin_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.bin_master_create}
+            onChange={handleChange}
+            name="bin_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Employee Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.employee_master_view}
+            onChange={handleChange}
+            name="employee_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.employee_master_edit}
+            onChange={handleChange}
+            name="employee_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.employee_master_create}
+            onChange={handleChange}
+            name="employee_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Storage Search Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.storage_search_master_view}
+            onChange={handleChange}
+            name="storage_search_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.storage_search_master_edit}
+            onChange={handleChange}
+            name="storage_search_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.storage_search_master_create}
+            onChange={handleChange}
+            name="storage_search_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Storage Type Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.storage_type_master_view}
+            onChange={handleChange}
+            name="storage_type_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.storage_type_master_edit}
+            onChange={handleChange}
+            name="storage_type_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.storage_type_master_create}
+            onChange={handleChange}
+            name="storage_type_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Loading Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.loading_master_view}
+            onChange={handleChange}
+            name="loading_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.loading_master_edit}
+            onChange={handleChange}
+            name="loading_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.loading_master_create}
+            onChange={handleChange}
+            name="loading_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Unloading Maste</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.unloading_master_view}
+            onChange={handleChange}
+            name="unloading_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.unloading_master_edit}
+            onChange={handleChange}
+            name="unloading_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.unloading_master_create}
+            onChange={handleChange}
+            name="unloading_master_create"
           />
           <Typography>Create</Typography>
         </Div>

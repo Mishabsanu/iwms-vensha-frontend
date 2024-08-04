@@ -19,7 +19,7 @@ import {
 } from "@mui/material";
 import AllApis from "app/Apis";
 import FullScreenLoader from "app/components/ListingPageLoader";
-import { getAllGrade } from "app/redux/actions/masterAction";
+import { getAllVendor } from "app/redux/actions/masterAction";
 import { getGstList } from "app/services/apis/ListApi/gstList";
 import { displayDateFun } from "app/utils/constants/functions";
 import axios from "axios";
@@ -105,7 +105,7 @@ export default function ListProductionTable({
 
       if (res?.data.status) {
         Swal.fire({ icon: "success", title: "Allocat successfully" });
-        dispatch(getAllGrade(searchTerm, sort, sortBy, page));
+        dispatch(getAllVendor(searchTerm, sort, sortBy, page));
         setAddGroup([]);
         navigate("/dashboard/production");
       } else {
