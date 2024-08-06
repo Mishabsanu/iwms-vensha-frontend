@@ -18,18 +18,33 @@ export default function AddMaterial() {
   const { state } = useLocation();
   const [isSubmitting, setSubmitting] = useState(false);
   const supplier = {
-    warehouse_code: state?.warehouse_code ? state?.warehouse_code : "",
-    item_type: state?.item_type ? state?.item_type : "",
-    storage_type: state?.storage_type ? state?.storage_type : "Select",
-    customer_code: state?.customer_code ? state?.customer_code : "",
-    vendor_code: state?.vendor_code ? state?.vendor_code : "",
-    sap_code: state?.sap_code ? state?.sap_code : "",
-    material_detail: state?.material_detail ? state?.material_detail : "",
-    sut: state?.sut ? state?.sut : "",
-    pallet_qty: state?.pallet_qty ? state?.pallet_qty : "",
-    sku_group: state?.sku_group ? state?.sku_group : "",
-    sub_category: state?.sub_category ? state?.sub_category : "",
-    sii: state?.sii ? state?.sii : "",
+    warehouse_code: state?.warehouse_code || "",
+    item_type: state?.item_type || "",
+    storage_type: state?.storage_type || "Select",
+    customer_code: state?.customer_code || "",
+    unit: state?.unit || "",
+    vendor_code: state?.vendor_code || "",
+    sku_code: state?.sku_code || "",
+    sut_qty: state?.sut_qty || "",
+    material_detail: state?.material_detail || "",
+    item_life: state?.item_life || "",
+    sut: state?.sut || "",
+    pallet_qty: state?.pallet_qty || "",
+    sku_group: state?.sku_group || "",
+    sku_description: state?.sku_description || "",
+    sii: state?.sii || "",
+    sub_category: state?.sub_category || "",
+    combination: state?.combination || "",
+    bulk_structure: state?.bulk_structure || "",
+    length: state?.length || "",
+    breadth: state?.breadth || "",
+    height: state?.height || "",
+    total_craft: state?.total_craft || "",
+    gross_weight: state?.gross_weight || "",
+    actual_weight: state?.actual_weight || "",
+    excel_filename: state?.excel_filename || "",
+    sku_grp: state?.sku_grp || "",
+    ssi: state?.ssi || "",
   };
   const [vendorData, setVendorData] = useState([]);
   const [storageType, setStorageType] = useState([]);
@@ -44,14 +59,16 @@ export default function AddMaterial() {
     warehouse_code: yup.string().required("Warehouse code is required"),
     item_type: yup.string("Enter Item Type").required("Item Type is required"),
     storage_type: yup.string().required("Storage Type is required"),
+    sku_description: yup.string().required("SKU Desc is required"),
     customer_code: yup.string().required("Customer Code is required"),
     vendor_code: yup
       .string("Enter Vendor Code")
       .required("Vendor Code is required"),
-    sap_code: yup.string("Enter Sap Code").required("Sap Code is required"),
+    sku_code: yup.string("Enter SKU Code").required("SKU Code is required"),
     material_detail: yup
       .string("Enter Material Details")
       .required("Material Details is required"),
+    item_life: yup.string("Enter Item Life").required("Item Life is required"),
     sut: yup.string("Enter SUT").required("SUT is required"),
     pallet_qty: yup
       .string("Enter Pallet Qty")
@@ -61,6 +78,31 @@ export default function AddMaterial() {
     sub_category: yup
       .string("Enter Sub Category")
       .required("Sub Category is required"),
+    combination: yup
+      .string("Enter Combination")
+      .required("Combination is required"),
+    bulk_structure: yup
+      .string("Enter Bulk Structure")
+      .required("Bulk Structure is required"),
+    length: yup.string("Enter Length").required("Length is required"),
+    breadth: yup.string("Enter Breadth").required("Breadth is required"),
+    height: yup.string("Enter Height").required("Height is required"),
+    total_craft: yup
+      .string("Enter Total Craft")
+      .required("Total Craft is required"),
+    gross_weight: yup
+      .string("Enter Gross Weight")
+      .required("Gross Weight is required"),
+    sut_qty: yup.string("Enter Sut Qty").required("Sut Qty is required"),
+    unit: yup.string("Enter Unit").required("Unit is required"),
+    actual_weight: yup
+      .string("Enter Actual Weight")
+      .required("Actual Weight is required"),
+    excel_filename: yup
+      .string("Enter Excel File Name")
+      .required("Excel File Name is required"),
+    sku_grp: yup.string("Enter SKU Group").required("SKU Group is required"),
+    ssi: yup.string("Enter SSI").required("SSI is required"),
   });
   const onUserSave = async (values) => {
     const body = { ...values };
@@ -70,7 +112,7 @@ export default function AddMaterial() {
         key !== "item_type" &&
         key !== "storage_type" &&
         key !== "customer_code" &&
-        key !== "sap_code" &&
+        key !== "sku_code" &&
         key !== "material_detail" &&
         key !== "sut" &&
         key !== "pallet_qty" &&
@@ -154,14 +196,6 @@ export default function AddMaterial() {
                   <Grid item xs={3}>
                     <FormTextField1 name="item_type" label="Item Type *" />
                   </Grid>
-
-                  {/* <Grid item xs={3}>
-                    <ListOptions1
-                      name="storage_type"
-                      label="Storage Type *"
-                      options={StorageType}
-                    />
-                  </Grid> */}
                   <Grid item xs={3}>
                     <Div
                       sx={{
@@ -240,7 +274,10 @@ export default function AddMaterial() {
                     />
                   </Grid>
                   <Grid item xs={3}>
-                    <FormTextField1 name="sap_code" label="SAP Code *" />
+                    <FormTextField1 name="sku_code" label="SKU Code *" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1 name="sku_description" label="SKU Desc *" />
                   </Grid>
                   <Grid item xs={3}>
                     <FormTextField1
@@ -250,6 +287,12 @@ export default function AddMaterial() {
                   </Grid>
                   <Grid item xs={3}>
                     <FormTextField1 name="item_life" label="Item Life *" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1 name="unit" label="Unit *" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1 name="sut_qty" label="Sut Qty *" />
                   </Grid>
                   <Grid item xs={3}>
                     <FormTextField1 name="sut" label="SUT *" />
@@ -262,6 +305,57 @@ export default function AddMaterial() {
                   </Grid>
                   <Grid item xs={3}>
                     <FormTextField1 name="sii" label="Sii *" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1
+                      name="sub_category"
+                      label="Sub Category *"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1 name="combination" label="Combination *" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1
+                      name="bulk_structure"
+                      label="Bulk Structure *"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1 name="length" label="Length *" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1 name="breadth" label="Breadth *" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1 name="height" label="Height *" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1 name="total_craft" label="Total Craft *" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1
+                      name="gross_weight"
+                      label="Gross Weight *"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1
+                      name="actual_weight"
+                      label="Actual Weight *"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1
+                      name="excel_filename"
+                      label="Excel File Name *"
+                    />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1 name="sku_grp" label="SKU Group *" />
+                  </Grid>
+                  <Grid item xs={3}>
+                    <FormTextField1 name="ssi" label="SSI *" />
                   </Grid>
                   <Grid item xs={3}>
                     <FormTextField1

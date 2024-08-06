@@ -27,7 +27,7 @@ export default function AddInbound() {
   ]);
   const [customerData, setCustomerData] = useState([]);
   const [vendorData, setVendorData] = useState([]);
-  console.log(vendorData,'vendorData');
+  console.log(vendorData, "vendorData");
 
   useEffect(async () => {
     const vendors = await Axios.get(`${AllApis.dropdownList.vendor}`);

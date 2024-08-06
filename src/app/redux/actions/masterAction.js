@@ -32,6 +32,9 @@ import {
   ALL_UNLOADING_MASTER_REQUEST,
   ALL_UNLOADING_MASTER_SUCCESS,
   ALL_UNLOADING_MASTER_FAIL,
+  ALL_PRODUCTION_REQUEST,
+  ALL_PRODUCTION_SUCCESS,
+  ALL_PRODUCTION_FAIL,
 } from "app/utils/constants/masterConstants";
 import axios from "axios";
 
@@ -85,18 +88,6 @@ export const getAllSuppliers =
         body,
         config
       );
-      // const data = await axios.post(
-      //   `${process.env.REACT_APP_URL}/supplier-master/list-supplier-master?search=${searchFields}&page=${page}`,
-      //   {
-      //     // SEARCH: {
-      //     string: ["supplier_name"],
-      //     numbers: [],
-      //     // }
-      //   },
-      //   config
-      // );
-
-      // console.log(data);
       dispatch({
         type: ALL_SUPPLIER_MASTER_SUCCESS,
         payload: {
@@ -107,6 +98,71 @@ export const getAllSuppliers =
     } catch (error) {
       dispatch({
         type: LOAD_SUPPLIER_MASTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
+//getAllProduction
+
+export const getAllProduction =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+        searchFields: {
+          string: [
+            "supplier_name",
+            "email_id",
+            "pan_no",
+            "contact_Person_name",
+            "bill_address",
+            "city",
+            "state",
+            "country",
+            "gst_no",
+            "created_employee_id.first_name",
+            "created_employee_id.last_name",
+            "status",
+            "supplier_remarks",
+          ],
+          numbers: ["contact_Person_number", "pincode", "gst_no"],
+        },
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_PRODUCTION_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+        }/production/list-production?${urlParams.toString()}`,
+        body,
+        config
+      );
+      dispatch({
+        type: ALL_PRODUCTION_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_PRODUCTION_FAIL,
         payload: error?.response?.data?.message,
       });
     }

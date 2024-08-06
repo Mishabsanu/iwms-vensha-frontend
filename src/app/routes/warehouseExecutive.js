@@ -1,9 +1,9 @@
 import Page from "@jumbo/shared/Page/Page";
-import ListProduction from "app/pages/Production/ListProduction";
-import AddProduction from "app/pages/Production/AddProduction";
+import ListProduction from "app/pages/WarehouseExecutive/Production/ListProduction";
+import AddProduction from "app/pages/WarehouseExecutive/Production/AddProduction";
 import ProductionRouteMiddleware from "./middleware/auth/productionValidRoute";
 
-const productionManagementRoutes = [
+const warehouseExecutive = [
   {
     middleware: [
       {
@@ -13,7 +13,7 @@ const productionManagementRoutes = [
     ],
     routes: [
       {
-        path: "/dashboard/production",
+        path: "/dashboard/warehouseexecutive/production",
         element: (
           <Page component={ListProduction} layout={"vertical-default"} />
         ),
@@ -31,4 +31,4 @@ const productionManagementRoutes = [
   },
 ];
 
-export default productionManagementRoutes;
+export default warehouseExecutive;

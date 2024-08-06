@@ -29,24 +29,9 @@
         "loading": "Loading",
         "unloading": "Unloading"
       },
-      "s": {
-        "Inbound": "Inbound",
-        "OutBound": "OutBound",
-        "groupedVeneer": "Grouped Veneer",
-        "readySheetForm": "Ready Sheet Form",
-        "readyForDispatch": "Ready For Dispatch"
-      },
       "WarehouseExecutive": {
-        "Inbound": "Inbound",
-        "OutBound": "OutBound",
-        "dying": "Dying",
-        "cutting": "Cutting",
-        "tapping": "Tapping",
-        "pressing": "Pressing",
-        "finishing": "Finishing"
-      },
-      "orders": "Orders",
-      "dispatch": "Dispatch"
+        "production": "production"
+      }
     }
   },
   "widgets": {

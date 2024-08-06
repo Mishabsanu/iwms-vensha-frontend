@@ -67,7 +67,6 @@ export const loadUser = () => async (dispatch) => {
       `${process.env.REACT_APP_URL}/profile/list-user-profile`,
       config
     );
-    // console.log(data);
     dispatch({ type: LOAD_USER_SUCCESS, payload: data?.data?.result });
   } catch (error) {
     dispatch({

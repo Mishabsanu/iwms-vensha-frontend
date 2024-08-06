@@ -1,14 +1,13 @@
 import CategoryIcon from "@mui/icons-material/Category";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import LockPersonOutlinedIcon from "@mui/icons-material/LockPersonOutlined";
-import PeopleIcon from "@mui/icons-material/People";
-import ScaleIcon from "@mui/icons-material/Scale";
-import StarBorderPurple500Icon from "@mui/icons-material/StarBorderPurple500";
-import WarehouseIcon from "@mui/icons-material/Warehouse";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
+import LockPersonOutlinedIcon from "@mui/icons-material/LockPersonOutlined";
+import PeopleIcon from "@mui/icons-material/People";
 import PersonIcon from "@mui/icons-material/Person";
+import ScaleIcon from "@mui/icons-material/Scale";
+import StarBorderPurple500Icon from "@mui/icons-material/StarBorderPurple500";
+import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 const menus = [
   {
     uri: "/dashboard",
@@ -156,6 +155,21 @@ const menus = [
         permission: "unloading_master_view",
         type: "nav-item",
         icon: <DirectionsCarIcon sx={{ fontSize: 20 }} />,
+      },
+    ],
+  },
+  {
+    label: "sidebar.menu.WarehouseExecutive",
+    type: "collapsible",
+    icon: <StarBorderPurple500Icon sx={{ fontSize: 20 }} />,
+    children: [
+      {
+        uri: "/dashboard/warehouseexecutive/production",
+        label: "sidebar.menuItem.WarehouseExecutive.production",
+        isActiveUri: ["/master/production/add", "/master/production/edit"],
+        permission: "production_master_view",
+        type: "nav-item",
+        icon: <ScaleIcon sx={{ fontSize: 20 }} />,
       },
     ],
   },

@@ -8,7 +8,7 @@ import PasswordOtp from "app/pages/Otp";
 import EditUserProfile from "app/pages/UserManagement/Edit Profile";
 import { masterRoutes } from "./masterRoutes";
 import userManagementRoutes from "./userManagementRoutes";
-import productionManagementRoutes from "./production";
+import warehouseExecutive from "./warehouseExecutive";
 
 /**
  routes which you want to make accessible to both authenticated and anonymous users
@@ -51,9 +51,7 @@ const routesForPublic = [
       },
       ...userManagementRoutes,
       ...masterRoutes,
-      ...productionManagementRoutes,
-  
-  
+      ...warehouseExecutive,
     ],
   },
 ];
