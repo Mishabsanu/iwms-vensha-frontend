@@ -229,7 +229,7 @@ export default function ListProductionTable({
                     },
                   }}
                 >
-                  Sku Code
+                  SKU Code
                 </TableSortLabel>
               </TableCell>
               <TableCell

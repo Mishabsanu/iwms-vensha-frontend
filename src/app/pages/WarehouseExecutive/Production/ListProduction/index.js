@@ -3,7 +3,7 @@ import { Suspense, useEffect, useState } from "react";
 
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, InputAdornment, TextField, Typography } from "@mui/material";
-import { getAllVendor } from "app/redux/actions/masterAction";
+import { getAllProduction } from "app/redux/actions/masterAction";
 import { getAllUsers } from "app/redux/actions/userAction";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,7 +29,7 @@ export default function ListProduction() {
   //debouncing for search
   const handleSearch = (value) => {
     setPage(1);
-    dispatch(getAllVendor(value, sort, sortBy, 1));
+    dispatch(getAllProduction(value, sort, sortBy, 1));
   };
   const importRawMaterial = async (file) => {
     const config = {
@@ -46,7 +46,7 @@ export default function ListProduction() {
 
       const response = await Axios.post(AllApis.bulk.raw, formData, config);
       if (response?.data?.status === true) {
-        dispatch(getAllVendor(searchTerm, sort, sortBy, page, ""));
+        dispatch(getAllProduction(searchTerm, sort, sortBy, page, ""));
         Swal.fire({
           title: "Uploaded",
           icon: "success",
@@ -85,13 +85,13 @@ export default function ListProduction() {
   }, [searchTerm]);
 
   useEffect(() => {
-    dispatch(getAllVendor(searchTerm, sort, sortBy, page));
+    dispatch(getAllProduction(searchTerm, sort, sortBy, page));
   }, [sort, page]);
 
   return (
     <>
       <Div sx={{ mt: -4 }}>
-        <Typography variant="h1">Pallet Table</Typography>
+        <Typography variant="h1">Production</Typography>
         <Div
           sx={{
             display: "flex",
@@ -110,7 +110,7 @@ export default function ListProduction() {
               if (e.target.value == "") {
                 setSort("desc");
                 setSortBy("updated_at");
-                dispatch(getAllVendor("", "desc", "updated_at", 1));
+                dispatch(getAllProduction("", "desc", "updated_at", 1));
               }
             }}
             sx={{ width: 300, mb: 5, mt: 4 }}
@@ -140,7 +140,7 @@ export default function ListProduction() {
               </LoadingButton>
             )} */}
 
-            {/* {permissions?.material_master_create == true && (
+            {permissions?.material_master_create == true && (
               <Button
                 variant="contained"
                 sx={{ p: 1, pl: 4, pr: 4 }}
@@ -148,7 +148,7 @@ export default function ListProduction() {
               >
                 Add Production
               </Button>
-            )} */}
+            )}
             {permissions?.material_master_view && (
               <Div>
                 <form>

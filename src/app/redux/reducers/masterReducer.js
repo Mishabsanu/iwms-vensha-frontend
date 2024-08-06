@@ -38,6 +38,9 @@ import {
   ALL_UNLOADING_MASTER_FAIL,
   ALL_UNLOADING_MASTER_REQUEST,
   ALL_UNLOADING_MASTER_SUCCESS,
+  ALL_PRODUCTION_FAIL,
+  ALL_PRODUCTION_REQUEST,
+  ALL_PRODUCTION_SUCCESS,
 } from "app/utils/constants/masterConstants";
 
 const INIT_STATE = {
@@ -54,6 +57,7 @@ const INIT_STATE = {
   vehicleMaster: [],
   loadingMaster: [],
   unLoadingMaster: [],
+  production:[],
   TotalPage: null,
 };
 
@@ -140,6 +144,27 @@ export const masterReducer = (state = INIT_STATE, action) => {
         ...state,
         loading: false,
         loadingMaster: [],
+        error: action.payload,
+      };
+    //production master
+    case ALL_PRODUCTION_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_PRODUCTION_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        production: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_PRODUCTION_FAIL:
+      return {
+        ...state,
+        loading: false,
+        production: [],
         error: action.payload,
       };
     //LAODING master

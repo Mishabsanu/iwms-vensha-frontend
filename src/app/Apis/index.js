@@ -3,6 +3,7 @@ const AllApis = {
     grade: "/grade-master/dropdown-grade-master",
     pallete: "/pallete-master/dropdown-pallete-master",
     productionLine: "/production-line/dropdown-produntion-line-master",
+    skuSearch: "/production/sku-details",
 
     roles: "/role/dropdown-roles-master",
     vendor: "/inbound/list-vendor-without-permission",

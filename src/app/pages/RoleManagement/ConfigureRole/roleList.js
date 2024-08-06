@@ -101,6 +101,10 @@ export default function PermissionList() {
           unloading_master_view: false,
           unloading_master_edit: false,
           unloading_master_create: false,
+
+          production_master_view: false,
+          production_master_edit: false,
+          production_master_create: false,
         }
   );
 
@@ -645,6 +649,34 @@ export default function PermissionList() {
             checked={check.unloading_master_create}
             onChange={handleChange}
             name="unloading_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Production</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.production_master_view}
+            onChange={handleChange}
+            name="production_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.production_master_edit}
+            onChange={handleChange}
+            name="production_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.production_master_create}
+            onChange={handleChange}
+            name="production_master_create"
           />
           <Typography>Create</Typography>
         </Div>

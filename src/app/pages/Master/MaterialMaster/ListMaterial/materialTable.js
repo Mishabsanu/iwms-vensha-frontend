@@ -212,9 +212,9 @@ export default function ListMaterialTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "sap_code"}
+                  active={sortBy === "sku_code"}
                   direction={sort}
-                  onClick={() => handleSort("sap_code")}
+                  onClick={() => handleSort("sku_code")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -223,7 +223,7 @@ export default function ListMaterialTable({
                     },
                   }}
                 >
-                  Sap Code
+                  SKU Code
                 </TableSortLabel>
               </TableCell>
 
@@ -492,7 +492,7 @@ export default function ListMaterialTable({
                   {row?.vendor_code}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left", px: 1 }}>
-                  {row?.sap_code}
+                  {row?.sku_code}
                 </TableCell>
 
                 <TableCell
