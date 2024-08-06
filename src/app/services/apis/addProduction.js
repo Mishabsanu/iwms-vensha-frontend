@@ -13,10 +13,9 @@ export const addProduction = async (details) => {
       details,
       config
     );
-    // console.log(data);
+
     return data;
   } catch (error) {
-    // console.log(error);
     return error.response;
   }
 };

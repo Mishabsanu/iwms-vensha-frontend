@@ -28,7 +28,7 @@ export default function AddProduction() {
   const initialData = state || {};
 
   const user = {
-    production_line_id: initialData?.production_line_id || "Select",
+    production_line: initialData?.production_line || "Select",
     process_order: initialData?.process_order || "",
     dob: initialData?.dob || "",
     sku_code: initialData?.sku_code || "",
@@ -43,7 +43,11 @@ export default function AddProduction() {
     production_line_id: yup
       .string()
       .required("Production Line is required")
-      .test("", "Please select a valid Production Line", (value) => value !== "Select"),
+      .test(
+        "",
+        "Please select a valid Production Line",
+        (value) => value !== "Select"
+      ),
     process_order: yup.string().required("Process Order is required"),
     dob: yup.string().required("Date is required"),
     sku_code: yup.string().required("SKU Code is required"),
@@ -54,7 +58,11 @@ export default function AddProduction() {
     assigned_to: yup
       .string()
       .required("Assigned To is required")
-      .test("", "Please select a valid Assignee", (value) => value !== "Select"),
+      .test(
+        "",
+        "Please select a valid Assignee",
+        (value) => value !== "Select"
+      ),
   });
 
   const onUserSave = async (values) => {
@@ -62,13 +70,15 @@ export default function AddProduction() {
     setSubmitting(true);
 
     try {
-      const response = pathname === "/dashboard/editproduction"
-        ? await updateProduction({ ...body, id: state._id })
-        : await addProduction(body);
+      const response =
+        pathname === "/dashboard/editproduction"
+          ? await updateProduction({ ...body, id: state._id })
+          : await addProduction(body);
 
-      const successMessage = pathname === "/dashboard/editproduction"
-        ? "Production Edited Successfully"
-        : "Production Added Successfully";
+      const successMessage =
+        pathname === "/dashboard/editproduction"
+          ? "Production Edited Successfully"
+          : "Production Added Successfully";
 
       if (response.status === 200 || response.status === 201) {
         Swal.fire({
@@ -97,10 +107,14 @@ export default function AddProduction() {
   useEffect(() => {
     const fetchDropdownData = async () => {
       try {
-        const productionLineResponse = await Axios.get(`${AllApis.dropdownList.productionLine}`);
+        const productionLineResponse = await Axios.get(
+          `${AllApis.dropdownList.productionLine}`
+        );
         setProductionLine(productionLineResponse.data.result);
 
-        const assignedToResponse = await Axios.get(`${AllApis.dropdownList.assignedTo}`);
+        const assignedToResponse = await Axios.get(
+          `${AllApis.dropdownList.assignedTo}`
+        );
         setAssignedTo(assignedToResponse.data.result);
       } catch (error) {
         console.error("Error fetching dropdown data", error);
@@ -113,7 +127,9 @@ export default function AddProduction() {
   return (
     <Div sx={{ mt: -4 }}>
       <Typography variant="h1">
-        {pathname === "/dashboard/addproduction" ? "Add New Production" : "Edit Production"}
+        {pathname === "/dashboard/addproduction"
+          ? "Add New Production"
+          : "Edit Production"}
       </Typography>
       <Div>
         <Formik
@@ -132,8 +148,16 @@ export default function AddProduction() {
                       <Select
                         name="production_line_id"
                         value={values.production_line_id}
-                        onChange={(event) => setFieldValue("production_line_id", event.target.value)}
-                        sx={{ ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select": { padding: 1.2 } }}
+                        onChange={(event) =>
+                          setFieldValue(
+                            "production_line_id",
+                            event.target.value
+                          )
+                        }
+                        sx={{
+                          ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
+                            { padding: 1.2 },
+                        }}
                       >
                         <MenuItem value="Select">Select</MenuItem>
                         {productionLine.map((item) => (
@@ -142,33 +166,56 @@ export default function AddProduction() {
                           </MenuItem>
                         ))}
                       </Select>
-                      <ErrorMessage name="production_line_id" component="div" style={{ color: "red" }} />
+                      <ErrorMessage
+                        name="production_line_id"
+                        component="div"
+                        style={{ color: "red" }}
+                      />
                     </Div>
                   </Grid>
 
                   <Grid item xs={4}>
-                    <FormTextField1 name="process_order" label="Process Order *" />
+                    <FormTextField1
+                      name="process_order"
+                      label="Process Order *"
+                    />
                   </Grid>
 
                   <Grid item xs={4}>
                     <Typography variant="h5">Date</Typography>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
-                        sx={{ width: "100%", "& .MuiInputBase-input": { padding: 1 } }}
+                        sx={{
+                          width: "100%",
+                          "& .MuiInputBase-input": { padding: 1 },
+                        }}
                         format="DD-MM-YYYY"
                         value={values.dob ? dayjs(values.dob) : null}
-                        onChange={(newValue) => setFieldValue("dob", newValue ? newValue.startOf("day").format("YYYY-MM-DDTHH:mm:ss.SSS[Z]") : null)}
+                        onChange={(newValue) =>
+                          setFieldValue(
+                            "dob",
+                            newValue
+                              ? newValue
+                                  .startOf("day")
+                                  .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]")
+                              : null
+                          )
+                        }
                       />
                     </LocalizationProvider>
                     <Div sx={{ height: "30px" }}>
-                      <ErrorMessage name="dob" component="div" style={{ color: "red" }} />
+                      <ErrorMessage
+                        name="dob"
+                        component="div"
+                        style={{ color: "red" }}
+                      />
                     </Div>
                   </Grid>
 
                   <Grid item xs={4}>
                     <FormTextField1 name="sku_code" label="SKU Code *" />
                   </Grid>
-                  
+
                   <Grid item xs={4}>
                     <FormTextField1 name="sku_dese" label="SKU Desc *" />
                   </Grid>
@@ -182,7 +229,10 @@ export default function AddProduction() {
                   </Grid>
 
                   <Grid item xs={4}>
-                    <FormTextField1 name="process_order_qty" label="Process Order Qty *" />
+                    <FormTextField1
+                      name="process_order_qty"
+                      label="Process Order Qty *"
+                    />
                   </Grid>
 
                   <Grid item xs={4}>
@@ -191,8 +241,13 @@ export default function AddProduction() {
                       <Select
                         name="assigned_to"
                         value={values.assigned_to}
-                        onChange={(event) => setFieldValue("assigned_to", event.target.value)}
-                        sx={{ ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select": { padding: 1.2 } }}
+                        onChange={(event) =>
+                          setFieldValue("assigned_to", event.target.value)
+                        }
+                        sx={{
+                          ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
+                            { padding: 1.2 },
+                        }}
                       >
                         <MenuItem value="Select">Select</MenuItem>
                         {assignedTo.map((item) => (
@@ -201,12 +256,25 @@ export default function AddProduction() {
                           </MenuItem>
                         ))}
                       </Select>
-                      <ErrorMessage name="assigned_to" component="div" style={{ color: "red" }} />
+                      <ErrorMessage
+                        name="assigned_to"
+                        component="div"
+                        style={{ color: "red" }}
+                      />
                     </Div>
                   </Grid>
                 </Grid>
 
-                <Div sx={{ width: "93.5%", display: "flex", justifyContent: "center", alignItems: "center", gap: 3, mt: 3 }}>
+                <Div
+                  sx={{
+                    width: "93.5%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 3,
+                    mt: 3,
+                  }}
+                >
                   <Button
                     variant="outlined"
                     onClick={() => {
