@@ -1,6 +1,13 @@
-import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
+import { useState } from "react";
 // import { authUser } from "./fake-db";
+import JumboDdPopover from "@jumbo/components/JumboDdPopover";
+import useJumboAuth from "@jumbo/hooks/useJumboAuth";
+import useJumboTheme from "@jumbo/hooks/useJumboTheme";
+import Div from "@jumbo/shared/Div";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PasswordIcon from "@mui/icons-material/Password";
 import {
   ListItemIcon,
   ListItemText,
@@ -10,16 +17,9 @@ import {
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import PasswordIcon from "@mui/icons-material/Password";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { useLocation, useNavigate } from "react-router-dom";
-import JumboDdPopover from "@jumbo/components/JumboDdPopover";
-import Div from "@jumbo/shared/Div";
-import useJumboTheme from "@jumbo/hooks/useJumboTheme";
-import useJumboAuth from "@jumbo/hooks/useJumboAuth";
-import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "app/redux/actions/userAction";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 // import { BACKEND_URL } from "app/utils/constants/paths";
 import ChangePasswordModal from "./changePassword";
 

@@ -6,7 +6,8 @@
       "inventory": "Inventory",
       "WarehouseExecutive": "Warehouse Executive",
       "ProductionBooking": "Production Booking",
-      "Pallet ": "Pallet"
+      "Pallet": "Pallet",
+      "ForkliftOperator": "Forklift Operator"
     },
     "menuItem": {
       "dashboard": "Dashboard",
@@ -14,6 +15,7 @@
       "roleAndPermission": "Roles And Permissions",
       "ProductionBooking": "Pallet",
       "Pallet": "BIN ",
+      "ForkliftOperator": "Forklift Operator",
       "master": {
         "material": "Materials",
         "inbound": "Inbound",
@@ -30,7 +32,8 @@
         "unloading": "Unloading"
       },
       "WarehouseExecutive": {
-        "production": "production"
+        "production": "production",
+        "binAllocation": "Bin Table"
       }
     }
   },

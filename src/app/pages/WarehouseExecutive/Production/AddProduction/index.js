@@ -1,109 +1,74 @@
-import Div from "@jumbo/shared/Div/Div";
+import Div from "@jumbo/shared/Div";
 import { LoadingButton } from "@mui/lab";
-import { Button, Grid, MenuItem, Select, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  FormControl,
+  Grid,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import AllApis from "app/Apis";
-import FormTextField1 from "app/components/InputField/FormTextField1";
 import { addProduction } from "app/services/apis/addProduction";
 import { updateProduction } from "app/services/apis/updateProduction";
-import { outerDiv1 } from "app/utils/constants/dropdowns.js";
 import dayjs from "dayjs";
 import { ErrorMessage, Form, Formik } from "formik";
-import { Axios } from "index";
+import debounce from "lodash/debounce";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import * as yup from "yup";
+import { SkuDetails } from "../Modal/skuDetails";
+import { Axios } from "index";
 
 export default function AddProduction() {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const [productionLine, setProductionLine] = useState([]);
-  const [assignedTo, setAssignedTo] = useState([]);
   const [isSubmitting, setSubmitting] = useState(false);
-  const { pathname } = useLocation();
-
+  const { state, pathname } = useLocation();
+  const [rowData, setRowData] = useState([]);
+  const [selectedSku, setSelectedSku] = useState({});
+  const [open, setOpen] = useState(false);
+  const [loadingSkuOptions, setLoadingSkuOptions] = useState(false);
+  const [assignedTo, setAssignedTo] = useState([]);
+  const [productionLine, setProductionLine] = useState([]);
   const initialData = state || {};
 
   const user = {
     production_line: initialData?.production_line || "Select",
     process_order: initialData?.process_order || "",
-    dob: initialData?.dob || "",
+    date: initialData?.date || "",
     sku_code: initialData?.sku_code || "",
-    sku_dese: initialData?.sku_dese || "",
+    sku_description: initialData?.sku_description || "",
     sut: initialData?.sut || "",
     batch: initialData?.batch || "",
+    pallet_qty: initialData?.pallet_qty || "",
     process_order_qty: initialData?.process_order_qty || "",
     assigned_to: initialData?.assigned_to || "Select",
   };
 
   const validationSchema = yup.object({
-    production_line_id: yup
+    production_line: yup
       .string()
       .required("Production Line is required")
-      .test(
-        "",
-        "Please select a valid Production Line",
-        (value) => value !== "Select"
-      ),
+      .notOneOf(["Select"], "Please select a valid Production Line"),
     process_order: yup.string().required("Process Order is required"),
-    dob: yup.string().required("Date is required"),
+    date: yup.string().required("Date is required"),
     sku_code: yup.string().required("SKU Code is required"),
-    sku_dese: yup.string().required("SKU Description is required"),
+    sku_description: yup.string().required("SKU Description is required"),
     sut: yup.string().required("SUT is required"),
     batch: yup.string().required("Batch is required"),
-    process_order_qty: yup.string().required("Process Order Qty is required"),
+    pallet_qty: yup.string().required("Pallet Qty is required"),
+    process_order_qty: yup
+      .string("Enter Process Order Qty")
+      .required("Process Order Qty is required"),
     assigned_to: yup
       .string()
       .required("Assigned To is required")
-      .test(
-        "",
-        "Please select a valid Assignee",
-        (value) => value !== "Select"
-      ),
+      .notOneOf(["Select"], "Please select a valid Assignee"),
   });
-
-  const onUserSave = async (values) => {
-    const body = { ...values };
-    setSubmitting(true);
-
-    try {
-      const response =
-        pathname === "/dashboard/editproduction"
-          ? await updateProduction({ ...body, id: state._id })
-          : await addProduction(body);
-
-      const successMessage =
-        pathname === "/dashboard/editproduction"
-          ? "Production Edited Successfully"
-          : "Production Added Successfully";
-
-      if (response.status === 200 || response.status === 201) {
-        Swal.fire({
-          icon: "success",
-          title: successMessage,
-          timer: 1000,
-          showConfirmButton: false,
-        });
-        navigate("/dashboard/production");
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: response?.message,
-        });
-      }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: error?.message || "An error occurred",
-      });
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   useEffect(() => {
     const fetchDropdownData = async () => {
       try {
@@ -124,8 +89,77 @@ export default function AddProduction() {
     fetchDropdownData();
   }, []);
 
+  const onUserSave = async (values) => {
+    const body = { ...values };
+    setSubmitting(true);
+    try {
+      const response =
+        pathname === "/dashboard/editproduction"
+          ? await updateProduction({ ...body, id: state._id })
+          : await addProduction(body);
+
+      const successMessage =
+        pathname === "/dashboard/editproduction"
+          ? "Production Edited Successfully"
+          : "Production Added Successfully";
+      if (response.status === 200 || response.status === 201) {
+        Swal.fire({
+          icon: "success",
+          title: successMessage,
+          timer: 1000,
+          showConfirmButton: false,
+        });
+        navigate("/dashboard/warehouseexecutive/production");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: response?.message,
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: error?.message || "An error occurred",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const fetchSkuOptions = debounce(async (query) => {
+    setLoadingSkuOptions(true);
+    try {
+      const response = await Axios.get(
+        `${AllApis.dropdownList.skuSearch}?q=${query}`
+      );
+      setOpen(true);
+      setRowData(response.data.data || []);
+    } catch (error) {
+      console.error("Error fetching SKU options", error);
+    } finally {
+      setLoadingSkuOptions(false);
+    }
+  }, 300);
+
+  const handleSkuInputChange = (event, setFieldValue) => {
+    const query = event.target.value;
+    fetchSkuOptions(query);
+    setFieldValue("sku_code", query);
+  };
+
+  const handleSelectSku = (sku, setFieldValue) => {
+    setSelectedSku(sku);
+
+    // Update form fields based on the selected SKU
+    setFieldValue("sku_code", sku.sku_code);
+    setFieldValue("sku_description", sku.sku_description);
+    setFieldValue("sut", sku.sut);
+    setFieldValue("pallet_qty", sku.pallet_qty);
+    setOpen(false);
+  };
+
   return (
-    <Div sx={{ mt: -4 }}>
+    <Div sx={{ mt: 0 }}>
       <Typography variant="h1">
         {pathname === "/dashboard/addproduction"
           ? "Add New Production"
@@ -136,27 +170,29 @@ export default function AddProduction() {
           initialValues={user}
           validationSchema={validationSchema}
           onSubmit={onUserSave}
-          enableReinitialize
         >
-          {({ setFieldValue, values }) => (
-            <Form noValidate autoComplete="off">
+          {({ values, setFieldValue, errors }) => (
+            <Form>
               <Div sx={{ mt: 4 }}>
-                <Grid container rowSpacing={0} columnSpacing={3}>
-                  <Grid item xs={4}>
-                    <Div sx={outerDiv1}>
-                      <Typography variant="h5">Production Line*</Typography>
-                      <Select
-                        name="production_line_id"
-                        value={values.production_line_id}
-                        onChange={(event) =>
-                          setFieldValue(
-                            "production_line_id",
-                            event.target.value
-                          )
+                <Grid container spacing={2}>
+                  <Grid item xs={3} sm={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="Production Line"
+                        name="production_line"
+                        value={values.production_line}
+                        onChange={(e) =>
+                          setFieldValue("production_line", e.target.value)
                         }
-                        sx={{
-                          ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
-                            { padding: 1.2 },
+                        select
+                        fullWidth
+                        error={errors.production_line}
+                        helperText={errors.production_line}
+                        InputLabelProps={{
+                          shrink: values.production_line,
+                        }}
+                        SelectProps={{
+                          native: false,
                         }}
                       >
                         <MenuItem value="Select">Select</MenuItem>
@@ -165,88 +201,157 @@ export default function AddProduction() {
                             {item.production_line_name}
                           </MenuItem>
                         ))}
-                      </Select>
-                      <ErrorMessage
-                        name="production_line_id"
-                        component="div"
-                        style={{ color: "red" }}
+                      </TextField>
+                      <ErrorMessage name="production_line" component="div" />
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={3} sm={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="Process Order"
+                        name="process_order"
+                        value={values.process_order}
+                        onChange={(e) =>
+                          setFieldValue("process_order", e.target.value)
+                        }
                       />
-                    </Div>
+                      <ErrorMessage name="process_order" component="div" />
+                    </FormControl>
                   </Grid>
 
-                  <Grid item xs={4}>
-                    <FormTextField1
-                      name="process_order"
-                      label="Process Order *"
-                    />
-                  </Grid>
-
-                  <Grid item xs={4}>
-                    <Typography variant="h5">Date</Typography>
+                  <Grid item xs={12} sm={6} md={4} lg={3}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
-                        sx={{
-                          width: "100%",
-                          "& .MuiInputBase-input": { padding: 1 },
-                        }}
-                        format="DD-MM-YYYY"
-                        value={values.dob ? dayjs(values.dob) : null}
-                        onChange={(newValue) =>
-                          setFieldValue(
-                            "dob",
-                            newValue
-                              ? newValue
-                                  .startOf("day")
-                                  .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]")
-                              : null
-                          )
+                        label="Date"
+                        name="date"
+                        value={values.date ? dayjs(values.date) : null}
+                        onChange={(date) =>
+                          setFieldValue("date", date ? date.toISOString() : "")
                         }
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            fullWidth
+                            InputProps={{
+                              ...params.InputProps,
+                              style: { width: "100%" },
+                            }}
+                            sx={{
+                              width: "100%", // Ensure the TextField takes full width
+                              "& .MuiInputBase-root": {
+                                width: "100%", // Ensure the inner input element takes full width
+                              },
+                            }}
+                          />
+                        )}
                       />
                     </LocalizationProvider>
-                    <Div sx={{ height: "30px" }}>
-                      <ErrorMessage
-                        name="dob"
-                        component="div"
-                        style={{ color: "red" }}
+                    <ErrorMessage name="date" component="div" />
+                  </Grid>
+
+                  <Grid item xs={3} sm={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="SKU Code"
+                        name="sku_code"
+                        value={values.sku_code}
+                        onChange={(e) => handleSkuInputChange(e, setFieldValue)}
+                        onFocus={() => fetchSkuOptions(values.sku_code)}
+                        InputProps={{
+                          endAdornment: loadingSkuOptions ? (
+                            <CircularProgress size={24} />
+                          ) : null,
+                        }}
                       />
-                    </Div>
+                      <ErrorMessage name="sku_code" component="div" />
+                    </FormControl>
                   </Grid>
 
-                  <Grid item xs={4}>
-                    <FormTextField1 name="sku_code" label="SKU Code *" />
+                  <Grid item xs={6} sm={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="SKU Description"
+                        name="sku_description"
+                        value={values.sku_description}
+                        onChange={(e) =>
+                          setFieldValue("sku_description", e.target.value)
+                        }
+                      />
+                      <ErrorMessage name="sku_description" component="div" />
+                    </FormControl>
                   </Grid>
 
-                  <Grid item xs={4}>
-                    <FormTextField1 name="sku_dese" label="SKU Desc *" />
+                  <Grid item xs={6} sm={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="SUT"
+                        name="sut"
+                        value={values.sut}
+                        onChange={(e) => setFieldValue("sut", e.target.value)}
+                      />
+                      <ErrorMessage name="sut" component="div" />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6} sm={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="Pallete Qty"
+                        name="pallet_qty"
+                        value={values.pallet_qty}
+                        onChange={(e) =>
+                          setFieldValue("pallet_qty", e.target.value)
+                        }
+                      />
+                      <ErrorMessage name="pallet_qty" component="div" />
+                    </FormControl>
                   </Grid>
 
-                  <Grid item xs={4}>
-                    <FormTextField1 name="sut" label="SUT *" />
+                  <Grid item xs={6} sm={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="Batch"
+                        name="batch"
+                        value={values.batch}
+                        onChange={(e) => setFieldValue("batch", e.target.value)}
+                      />
+                      <ErrorMessage name="batch" component="div" />
+                    </FormControl>
                   </Grid>
 
-                  <Grid item xs={4}>
-                    <FormTextField1 name="batch" label="Batch *" />
+                  <Grid item xs={12} sm={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={errors.process_order_qty}
+                        helperText={errors.process_order_qty}
+                        label="Process Order Qty"
+                        name="process_order_qty"
+                        value={values.process_order_qty}
+                        onChange={(e) =>
+                          setFieldValue("process_order_qty", e.target.value)
+                        }
+                      />
+                      {/* <ErrorMessage name="process_order_qty" component="div" /> */}
+                    </FormControl>
                   </Grid>
-
-                  <Grid item xs={4}>
-                    <FormTextField1
-                      name="process_order_qty"
-                      label="Process Order Qty *"
-                    />
-                  </Grid>
-
-                  <Grid item xs={4}>
-                    <Div sx={outerDiv1}>
-                      <Typography variant="h5">Assigned To*</Typography>
-                      <Select
+                  <Grid item xs={12} sm={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="Assigned To"
                         name="assigned_to"
                         value={values.assigned_to}
-                        onChange={(event) =>
-                          setFieldValue("assigned_to", event.target.value)
+                        onChange={(e) =>
+                          setFieldValue("assigned_to", e.target.value)
                         }
-                        sx={{
-                          ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
-                            { padding: 1.2 },
+                        select
+                        fullWidth
+                        error={Boolean(errors.assigned_to)}
+                        helperText={errors.assigned_to}
+                        InputLabelProps={{
+                          shrink: Boolean(values.assigned_to),
+                        }}
+                        SelectProps={{
+                          native: false,
                         }}
                       >
                         <MenuItem value="Select">Select</MenuItem>
@@ -255,54 +360,54 @@ export default function AddProduction() {
                             {`${item.first_name} ${item.last_name}`}
                           </MenuItem>
                         ))}
-                      </Select>
-                      <ErrorMessage
-                        name="assigned_to"
-                        component="div"
-                        style={{ color: "red" }}
-                      />
-                    </Div>
+                      </TextField>
+                    </FormControl>
                   </Grid>
                 </Grid>
-
-                <Div
-                  sx={{
-                    width: "93.5%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: 3,
-                    mt: 3,
+              </Div>
+              <Div
+                sx={{
+                  width: "93.5%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 3,
+                  mt: 3,
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Are you sure you want to cancel?",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonText: "Yes",
+                      cancelButtonText: "No",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        navigate("/dashboard/user");
+                      }
+                    });
                   }}
                 >
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      Swal.fire({
-                        title: "Are you sure you want to cancel?",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonText: "Yes",
-                        cancelButtonText: "No",
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          navigate("/dashboard/user");
-                        }
-                      });
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <LoadingButton
-                    variant="contained"
-                    type="submit"
-                    sx={{ width: "100px" }}
-                    loading={isSubmitting}
-                  >
-                    Save
-                  </LoadingButton>
-                </Div>
+                  Cancel
+                </Button>
+                <LoadingButton
+                  variant="contained"
+                  type="submit"
+                  sx={{ width: "100px" }}
+                  loading={isSubmitting}
+                >
+                  Save
+                </LoadingButton>
               </Div>
+              <SkuDetails
+                open={open}
+                setOpen={setOpen}
+                rowData={rowData}
+                onSelect={(sku) => handleSelectSku(sku, setFieldValue)}
+              />
             </Form>
           )}
         </Formik>

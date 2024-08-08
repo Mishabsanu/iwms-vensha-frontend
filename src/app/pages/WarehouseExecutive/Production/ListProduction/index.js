@@ -149,7 +149,7 @@ export default function ListProduction() {
                 Add Production
               </Button>
             )}
-            {permissions?.material_master_view && (
+            {/* {permissions?.material_master_view && (
               <Div>
                 <form>
                   <input
@@ -171,7 +171,7 @@ export default function ListProduction() {
                   </label>
                 </form>
               </Div>
-            )}
+            )} */}
           </Div>
         </Div>
         <Suspense fallback={<div>Loading...</div>}>

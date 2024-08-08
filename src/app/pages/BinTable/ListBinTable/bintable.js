@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
 import { useSelector } from "react-redux";
-export default function ListProductionTable({
+export default function ListAllocateBinTable({
   searchTerm,
   page,
   setPage,
@@ -20,7 +20,7 @@ export default function ListProductionTable({
   setSort,
   setSortBy,
 }) {
-  const { partyMaster, TotalPage, loading } = useSelector(
+  const { binTableMaster, TotalPage, loading } = useSelector(
     (state) => state.masterReducer
   );
 
@@ -58,9 +58,9 @@ export default function ListProductionTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "StorageType"}
+                  active={sortBy === "storage_type"}
                   direction={sort}
-                  onClick={() => handleSort("StorageType")}
+                  onClick={() => handleSort("storage_type")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -80,9 +80,9 @@ export default function ListProductionTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "StorageSection"}
+                  active={sortBy === "storage_section"}
                   direction={sort}
-                  onClick={() => handleSort("StorageSection")}
+                  onClick={() => handleSort("storage_section")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -102,9 +102,9 @@ export default function ListProductionTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "BinNumber"}
+                  active={sortBy === "bin_no"}
                   direction={sort}
-                  onClick={() => handleSort("BinNumber")}
+                  onClick={() => handleSort("bin_no")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -124,9 +124,9 @@ export default function ListProductionTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "Description"}
+                  active={sortBy === "description"}
                   direction={sort}
-                  onClick={() => handleSort("Description")}
+                  onClick={() => handleSort("description")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -135,7 +135,7 @@ export default function ListProductionTable({
                     },
                   }}
                 >
-                  Description
+                  description
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -145,9 +145,9 @@ export default function ListProductionTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "BinCapacity"}
+                  active={sortBy === "bin_capacity"}
                   direction={sort}
-                  onClick={() => handleSort("BinCapacity")}
+                  onClick={() => handleSort("bin_capacity")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -197,9 +197,9 @@ export default function ListProductionTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "Batch"}
+                  active={sortBy === "batch"}
                   direction={sort}
-                  onClick={() => handleSort("Batch")}
+                  onClick={() => handleSort("batch")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -218,9 +218,9 @@ export default function ListProductionTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "SkuCode"}
+                  active={sortBy === "sku_code"}
                   direction={sort}
-                  onClick={() => handleSort("SkuCode")}
+                  onClick={() => handleSort("sku_code")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -239,9 +239,9 @@ export default function ListProductionTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "OutboundTransfeOrder"}
+                  active={sortBy === "outbound_transfer_order"}
                   direction={sort}
-                  onClick={() => handleSort("OutboundTransfeOrder")}
+                  onClick={() => handleSort("outbound_transfer_order")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -263,9 +263,9 @@ export default function ListProductionTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "AvailableCapacity"}
+                  active={sortBy === "available_capacity"}
                   direction={sort}
-                  onClick={() => handleSort("AvailableCapacity")}
+                  onClick={() => handleSort("available_capacity")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -319,48 +319,48 @@ export default function ListProductionTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {partyMaster?.map((row, i) => (
+            {binTableMaster?.map((row, i) => (
               <TableRow key={i}>
                 <TableCell
                   sx={{
                     textAlign: "left",
                   }}
                 >
-                  {row?.StorageType || "-"}
+                  {row?.storage_type || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.StorageSection || "-"}
+                  {row?.storage_section || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.BinNumber || "-"}
+                  {row?.bin_no || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.Description || "-"}
+                  {row?.description || "-"}
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.BinCapacity || "-"}
+                  {row?.bin_capacity || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.Code3Digit || "-"}
+                  {row?.digit_3_codes || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.InboundTransferOrder || "-"}
+                  {row?.inbound_transfer_order || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.Batch || "-"}
+                  {row?.batch || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.SkuCode || "-"}
+                  {row?.sku_code || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.OutboundTransfeOrder || "-"}
+                  {row?.outbound_transfer_order || "-"}
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.AvailableCapacity ?? 0}
+                  {row?.available_capacity ?? 0}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row?.Status}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row?.status}</TableCell>
 
                 {/* <TableCell
                   sx={{

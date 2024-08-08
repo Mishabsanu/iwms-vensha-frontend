@@ -9,6 +9,7 @@ import EditUserProfile from "app/pages/UserManagement/Edit Profile";
 import { masterRoutes } from "./masterRoutes";
 import userManagementRoutes from "./userManagementRoutes";
 import warehouseExecutive from "./warehouseExecutive";
+import forkliftOperator from "./forkliftOperator";
 
 /**
  routes which you want to make accessible to both authenticated and anonymous users
@@ -52,6 +53,7 @@ const routesForPublic = [
       ...userManagementRoutes,
       ...masterRoutes,
       ...warehouseExecutive,
+      ...forkliftOperator,
     ],
   },
 ];
