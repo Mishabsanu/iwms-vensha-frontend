@@ -3,15 +3,15 @@ import { Suspense, useEffect, useState } from "react";
 
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, InputAdornment, TextField, Typography } from "@mui/material";
-import { getAllStorageType } from "app/redux/actions/masterAction";
+import AllApis from "app/Apis";
+import { Axios } from "index";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import ListBinTable from "./bintable";
 import Swal from "sweetalert2";
-import { Axios } from "index";
-import AllApis from "app/Apis";
+import ListAllocateBinTable from "./bintable";
+import { getAllBinTable } from "app/redux/actions/masterAction";
 
-export default function ListBins() {
+export default function ListAllocateBin() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
@@ -25,7 +25,7 @@ export default function ListBins() {
   //debouncing for search
   const handleSearch = (value) => {
     setPage(1);
-    dispatch(getAllStorageType(value, sort, sortBy, 1));
+    dispatch(getAllBinTable(value, sort, sortBy, 1));
   };
 
   const debouncedHandleSearch = debounce(handleSearch, 500);
@@ -40,7 +40,7 @@ export default function ListBins() {
   }, [searchTerm]);
 
   useEffect(() => {
-    dispatch(getAllStorageType(searchTerm, sort, sortBy, page));
+    dispatch(getAllBinTable(searchTerm, sort, sortBy, page));
   }, [sort, page]);
   const importRawMaterial = async (file) => {
     const config = {
@@ -56,7 +56,7 @@ export default function ListBins() {
       formData.append("excelFile", file); // Append your Excel file to the FormData
       const response = await Axios.post(AllApis.bulk.bin, formData, config);
       if (response?.data?.status === true) {
-        dispatch(getAllStorageType(searchTerm, sort, sortBy, page, ""));
+        dispatch(getAllBinTable(searchTerm, sort, sortBy, page, ""));
         Swal.fire({
           title: "Uploaded",
           icon: "success",
@@ -105,7 +105,7 @@ export default function ListBins() {
               if (e.target.value == "") {
                 setSort("desc");
                 setSortBy("updated_at");
-                dispatch(getAllStorageType("", "desc", "updated_at", 1));
+                dispatch(getAllBinTable("", "desc", "updated_at", 1));
               }
             }}
             sx={{ width: 300, mb: 5, mt: 4 }}
@@ -170,7 +170,7 @@ export default function ListBins() {
           )}
         </Div>
         <Suspense fallback={<div>Loading...</div>}>
-          <ListBinTable
+          <ListAllocateBinTable
             searchTerm={searchTerm}
             page={page}
             setPage={setPage}

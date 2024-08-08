@@ -105,6 +105,10 @@ export default function PermissionList() {
           production_master_view: false,
           production_master_edit: false,
           production_master_create: false,
+          
+          forklift_operator_master_view: false,
+          forklift_operator_master_edit: false,
+          forklift_operator_master_create: false,
         }
   );
 
@@ -677,6 +681,33 @@ export default function PermissionList() {
             checked={check.production_master_create}
             onChange={handleChange}
             name="production_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Forklift Operator</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.forklift_operator_master_view}
+            onChange={handleChange}
+            name="forklift_operator_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.forklift_operator_master_edit}
+            onChange={handleChange}
+            name="forklift_operator_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.forklift_operator_master_create}
+            onChange={handleChange}
+            name="forklift_operator_master_create"
           />
           <Typography>Create</Typography>
         </Div>

@@ -22,7 +22,10 @@ import { ASSET_IMAGES } from "../../../app/utils/constants/paths";
 import FullViewContent from "app/components/FullViewContent";
 
 const validationSchema = yup.object({
-  employee_id: yup.number().typeError("Employee ID is Invalid").required("Employee Id is Required"),
+  employee_id: yup
+    .number()
+    .typeError("Employee ID is Invalid")
+    .required("Employee Id is Required"),
   password: yup.string("Enter your password").required("Password is required"),
 });
 
@@ -45,7 +48,7 @@ const Login = ({ disableSmLogin }) => {
         text: error,
         customClass: {
           container: "popupImportant",
-      },
+        },
       });
       dispatch(clearErrors());
     }
@@ -62,7 +65,7 @@ const Login = ({ disableSmLogin }) => {
   };
 
   const handleForgotPassword = () => {
-    console.log('111111111111');
+    console.log("111111111111");
     showDialog({
       title: "Enter Email For Recovery",
       content: <ForgotPasswordForm hideDialogue={hideDialog} />,
@@ -71,12 +74,13 @@ const Login = ({ disableSmLogin }) => {
 
   return (
     <FullViewContent>
-
       <Div
         sx={{
-          width: 720,
+          width: 800,
           maxWidth: "100%",
-        }}>
+          
+        }}
+      >
         <Card
           sx={{
             display: "flex",
@@ -87,23 +91,8 @@ const Login = ({ disableSmLogin }) => {
           <CardContent
             sx={{
               flex: 1,
-              // position: "relative",
-              height: "100%",
-              // width: "100px",
-              // top: 120,
+              height: "90%",
               ml: 1,
-              // background: `url(${getAssetPath(
-              //   `${ASSET_IMAGES}/VENEERPRO_KDC_LOGO.png`,
-              //   "640x428"
-              // )}) no-repeat center`,
-              // backgroundSize: "contain",
-              // "&::after": {
-              //   display: "inline-block",
-              //   position: "absolute",
-              //   content: `''`,
-              //   inset: 0,
-              //   backgroundColor: alpha("#0267a0", 0.65),
-              // },
             }}
           >
             <Div
@@ -115,17 +104,19 @@ const Login = ({ disableSmLogin }) => {
                 color: "common.white",
                 position: "relative",
                 zIndex: 1,
-                height: "100%",
+                height: "90%",
               }}
             >
-              <Div sx={{ mt: "auto" }}>
-                <img src={getAssetPath(
-                `${ASSET_IMAGES}/logo192.png`,
-              )} alt="" style={{width:"100%",height:"100%"}}/>
+              <Div sx={{ ml: 4, mt: 0 }}>
+                <img
+                  src={getAssetPath(`${ASSET_IMAGES}/venshaLogo.jpg`)}
+                  alt=""
+                  style={{ width: "80%", height: "80%" }}
+                />
               </Div>
             </Div>
           </CardContent>
-          <CardContent sx={{ flex: 1, py: 4,pl:2 }}>
+          <CardContent sx={{ flex: 1, py: 7, pl: 2 }}>
             <Formik
               validateOnChange={true}
               initialValues={{
@@ -136,7 +127,11 @@ const Login = ({ disableSmLogin }) => {
               onSubmit={onSignIn}
             >
               {({ values }) => (
-                <Form style={{ textAlign: "left" }} noValidate autoComplete="off">
+                <Form
+                  style={{ textAlign: "left" }}
+                  noValidate
+                  autoComplete="off"
+                >
                   <Div sx={{ mt: 1, mb: 3 }}>
                     <JumboTextField
                       fullWidth
@@ -170,7 +165,7 @@ const Login = ({ disableSmLogin }) => {
                     variant="contained"
                     size="medium"
                     type="submit"
-                    sx={{ mb: 3 }}
+                    sx={{ mb: 3, backgroundColor: "#F9D342", color: "black" }}
                     loading={isSubmitting}
                   >
                     Sign In

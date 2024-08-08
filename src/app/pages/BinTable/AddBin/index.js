@@ -32,11 +32,8 @@ export default function AddProduction() {
   const [productionLine, setproductionLine] = useState([]);
   const [assignedTo, setAssignedTo] = useState([]);
   const [isSubmitting, setSubmitting] = useState(false);
-
   const { pathname } = useLocation();
-
   const data = state;
-
   const user = {
     // employee_id: data?.employee_id ? data.employee_id : empid,
     first_name: data?.first_name ? data?.first_name : "",

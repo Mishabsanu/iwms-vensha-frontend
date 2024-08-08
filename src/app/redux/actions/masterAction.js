@@ -32,9 +32,15 @@ import {
   ALL_UNLOADING_MASTER_REQUEST,
   ALL_UNLOADING_MASTER_SUCCESS,
   ALL_UNLOADING_MASTER_FAIL,
+  ALL_FORKLIFT_OPERATOR_MASTER_REQUEST,
+  ALL_FORKLIFT_OPERATOR_MASTER_SUCCESS,
+  ALL_FORKLIFT_OPERATOR_MASTER_FAIL,
   ALL_PRODUCTION_REQUEST,
   ALL_PRODUCTION_SUCCESS,
   ALL_PRODUCTION_FAIL,
+  ALL_BIN_TABLE_REQUEST,
+  ALL_BIN_TABLE_SUCCESS,
+  ALL_BIN_TABLE_FAIL,
 } from "app/utils/constants/masterConstants";
 import axios from "axios";
 
@@ -218,6 +224,56 @@ export const getAllVendor =
     }
   };
 
+//Bin Table
+export const getAllBinTable =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+
+      dispatch({ type: ALL_BIN_TABLE_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+          // }/production/list-production?${urlParams.toString()}`,
+        }/production/list-bin?${urlParams.toString()}`,
+        { ...body },
+        config
+      );
+      // console.log(data);
+      dispatch({
+        type: ALL_BIN_TABLE_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_BIN_TABLE_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
 //STORAGE_TYPE master
 export const getAllStorageType =
   (search_value, sort, sortBy, page) => async (dispatch) => {
@@ -259,6 +315,52 @@ export const getAllStorageType =
     } catch (error) {
       dispatch({
         type: ALL_STORAGE_TYPE_MASTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
+//forklift-operator master
+export const getAllForkliftOperator =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {};
+      if (!search_value) {
+        search_value = "";
+      }
+
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+
+      dispatch({ type: ALL_FORKLIFT_OPERATOR_MASTER_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+        }/forklift-operator/list-forklift-operator?${urlParams.toString()}`,
+        body,
+        config
+      );
+
+      dispatch({
+        type: ALL_FORKLIFT_OPERATOR_MASTER_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_FORKLIFT_OPERATOR_MASTER_FAIL,
         payload: error?.response?.data?.message,
       });
     }

@@ -38,9 +38,15 @@ import {
   ALL_UNLOADING_MASTER_FAIL,
   ALL_UNLOADING_MASTER_REQUEST,
   ALL_UNLOADING_MASTER_SUCCESS,
+  ALL_FORKLIFT_OPERATOR_MASTER_FAIL,
+  ALL_FORKLIFT_OPERATOR_MASTER_REQUEST,
+  ALL_FORKLIFT_OPERATOR_MASTER_SUCCESS,
   ALL_PRODUCTION_FAIL,
   ALL_PRODUCTION_REQUEST,
   ALL_PRODUCTION_SUCCESS,
+  ALL_BIN_TABLE_FAIL,
+  ALL_BIN_TABLE_REQUEST,
+  ALL_BIN_TABLE_SUCCESS,
 } from "app/utils/constants/masterConstants";
 
 const INIT_STATE = {
@@ -48,6 +54,7 @@ const INIT_STATE = {
   error: null,
   supplierMaster: [],
   binMaster: [],
+  binTableMaster: [],
   storageTypeMaster: [],
   storageSearchMaster: [],
   vendorMaster: [],
@@ -57,7 +64,8 @@ const INIT_STATE = {
   vehicleMaster: [],
   loadingMaster: [],
   unLoadingMaster: [],
-  production:[],
+  production: [],
+  forkliftOperator: [],
   TotalPage: null,
 };
 
@@ -144,6 +152,48 @@ export const masterReducer = (state = INIT_STATE, action) => {
         ...state,
         loading: false,
         loadingMaster: [],
+        error: action.payload,
+      };
+    //LAODING master
+    case ALL_FORKLIFT_OPERATOR_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_FORKLIFT_OPERATOR_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        forkliftOperator: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_FORKLIFT_OPERATOR_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        forkliftOperator: [],
+        error: action.payload,
+      };
+    //binTableMaster master
+    case ALL_BIN_TABLE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_BIN_TABLE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        binTableMaster: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_BIN_TABLE_FAIL:
+      return {
+        ...state,
+        loading: false,
+        binTableMaster: [],
         error: action.payload,
       };
     //production master

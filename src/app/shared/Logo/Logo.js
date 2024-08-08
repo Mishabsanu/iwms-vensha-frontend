@@ -9,14 +9,14 @@ const Logo = ({ mini, mode, sx }) => {
         {!mini ? (
           <img
             style={{
-              height: "80px",
-              width: "150px",
+              height: "152px",
+              width: "170px",
               mixBlendMode: "color-burn",
             }}
             src={
               mode === "light"
-                ? `${ASSET_IMAGES}/logo192.png`
-                : `${ASSET_IMAGES}/logo192.png`
+                ? `${ASSET_IMAGES}/venshaLogo.jpg`
+                : `${ASSET_IMAGES}/venshaLogo.jpg`
             }
             alt="Jumbo React"
           />
@@ -24,8 +24,8 @@ const Logo = ({ mini, mode, sx }) => {
           <img
             src={
               mode === "light"
-                ? `${ASSET_IMAGES}/VENEERPRO_KDC_LOGO.svg`
-                : `${ASSET_IMAGES}/VENEERPRO_KDC_LOGO.svg`
+                ? `${ASSET_IMAGES}/venshaLogo.jpg`
+                : `${ASSET_IMAGES}/venshaLogo.jpg`
             }
             alt="Jumbo React"
           />

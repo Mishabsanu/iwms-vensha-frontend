@@ -16,6 +16,7 @@ import {
 import AllApis from "app/Apis";
 import FullScreenLoader from "app/components/ListingPageLoader";
 import { getAllVendor } from "app/redux/actions/masterAction";
+import { displayDateFun } from "app/utils/constants/functions";
 import { Axios } from "index";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -340,9 +341,9 @@ export default function ListProductionTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "Process_Qty"}
+                  active={sortBy === "process_order"}
                   direction={sort}
-                  onClick={() => handleSort("Process_Qty")}
+                  onClick={() => handleSort("process_order")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -351,7 +352,29 @@ export default function ListProductionTable({
                     },
                   }}
                 >
-                  Process Qty
+                  Process Order
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "150px",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "process_order_qty"}
+                  direction={sort}
+                  onClick={() => handleSort("process_order_qty")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Process Order
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -614,44 +637,48 @@ export default function ListProductionTable({
                     textAlign: "left",
                   }}
                 >
-                  {row.Date}
+                  {displayDateFun(row.date)}
                 </TableCell>
                 <TableCell
                   sx={{
                     textAlign: "left",
                   }}
                 >
-                  {row.Production_Line}
+                  {row.production_line_details.production_line_name}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.Process_Qty}
+                  {row.process_order_qty}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row.SKU_Code}</TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.Sku_Description}
+                  {row.process_order}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row.sku_code}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row.sku_description}
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.SUT || "-"}
+                  {row?.sut || "-"}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row?.UOM}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row?.uom}</TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.Transfer_Order}
-                </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>
-                  {row?.Pallet_Qty || "-"}
+                  {row?.transfer_order}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.Assigned_To || "-"}
+                  {row?.pallet_qty || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.Batch || "-"}
+                  {`${row?.assigned_user.first_name} ${row?.assigned_user.last_name}` ||
+                    "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.Bin || "-"}
+                  {row?.batch || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.Three_Digit_Codes || "-"}
+                  {row?.bin || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.digit_3_codes || "-"}
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "left" }}>

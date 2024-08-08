@@ -7,6 +7,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import PersonIcon from "@mui/icons-material/Person";
 import ScaleIcon from "@mui/icons-material/Scale";
 import StarBorderPurple500Icon from "@mui/icons-material/StarBorderPurple500";
+import BikeScooterIcon from '@mui/icons-material/BikeScooter';
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 const menus = [
   {
@@ -171,7 +172,26 @@ const menus = [
         type: "nav-item",
         icon: <ScaleIcon sx={{ fontSize: 20 }} />,
       },
+      {
+        uri: "/dashboard/warehouseexecutive/bin",
+        label: "sidebar.menuItem.WarehouseExecutive.binAllocation",
+        isActiveUri: ["/master/bin/add", "/master/bin/edit"],
+        permission: "bin_master_view",
+        type: "nav-item",
+        icon: <ScaleIcon sx={{ fontSize: 20 }} />,
+      },
     ],
+  },
+  {
+    uri: "/dashboard/forklift-operator",
+    isActiveUri: [
+      "/dashboard/editforklift-operator",
+      "/dashboard/addforklift-operator",
+    ],
+    label: "sidebar.menuItem.ForkliftOperator",
+    type: "nav-item",
+    permission: "forklift_operator_master_view",
+    icon: <BikeScooterIcon sx={{ fontSize: 20 }} />,
   },
 ];
 
