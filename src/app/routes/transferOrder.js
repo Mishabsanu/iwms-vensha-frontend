@@ -2,7 +2,7 @@ import Page from "@jumbo/shared/Page/Page";
 import ListTransferOrder from "app/pages/transferOrder/ListTransferOrder";
 import TransferOrderMiddleware from "./middleware/auth/transferOrderMiddleware";
 
-const trasnferOrder = [
+const transaction = [
   {
     middleware: [
       {
@@ -21,4 +21,4 @@ const trasnferOrder = [
   },
 ];
 
-export default trasnferOrder;
+export default transaction;

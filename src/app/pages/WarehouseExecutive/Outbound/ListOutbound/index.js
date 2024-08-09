@@ -3,17 +3,17 @@ import { Suspense, useEffect, useState } from "react";
 
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, InputAdornment, TextField, Typography } from "@mui/material";
-import { getAllProduction } from "app/redux/actions/masterAction";
-import { getAllUsers } from "app/redux/actions/userAction";
+import AllApis from "app/Apis";
+import { getAllOutbound } from "app/redux/actions/masterAction";
+import { Axios } from "index";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ListProductionTable from "./productiontable";
-import { Axios } from "index";
-import AllApis from "app/Apis";
 import Swal from "sweetalert2";
+import ListProductionTable from "./outboundtable";
+import ListOutboundTable from "./outboundtable";
 
-export default function ListProduction() {
+export default function ListOutbound() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
@@ -29,7 +29,7 @@ export default function ListProduction() {
   //debouncing for search
   const handleSearch = (value) => {
     setPage(1);
-    dispatch(getAllProduction(value, sort, sortBy, 1));
+    dispatch(getAllOutbound(value, sort, sortBy, 1));
   };
   const importRawMaterial = async (file) => {
     const config = {
@@ -45,7 +45,7 @@ export default function ListProduction() {
       formData.append("excelFile", file); // Append your Excel file to the FormData
       const response = await Axios.post(AllApis.bulk.raw, formData, config);
       if (response?.data?.status === true) {
-        dispatch(getAllProduction(searchTerm, sort, sortBy, page, ""));
+        dispatch(getAllOutbound(searchTerm, sort, sortBy, page, ""));
         Swal.fire({
           title: "Uploaded",
           icon: "success",
@@ -84,13 +84,13 @@ export default function ListProduction() {
   }, [searchTerm]);
 
   useEffect(() => {
-    dispatch(getAllProduction(searchTerm, sort, sortBy, page));
+    dispatch(getAllOutbound(searchTerm, sort, sortBy, page));
   }, [sort, page]);
 
   return (
     <>
       <Div sx={{ mt: -4 }}>
-        <Typography variant="h1">Production</Typography>
+        <Typography variant="h1">Outbound</Typography>
         <Div
           sx={{
             display: "flex",
@@ -109,7 +109,7 @@ export default function ListProduction() {
               if (e.target.value == "") {
                 setSort("desc");
                 setSortBy("updated_at");
-                dispatch(getAllProduction("", "desc", "updated_at", 1));
+                dispatch(getAllOutbound("", "desc", "updated_at", 1));
               }
             }}
             sx={{ width: 300, mb: 5, mt: 4 }}
@@ -124,57 +124,19 @@ export default function ListProduction() {
             }}
           />
           <Div>
-            {/* {permissions?.user_view == true && (
-              <LoadingButton
-                variant="contained"
-                sx={{
-                  mr: 2,
-                  p: 1,
-                  pl: 4,
-                  pr: 4,
-                }}
-                onClick={() => handleLogs("user/user-logs", "users")}
-              >
-                Log
-              </LoadingButton>
-            )} */}
-
-            {permissions?.material_master_create == true && (
+            {permissions?.outbound_master_create == true && (
               <Button
                 variant="contained"
                 sx={{ p: 1, pl: 4, pr: 4 }}
-                onClick={() => navigate("/dashboard/addproduction")}
+                onClick={() => navigate("/dashboard/addoutbound")}
               >
-                Add Production
+                Add Outbound
               </Button>
             )}
-            {/* {permissions?.material_master_view && (
-              <Div>
-                <form>
-                  <input
-                    type="file"
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
-                    id="fileInput"
-                  />
-                  <label htmlFor="fileInput">
-                    <Button
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      component="span"
-                      sx={{ height: "100%" }}
-                    >
-                      Import
-                    </Button>
-                  </label>
-                </form>
-              </Div>
-            )} */}
           </Div>
         </Div>
         <Suspense fallback={<div>Loading...</div>}>
-          <ListProductionTable
+          <ListOutboundTable
             searchTerm={searchTerm}
             page={page}
             setPage={setPage}

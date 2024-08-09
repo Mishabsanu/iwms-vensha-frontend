@@ -121,6 +121,10 @@ export default function PermissionList() {
           transfer_order_view: false,
           transfer_order_edit: false,
           transfer_order_create: false,
+
+          outbound_master_view: false,
+          outbound_master_edit: false,
+          outbound_master_create: false,
         }
   );
 
@@ -801,6 +805,34 @@ export default function PermissionList() {
             checked={check.stock_report_create}
             onChange={handleChange}
             name="stock_report_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Outbound</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.outbound_master_view}
+            onChange={handleChange}
+            name="outbound_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.outbound_master_edit}
+            onChange={handleChange}
+            name="outbound_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.outbound_master_create}
+            onChange={handleChange}
+            name="outbound_master_create"
           />
           <Typography>Create</Typography>
         </Div>

@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, InputAdornment, TextField, Typography } from "@mui/material";
 import AllApis from "app/Apis";
-import { getAllUnit } from "app/redux/actions/masterAction";
+import { getAllTransaction } from "app/redux/actions/masterAction";
 import { Axios } from "index";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +28,7 @@ export default function ListTransferOrder() {
   //debouncing for search
   const handleSearch = (value) => {
     setPage(1);
-    dispatch(getAllUnit(value, sort, sortBy, 1));
+    dispatch(getAllTransaction(value, sort, sortBy, 1));
   };
   const importRawMaterial = async (file) => {
     const config = {
@@ -45,7 +45,7 @@ export default function ListTransferOrder() {
 
       const response = await Axios.post(AllApis.bulk.raw, formData, config);
       if (response?.data?.status === true) {
-        dispatch(getAllUnit(searchTerm, sort, sortBy, page, ""));
+        dispatch(getAllTransaction(searchTerm, sort, sortBy, page, ""));
         Swal.fire({
           title: "Uploaded",
           icon: "success",
@@ -84,13 +84,13 @@ export default function ListTransferOrder() {
   }, [searchTerm]);
 
   useEffect(() => {
-    dispatch(getAllUnit(searchTerm, sort, sortBy, page));
+    dispatch(getAllTransaction(searchTerm, sort, sortBy, page));
   }, [sort, page]);
 
   return (
     <>
       <Div sx={{ mt: -4 }}>
-        <Typography variant="h1">Transfer Order Table</Typography>
+        <Typography variant="h1">Transaction Order</Typography>
         <Div
           sx={{
             display: "flex",
@@ -109,7 +109,7 @@ export default function ListTransferOrder() {
               if (e.target.value == "") {
                 setSort("desc");
                 setSortBy("updated_at");
-                dispatch(getAllUnit("", "desc", "updated_at", 1));
+                dispatch(getAllTransaction("", "desc", "updated_at", 1));
               }
             }}
             sx={{ width: 300, mb: 5, mt: 4 }}

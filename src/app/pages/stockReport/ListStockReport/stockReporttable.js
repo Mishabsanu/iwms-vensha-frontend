@@ -28,7 +28,7 @@ export default function ListStockReportTable({
   setSort,
   setSortBy,
 }) {
-  const { unitMaster, TotalPage, loading } = useSelector(
+  const { stockReport, TotalPage, loading } = useSelector(
     (state) => state.masterReducer
   );
   const [loader, setLoader] = useState(false);
@@ -78,14 +78,15 @@ export default function ListStockReportTable({
               <TableCell
                 sx={{
                   textAlign: "left",
+                  minWidth: "150px",
+                  verticalAlign: "middle",
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "date"}
+                  active={sortBy === "Date"}
                   direction={sort}
-                  onClick={() => handleSort("date")}
+                  onClick={() => handleSort("Date")}
                   sx={{
-                    //   maxWidth: "70px",
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
@@ -99,26 +100,14 @@ export default function ListStockReportTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "180px",
+                  minWidth: "150px",
                   verticalAlign: "middle",
-                  color: "white",
-                  px: 1,
-                }}
-              >
-                LR Number
-              </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  minWidth: "80px",
-                  verticalAlign: "middle",
-                  color: "white",
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "truck_number"}
+                  active={sortBy === "Production_Line"}
                   direction={sort}
-                  onClick={() => handleSort("truck_number")}
+                  onClick={() => handleSort("Production_Line")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -127,7 +116,251 @@ export default function ListStockReportTable({
                     },
                   }}
                 >
-                  Truck Number
+                  Production Line
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "150px",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "process_order"}
+                  direction={sort}
+                  onClick={() => handleSort("process_order")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Process Order
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "150px",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "process_order_qty"}
+                  direction={sort}
+                  onClick={() => handleSort("process_order_qty")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Process Order
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "150px",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "SKU_Code"}
+                  direction={sort}
+                  onClick={() => handleSort("SKU_Code")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  SKU Code
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Sku_Description"}
+                  direction={sort}
+                  onClick={() => handleSort("Sku_Description")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Sku Description
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "SUT"}
+                  direction={sort}
+                  onClick={() => handleSort("SUT")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  SUT
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                  color: "white",
+                  minWidth: "120px",
+                }}
+              >
+                UOM
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Transfer_Order"}
+                  direction={sort}
+                  onClick={() => handleSort("Transfer_Order")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Transfer Order
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Pallet_Qty"}
+                  direction={sort}
+                  onClick={() => handleSort("Pallet_Qty")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Pallet Qty
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Assigned_To"}
+                  direction={sort}
+                  onClick={() => handleSort("Assigned_To")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Assigned To
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Batch"}
+                  direction={sort}
+                  onClick={() => handleSort("Batch")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Batch
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Bin"}
+                  direction={sort}
+                  onClick={() => handleSort("Bin")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Bin
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Three_Digit_Codes"}
+                  direction={sort}
+                  onClick={() => handleSort("Three_Digit_Codes")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  3 Digit Codes
                 </TableSortLabel>
               </TableCell>
 
@@ -140,9 +373,9 @@ export default function ListStockReportTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "truck_number"}
+                  active={sortBy === "status"}
                   direction={sort}
-                  onClick={() => handleSort("truck_number")}
+                  onClick={() => handleSort("status")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -151,179 +384,66 @@ export default function ListStockReportTable({
                     },
                   }}
                 >
-                  Truck Type
+                  Status
                 </TableSortLabel>
               </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  px: 1,
-                  minWidth: "80px",
-                  verticalAlign: "middle",
-                }}
-              >
-                <TableSortLabel
-                  active={sortBy === "from_vendor"}
-                  direction={sort}
-                  onClick={() => handleSort("from_vendor")}
-                  sx={{
-                    maxWidth: "50px",
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white", // Set the color for the active state
-                    },
-                  }}
-                >
-                  {" "}
-                  From Vendor
-                </TableSortLabel>
-              </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  px: 1,
-                  minWidth: "80px",
-                  verticalAlign: "middle",
-                }}
-              >
-                <TableSortLabel
-                  active={sortBy === "truck_type"}
-                  direction={sort}
-                  onClick={() => handleSort("truck_type")}
-                  sx={{
-                    maxWidth: "50px",
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white", // Set the color for the active state
-                    },
-                  }}
-                >
-                  Customer Name
-                </TableSortLabel>
-              </TableCell>
-
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  color: "white",
-                }}
-              >
-                P.O Number
-              </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  color: "white",
-                }}
-              >
-                Invoice Number
-              </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  color: "white",
-                }}
-              >
-                Invoice Qty
-              </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  color: "white",
-                }}
-              >
-                Invoice Value
-              </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  color: "white",
-                }}
-              >
-                EWay Bill Number
-              </TableCell>
-              {permissions?.grade_master_edit == true && (
-                <TableCell
-                  sx={{
-                    textAlign: "left",
-                    color: "white",
-                  }}
-                >
-                  Action
-                </TableCell>
-              )}
             </TableRow>
           </TableHead>
           <TableBody>
-            {unitMaster?.map((row, i) => (
+            {stockReport?.map((row, i) => (
               <TableRow key={i}>
-                <TableCell sx={{ textAlign: "left" }}>
-                  {displayDateFun(row.date)}
-                </TableCell>
-                <TableCell sx={{ textAlign: "left", px: 1 }}>
-                  {row?.lr_number ? row?.lr_number : "-"}
-                </TableCell>
                 <TableCell
-                  sx={{ textAlign: "left", textTransform: "capitalize" }}
+                  sx={{
+                    textAlign: "left",
+                  }}
                 >
-                  {row?.truck_number}{" "}
+                  {displayDateFun(row.date)}
                 </TableCell>
                 <TableCell
                   sx={{
                     textAlign: "left",
-                    px: 1,
-                    textTransform: "capitalize",
                   }}
                 >
-                  {row?.truck_type}
+                  {row.production_line_details.production_line_name}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.from_vendor}
+                  {row.process_order_qty}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.customer_name}
+                  {row.process_order}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row.sku_code}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row.sku_description}
+                </TableCell>
+
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.sut || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row?.uom}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.transfer_order}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.po_number}
+                  {row?.pallet_qty || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.invoice_number}
+                  {`${row?.assigned_user.first_name} ${row?.assigned_user.last_name}` ||
+                    "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.invoice_qty}
+                  {row?.batch || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.invoice_value}
+                  {row?.bin || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.eway_bill_number}
+                  {row?.digit_3_codes || "-"}
                 </TableCell>
-                {permissions?.item_code_master_edit == true && (
-                  <TableCell sx={{ textAlign: "left" }}>
-                    <JumboDdMenu
-                      icon={<MoreHorizIcon />}
-                      menuItems={[
-                        {
-                          icon: <EditIcon />,
-                          title: "Edit Item Type Details",
-                          action: "edit",
-                          data: row,
-                        },
-                        {
-                          icon: <AutorenewIcon />,
-                          title: `${
-                            row?.status == "active" ? "Deactivate" : "Activate"
-                          }`,
-                          action: "editStatus",
-                          data: row,
-                        },
-                      ]}
-                      onClickCallback={handleItemAction}
-                    />
-                  </TableCell>
-                )}
+
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.status || "-"}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
