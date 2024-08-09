@@ -7,8 +7,10 @@ import PeopleIcon from "@mui/icons-material/People";
 import PersonIcon from "@mui/icons-material/Person";
 import ScaleIcon from "@mui/icons-material/Scale";
 import StarBorderPurple500Icon from "@mui/icons-material/StarBorderPurple500";
-import BikeScooterIcon from '@mui/icons-material/BikeScooter';
+import BikeScooterIcon from "@mui/icons-material/BikeScooter";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import MoveUpIcon from "@mui/icons-material/MoveUp";
 const menus = [
   {
     uri: "/dashboard",
@@ -115,6 +117,14 @@ const menus = [
         icon: <LocalOfferOutlinedIcon sx={{ fontSize: 20 }} />,
       },
       {
+        uri: "/dashboard/master/cross-dock",
+        label: "sidebar.menuItem.master.cross_dock",
+        isActiveUri: ["/master/cross-dock/add", "/master/cross-dock/edit"],
+        permission: "cross_dock_master_view",
+        type: "nav-item",
+        icon: <LocalOfferOutlinedIcon sx={{ fontSize: 20 }} />,
+      },
+      {
         uri: "/dashboard/master/storage-search",
         label: "sidebar.menuItem.master.storage_search",
         isActiveUri: [
@@ -192,6 +202,25 @@ const menus = [
     type: "nav-item",
     permission: "forklift_operator_master_view",
     icon: <BikeScooterIcon sx={{ fontSize: 20 }} />,
+  },
+  {
+    uri: "/dashboard/transfer-order",
+    isActiveUri: [
+      "/dashboard/edittransfer-order",
+      "/dashboard/addtransfer-order",
+    ],
+    label: "sidebar.menuItem.trasnferOrder",
+    type: "nav-item",
+    permission: "transfer_order_view",
+    icon: <MoveUpIcon sx={{ fontSize: 20 }} />,
+  },
+  {
+    uri: "/dashboard/stock-report",
+    isActiveUri: ["/dashboard/editstock-report", "/dashboard/addstock-report"],
+    label: "sidebar.menuItem.stockReport",
+    type: "nav-item",
+    permission: "stock_report_view",
+    icon: <AssessmentIcon sx={{ fontSize: 20 }} />,
   },
 ];
 

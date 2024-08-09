@@ -9,6 +9,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ListMaterialTable from "./materialTable";
+import { Axios } from "index";
+import AllApis from "app/Apis";
+import Swal from "sweetalert2";
 
 export default function ListMaterial() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,6 +23,7 @@ export default function ListMaterial() {
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   //debouncing for search
   const handleSearch = (value) => {
@@ -41,6 +45,47 @@ export default function ListMaterial() {
   useEffect(() => {
     dispatch(getAllSuppliers(searchTerm, sort, sortBy, page));
   }, [sort, page]);
+
+  const importMaterial = async (file) => {
+    const config = {
+      withCredentials: true,
+      headers: {
+        withCredentials: true,
+        "Content-Type": "multipart/form-data", // Set content type to multipart/form-data
+      },
+    };
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("excelFile", file); // Append your Excel file to the FormData
+      const response = await Axios.post(AllApis.bulk.material, formData, config);
+      if (response?.data?.status === true) {
+        dispatch(getAllSuppliers(searchTerm, sort, sortBy, page, ""));
+        Swal.fire({
+          title: "Uploaded",
+          icon: "success",
+          timer: 5000,
+          showConfirmButton: false,
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: error?.response?.data?.message,
+        icon: "error",
+        timer: 5000,
+        showConfirmButton: false,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    importMaterial(file);
+
+    // Reset the file input value to allow multiple uploads
+    e.target.value = null;
+  };
 
   return (
     <Div sx={{ mt: -4 }}>
@@ -87,7 +132,9 @@ export default function ListMaterial() {
                 pl: 4,
                 pr: 4,
               }}
-              onClick={() => handleLogs("supplier-master/supplier-logs","suppliers")}
+              onClick={() =>
+                handleLogs("supplier-master/supplier-logs", "suppliers")
+              }
             >
               Log
             </LoadingButton>
@@ -101,6 +148,29 @@ export default function ListMaterial() {
             >
               Add New Material
             </Button>
+          )}
+          {permissions?.material_master_create && (
+            <Div>
+              <form>
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                  id="fileInput"
+                />
+                <label htmlFor="fileInput">
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    component="span"
+                    sx={{ height: "100%" }}
+                  >
+                    Import
+                  </Button>
+                </label>
+              </form>
+            </Div>
           )}
         </Div>
       </Div>

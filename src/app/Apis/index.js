@@ -5,7 +5,7 @@ const AllApis = {
     productionLine: "/production-line/dropdown-produntion-line-master",
     skuSearch: "/production/sku-details",
     // skuDetails: "/production/sku-all-details",
-    skuDetails: function ( sku_code) {
+    skuDetails: function (sku_code) {
       return `/production/sku-all-details?sku_code=${sku_code}`;
     },
 
@@ -18,8 +18,10 @@ const AllApis = {
   },
   bulk: {
     raw: "/production/bulk-upload-production",
+    material:"/material-master/bulk-upload-material",
     bin: "/production/bulk-upload-bin",
   },
   allocateBin: "/production/allocate-bin",
+  crossDocker: "/production/cross-docker-allocate",
 };
 export default AllApis;

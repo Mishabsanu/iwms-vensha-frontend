@@ -14,13 +14,10 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
-import { getAllSuppliers } from "app/redux/actions/masterAction";
-import { updateMaterial } from "app/services/apis/updateMaterial";
 import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 export default function ListMaterialTable({
   searchTerm,
   setPage,
@@ -237,9 +234,9 @@ export default function ListMaterialTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "material_detail"}
+                  active={sortBy === "sku_description"}
                   direction={sort}
-                  onClick={() => handleSort("material_detail")}
+                  onClick={() => handleSort("sku_description")}
                   sx={{
                     //   maxWidth: "70px",
                     color: "white",
@@ -286,9 +283,9 @@ export default function ListMaterialTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "pallet_qty"}
+                  active={sortBy === "pallete_qty"}
                   direction={sort}
-                  onClick={() => handleSort("pallet_qty")}
+                  onClick={() => handleSort("pallete_qty")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -309,9 +306,9 @@ export default function ListMaterialTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "sku_group"}
+                  active={sortBy === "sku_grp"}
                   direction={sort}
-                  onClick={() => handleSort("sku_group")}
+                  onClick={() => handleSort("sku_grp")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -332,9 +329,9 @@ export default function ListMaterialTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "sii"}
+                  active={sortBy === "ssi"}
                   direction={sort}
-                  onClick={() => handleSort("sii")}
+                  onClick={() => handleSort("ssi")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -343,7 +340,7 @@ export default function ListMaterialTable({
                     },
                   }}
                 >
-                  SII
+                  SSI
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -368,31 +365,6 @@ export default function ListMaterialTable({
                   }}
                 >
                   Sub Category
-                </TableSortLabel>
-              </TableCell>
-
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  px: 1,
-                  minWidth: "150px",
-                  verticalAlign: "middle",
-                  color: "white",
-                }}
-              >
-                <TableSortLabel
-                  active={sortBy === "created_employee_id.first_name"}
-                  direction={sort}
-                  onClick={() => handleSort("created_employee_id.first_name")}
-                  sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white", // Set the color for the active state
-                    },
-                  }}
-                >
-                  Created By
                 </TableSortLabel>
               </TableCell>
 
@@ -503,7 +475,7 @@ export default function ListMaterialTable({
                     wordWrap: "break-word",
                   }}
                 >
-                  {row?.material_detail || "-"}
+                  {row?.sku_description || "-"}
                 </TableCell>
                 <TableCell
                   sx={{
@@ -522,12 +494,12 @@ export default function ListMaterialTable({
                     textTransform: "uppercase",
                   }}
                 >
-                  {row?.pallet_qty}
+                  {row?.pallete_qty}
                 </TableCell>
                 <TableCell
                   sx={{ textAlign: "left", px: 1, textTransform: "uppercase" }}
                 >
-                  {row?.sku_group}
+                  {row?.sku_grp}
                 </TableCell>
                 <TableCell
                   sx={{
@@ -536,7 +508,7 @@ export default function ListMaterialTable({
                     textTransform: "uppercase",
                   }}
                 >
-                  {row?.sii || "-"}
+                  {row?.ssi || "-"}
                 </TableCell>
                 <TableCell
                   sx={{
@@ -548,11 +520,6 @@ export default function ListMaterialTable({
                   {row?.sub_category || "-"}
                 </TableCell>
 
-                <TableCell sx={{ textTransform: "capitalize", px: 1 }}>
-                  {" "}
-                  {row?.created_employee_id?.first_name}{" "}
-                  {row?.created_employee_id?.last_name}
-                </TableCell>
                 <TableCell
                   sx={{
                     textAlign: "left",

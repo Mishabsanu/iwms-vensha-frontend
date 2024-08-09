@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import AllApis from "app/Apis";
 import FullScreenLoader from "app/components/ListingPageLoader";
-import { getAllVendor } from "app/redux/actions/masterAction";
+import { getAllProduction, getAllVendor } from "app/redux/actions/masterAction";
 import { displayDateFun } from "app/utils/constants/functions";
 import { Axios } from "index";
 import { useState } from "react";
@@ -99,6 +99,46 @@ export default function ListProductionTable({
 
       if (res?.data.status) {
         Swal.fire({ icon: "success", title: "Allocat successfully" });
+        dispatch(getAllProduction(searchTerm, sort, sortBy, page));
+        setAddGroup([]);
+        navigate("/dashboard/warehouseexecutive/production");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: res.data.message || "Unknown error occurred",
+        });
+      }
+    } catch (error) {
+      console.log(error, "error");
+      Swal.fire({
+        title: error.response ? error.response.data.message : error.message,
+        icon: "error",
+
+        showConfirmButton: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleAddCrossDocker = async () => {
+    try {
+      setIsLoading(true);
+
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+      const res = await Axios.post(
+        AllApis.crossDocker,
+        { item_details: addGroup },
+        config
+      );
+
+      if (res?.data.status) {
+        Swal.fire({ icon: "success", title: "Allocat successfully" });
         dispatch(getAllVendor(searchTerm, sort, sortBy, page));
         setAddGroup([]);
         navigate("/dashboard/production");
@@ -146,6 +186,13 @@ export default function ListProductionTable({
               onClick={() => handleAddBinAllocate()}
             >
               Send To Bin Allocat
+            </LoadingButton>
+            <LoadingButton
+              variant="contained"
+              color="success"
+              onClick={() => handleAddCrossDocker()}
+            >
+              Send To Cross Dock
             </LoadingButton>
           </Div>
         </Div>
@@ -217,76 +264,6 @@ export default function ListProductionTable({
                       },
                     }}
                   />
-
-                  {/* <Checkbox
-                    onClick={(event) => {
-                      if (event?.target?.checked) {
-                        const allRawIds = production?.map((ele) => ({
-                          _id: ele._id,
-                        }));
-                        const newItems = allRawIds.filter(
-                          (newItem) =>
-                            !addGroup.some(
-                              (existingItem) => existingItem._id === newItem._id
-                            )
-                        );
-                        setAddGroup([...addGroup, ...newItems]);
-                      } else {
-                        setAddGroup(
-                          addGroup.filter(
-                            (item) =>
-                              !production.some(
-                                (packItem) => packItem._id === item._id
-                              )
-                          )
-                        );
-                      }
-                    }}
-                    color="primary"
-                    checked={
-                      addGroup?.length > 0 &&
-                      production
-                        ?.map((item) => item._id)
-                        ?.every((id) =>
-                          addGroup?.some((groupItem) => groupItem._id === id)
-                        )
-                    }
-                    sx={{
-                      "&.Mui-checked": {
-                        color: "white",
-                      },
-                    }}
-                  /> */}
-
-                  {/* <Checkbox
-                    onClick={(event) => {
-                      if (event?.target?.checked == true) {
-                        const allRawIds = production?.map((ele) => ele?._id);
-                        setAddGroup([...addGroup, ...allRawIds]);
-                      } else {
-                        setAddGroup(
-                          addGroup.filter(
-                            (item) =>
-                              !production
-                                .map((item) => item._id)
-                                .includes(item)
-                          )
-                        );
-                      }
-                    }}
-                    color="primary"
-                    checked={
-                      addGroup?.length > 0 &&
-                      production
-                        .map((item) => item._id)
-                        .every((id) => addGroup.includes(id))
-                    }
-                    sx={{
-                      "&.Mui-checked": {
-                        color: "white",
-                      },
-                    }}
-                  /> */}
                 </TableCell>
               )}
               <TableCell
@@ -601,22 +578,6 @@ export default function ListProductionTable({
                   Status
                 </TableSortLabel>
               </TableCell>
-
-              {/* <TableCell
-                sx={{
-                  textAlign: "left",
-                  minWidth: "40px",
-                  verticalAlign: "middle",
-                  color: "white",
-                  position: "sticky",
-                  right: 0,
-                  height: "58px",
-                  zIndex: 1,
-                  bgcolor: "#7352C7",
-                }}
-              >
-                Action
-              </TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -684,40 +645,6 @@ export default function ListProductionTable({
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.status || "-"}
                 </TableCell>
-                {/* 
-                <TableCell
-                  sx={{
-                    textAlign: "left",
-                    px: 1,
-                    position: "sticky",
-                    right: 0,
-                    zIndex: 1,
-                    bgcolor: "white",
-                  }}
-                >
-                  <JumboDdMenu
-                    icon={<MoreHorizIcon />}
-                    menuItems={
-                      permissions.user_edit == true
-                        ? [
-                            {
-                              icon: <EditIcon />,
-                              title: "Edit User Details",
-                              action: "edit",
-                              data: row,
-                            },
-                            {
-                              icon: <SettingsIcon />,
-                              title: "Change Password",
-                              action: "configure",
-                              data: row,
-                            },
-                          ]
-                        : [{ title: "No Actions" }]
-                    }
-                    onClickCallback={handleItemAction}
-                  />
-                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>

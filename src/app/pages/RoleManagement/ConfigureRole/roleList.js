@@ -105,10 +105,22 @@ export default function PermissionList() {
           production_master_view: false,
           production_master_edit: false,
           production_master_create: false,
-          
+
           forklift_operator_master_view: false,
           forklift_operator_master_edit: false,
           forklift_operator_master_create: false,
+
+          cross_dock_master_view: false,
+          cross_dock_master_edit: false,
+          cross_dock_master_create: false,
+
+          stok_report_view: false,
+          stok_report_edit: false,
+          stok_report_create: false,
+
+          transfer_order_view: false,
+          transfer_order_edit: false,
+          transfer_order_create: false,
         }
   );
 
@@ -601,6 +613,33 @@ export default function PermissionList() {
           <Typography>Create</Typography>
         </Div>
       </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Cross Dock Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.cross_dock_master_view}
+            onChange={handleChange}
+            name="cross_dock_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.cross_dock_master_edit}
+            onChange={handleChange}
+            name="cross_dock_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.cross_dock_master_create}
+            onChange={handleChange}
+            name="cross_dock_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
 
       <Div sx={{ display: "flex", alignItems: "center" }}>
         <Typography sx={headingStyle}>Loading Master</Typography>
@@ -708,6 +747,60 @@ export default function PermissionList() {
             checked={check.forklift_operator_master_create}
             onChange={handleChange}
             name="forklift_operator_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Trasnfer Order</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.transfer_order_view}
+            onChange={handleChange}
+            name="transfer_order_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.transfer_order_edit}
+            onChange={handleChange}
+            name="transfer_order_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.transfer_order_create}
+            onChange={handleChange}
+            name="transfer_order_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Stock Report</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.stock_report_view}
+            onChange={handleChange}
+            name="stock_report_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.stock_report_edit}
+            onChange={handleChange}
+            name="stock_report_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.stock_report_create}
+            onChange={handleChange}
+            name="stock_report_create"
           />
           <Typography>Create</Typography>
         </Div>

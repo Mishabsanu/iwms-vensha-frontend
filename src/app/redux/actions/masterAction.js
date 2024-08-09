@@ -35,6 +35,9 @@ import {
   ALL_FORKLIFT_OPERATOR_MASTER_REQUEST,
   ALL_FORKLIFT_OPERATOR_MASTER_SUCCESS,
   ALL_FORKLIFT_OPERATOR_MASTER_FAIL,
+  ALL_CROSS_DOCK_MASTER_REQUEST,
+  ALL_CROSS_DOCK_MASTER_SUCCESS,
+  ALL_CROSS_DOCK_MASTER_FAIL,
   ALL_PRODUCTION_REQUEST,
   ALL_PRODUCTION_SUCCESS,
   ALL_PRODUCTION_FAIL,
@@ -361,6 +364,51 @@ export const getAllForkliftOperator =
     } catch (error) {
       dispatch({
         type: ALL_FORKLIFT_OPERATOR_MASTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+//CrossDock master
+export const getAllCrossDock =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {};
+      if (!search_value) {
+        search_value = "";
+      }
+
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+
+      dispatch({ type: ALL_CROSS_DOCK_MASTER_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+        }/cross-dock/list-cross-dock-master?${urlParams.toString()}`,
+        body,
+        config
+      );
+
+      dispatch({
+        type: ALL_CROSS_DOCK_MASTER_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_CROSS_DOCK_MASTER_FAIL,
         payload: error?.response?.data?.message,
       });
     }

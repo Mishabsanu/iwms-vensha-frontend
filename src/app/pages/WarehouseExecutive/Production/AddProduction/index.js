@@ -9,6 +9,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import AllApis from "app/Apis";
@@ -16,13 +18,49 @@ import { addProduction } from "app/services/apis/addProduction";
 import { updateProduction } from "app/services/apis/updateProduction";
 import dayjs from "dayjs";
 import { ErrorMessage, Form, Formik } from "formik";
+import { Axios } from "index";
 import debounce from "lodash/debounce";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import * as yup from "yup";
 import { SkuDetails } from "../Modal/skuDetails";
-import { Axios } from "index";
+
+import Select from "@mui/material/Select";
+import { useTheme } from "@emotion/react";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const names = [
+  "Oliver Hansen",
+  "Van Henry",
+  "April Tucker",
+  "Ralph Hubbard",
+  "Omar Alexander",
+  "Carlos Abbott",
+  "Miriam Wagner",
+  "Bradley Wilkerson",
+  "Virginia Andrews",
+  "Kelly Snyder",
+];
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 
 export default function AddProduction() {
   const navigate = useNavigate();
@@ -44,7 +82,7 @@ export default function AddProduction() {
     sku_description: initialData?.sku_description || "",
     sut: initialData?.sut || "",
     batch: initialData?.batch || "",
-    pallet_qty: initialData?.pallet_qty || "",
+    pallete_qty: initialData?.pallete_qty || "",
     process_order_qty: initialData?.process_order_qty || "",
     assigned_to: initialData?.assigned_to || "Select",
   };
@@ -60,14 +98,18 @@ export default function AddProduction() {
     sku_description: yup.string().required("SKU Description is required"),
     sut: yup.string().required("SUT is required"),
     batch: yup.string().required("Batch is required"),
-    pallet_qty: yup.string().required("Pallet Qty is required"),
+    pallete_qty: yup.string().required("Pallet Qty is required"),
     process_order_qty: yup
       .string("Enter Process Order Qty")
       .required("Process Order Qty is required"),
     assigned_to: yup
-      .string()
+      .array()
+      .of(yup.string())
+      .min(1, "At least one assignee is required")
       .required("Assigned To is required")
-      .notOneOf(["Select"], "Please select a valid Assignee"),
+      .test("not-select", "Please select a valid Assignee", (value) =>
+        value && value[0] !== "Select" ? true : false
+      ),
   });
   useEffect(() => {
     const fetchDropdownData = async () => {
@@ -88,9 +130,28 @@ export default function AddProduction() {
 
     fetchDropdownData();
   }, []);
+  const theme = useTheme();
+  const [personName, setPersonName] = useState([]);
+  console.log(personName, "personName");
+  const handleChange = (event, setFieldValue) => {
+    const {
+      target: { value },
+    } = event;
+    // Update the local state
+    setPersonName(typeof value === "string" ? value.split(",") : value);
+    // Update Formik field value
+    if (setFieldValue) {
+      setFieldValue(
+        "assigned_to",
+        typeof value === "string" ? value.split(",") : value
+      );
+    }
+  };
 
   const onUserSave = async (values) => {
-    const body = { ...values };
+    console.log(values, "values");
+
+    const body = { ...values, assigned_to: personName };
     setSubmitting(true);
     try {
       const response =
@@ -146,6 +207,11 @@ export default function AddProduction() {
     fetchSkuOptions(query);
     setFieldValue("sku_code", query);
   };
+  const handleSkuDesInputChange = (event, setFieldValue) => {
+    const query = event.target.value;
+    fetchSkuOptions(query);
+    setFieldValue("sku_description", query);
+  };
 
   const handleSelectSku = (sku, setFieldValue) => {
     setSelectedSku(sku);
@@ -154,7 +220,7 @@ export default function AddProduction() {
     setFieldValue("sku_code", sku.sku_code);
     setFieldValue("sku_description", sku.sku_description);
     setFieldValue("sut", sku.sut);
-    setFieldValue("pallet_qty", sku.pallet_qty);
+    setFieldValue("pallete_qty", sku.pallete_qty);
     setOpen(false);
   };
 
@@ -173,6 +239,7 @@ export default function AddProduction() {
         >
           {({ values, setFieldValue, errors }) => (
             <Form>
+              {console.log(values, "values")}
               <Div sx={{ mt: 4 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={3} sm={4}>
@@ -202,7 +269,6 @@ export default function AddProduction() {
                           </MenuItem>
                         ))}
                       </TextField>
-                      <ErrorMessage name="production_line" component="div" />
                     </FormControl>
                   </Grid>
 
@@ -216,7 +282,6 @@ export default function AddProduction() {
                           setFieldValue("process_order", e.target.value)
                         }
                       />
-                      <ErrorMessage name="process_order" component="div" />
                     </FormControl>
                   </Grid>
 
@@ -247,7 +312,6 @@ export default function AddProduction() {
                         )}
                       />
                     </LocalizationProvider>
-                    <ErrorMessage name="date" component="div" />
                   </Grid>
 
                   <Grid item xs={3} sm={4}>
@@ -264,7 +328,6 @@ export default function AddProduction() {
                           ) : null,
                         }}
                       />
-                      <ErrorMessage name="sku_code" component="div" />
                     </FormControl>
                   </Grid>
 
@@ -275,10 +338,15 @@ export default function AddProduction() {
                         name="sku_description"
                         value={values.sku_description}
                         onChange={(e) =>
-                          setFieldValue("sku_description", e.target.value)
+                          handleSkuDesInputChange(e, setFieldValue)
                         }
+                        onFocus={() => fetchSkuOptions(values.sku_description)}
+                        InputProps={{
+                          endAdornment: loadingSkuOptions ? (
+                            <CircularProgress size={24} />
+                          ) : null,
+                        }}
                       />
-                      <ErrorMessage name="sku_description" component="div" />
                     </FormControl>
                   </Grid>
 
@@ -290,20 +358,18 @@ export default function AddProduction() {
                         value={values.sut}
                         onChange={(e) => setFieldValue("sut", e.target.value)}
                       />
-                      <ErrorMessage name="sut" component="div" />
                     </FormControl>
                   </Grid>
                   <Grid item xs={6} sm={4}>
                     <FormControl fullWidth>
                       <TextField
                         label="Pallete Qty"
-                        name="pallet_qty"
-                        value={values.pallet_qty}
+                        name="pallete_qty"
+                        value={values.pallete_qty}
                         onChange={(e) =>
-                          setFieldValue("pallet_qty", e.target.value)
+                          setFieldValue("pallete_qty", e.target.value)
                         }
                       />
-                      <ErrorMessage name="pallet_qty" component="div" />
                     </FormControl>
                   </Grid>
 
@@ -315,7 +381,6 @@ export default function AddProduction() {
                         value={values.batch}
                         onChange={(e) => setFieldValue("batch", e.target.value)}
                       />
-                      <ErrorMessage name="batch" component="div" />
                     </FormControl>
                   </Grid>
 
@@ -331,36 +396,35 @@ export default function AddProduction() {
                           setFieldValue("process_order_qty", e.target.value)
                         }
                       />
-                      {/* <ErrorMessage name="process_order_qty" component="div" /> */}
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={4}>
                     <FormControl fullWidth>
-                      <TextField
-                        label="Assigned To"
-                        name="assigned_to"
-                        value={values.assigned_to}
-                        onChange={(e) =>
-                          setFieldValue("assigned_to", e.target.value)
-                        }
-                        select
-                        fullWidth
-                        error={Boolean(errors.assigned_to)}
-                        helperText={errors.assigned_to}
-                        InputLabelProps={{
-                          shrink: Boolean(values.assigned_to),
+                      <InputLabel id="demo-multiple-name-label">
+                        Assigned To
+                      </InputLabel>
+                      <Select
+                        labelId="demo-multiple-name-label"
+                        id="demo-multiple-name"
+                        multiple
+                        value={personName}
+                        onChange={(event) => {
+                          handleChange(event, setFieldValue);
                         }}
-                        SelectProps={{
-                          native: false,
-                        }}
+                        input={<OutlinedInput label="Assigned To" />}
+                        MenuProps={MenuProps}
                       >
                         <MenuItem value="Select">Select</MenuItem>
                         {assignedTo.map((item) => (
-                          <MenuItem key={item._id} value={item._id}>
+                          <MenuItem
+                            key={item._id}
+                            value={item._id}
+                            style={getStyles(item, values.assigned_to, theme)}
+                          >
                             {`${item.first_name} ${item.last_name}`}
                           </MenuItem>
                         ))}
-                      </TextField>
+                      </Select>
                     </FormControl>
                   </Grid>
                 </Grid>

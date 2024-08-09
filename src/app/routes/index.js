@@ -10,6 +10,7 @@ import { masterRoutes } from "./masterRoutes";
 import userManagementRoutes from "./userManagementRoutes";
 import warehouseExecutive from "./warehouseExecutive";
 import forkliftOperator from "./forkliftOperator";
+import trasnferOrder from "./transferOrder";
 
 /**
  routes which you want to make accessible to both authenticated and anonymous users
@@ -54,6 +55,7 @@ const routesForPublic = [
       ...masterRoutes,
       ...warehouseExecutive,
       ...forkliftOperator,
+      ...trasnferOrder,
     ],
   },
 ];
@@ -97,6 +99,5 @@ export {
   routes as default,
   routesForAuthenticatedOnly,
   routesForNotAuthenticatedOnly,
-  routesForPublic
+  routesForPublic,
 };
-
