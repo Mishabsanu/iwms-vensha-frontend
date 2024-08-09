@@ -41,6 +41,9 @@ import {
   ALL_FORKLIFT_OPERATOR_MASTER_FAIL,
   ALL_FORKLIFT_OPERATOR_MASTER_REQUEST,
   ALL_FORKLIFT_OPERATOR_MASTER_SUCCESS,
+  ALL_CROSS_DOCK_MASTER_FAIL,
+  ALL_CROSS_DOCK_MASTER_REQUEST,
+  ALL_CROSS_DOCK_MASTER_SUCCESS,
   ALL_PRODUCTION_FAIL,
   ALL_PRODUCTION_REQUEST,
   ALL_PRODUCTION_SUCCESS,
@@ -66,6 +69,7 @@ const INIT_STATE = {
   unLoadingMaster: [],
   production: [],
   forkliftOperator: [],
+  crossDock: [],
   TotalPage: null,
 };
 
@@ -279,6 +283,27 @@ export const masterReducer = (state = INIT_STATE, action) => {
         ...state,
         loading: false,
         vehicleMaster: [],
+        error: action.payload,
+      };
+    //crossDock master
+    case ALL_CROSS_DOCK_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_CROSS_DOCK_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        crossDock: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_CROSS_DOCK_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        crossDock: [],
         error: action.payload,
       };
 

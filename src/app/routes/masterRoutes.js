@@ -36,6 +36,9 @@ import LoadingRouteMiddleware from "./middleware/auth/loadingValidRoute";
 import UnLoadingRouteMiddleware from "./middleware/auth/unLoadingValidRoute";
 import ListUnLoading from "app/pages/Master/Unloading/ListUnLoading";
 import AddUnLoading from "app/pages/Master/Unloading/AddUnLoading";
+import CrossDockRouteMiddleware from "./middleware/auth/crossDockerValidRoute";
+import ListCrossDocke from "app/pages/Master/CrossDockMaster/ListCrossDock";
+import AddCrossDocke from "app/pages/Master/CrossDockMaster/AddCrossDock";
 
 export const masterRoutes = [
   {
@@ -285,6 +288,34 @@ export const masterRoutes = [
         path: "/master/storage-search/edit",
         element: (
           <Page component={AddStorageSearch} layout={"vertical-default"} />
+        ),
+      },
+    ],
+  },
+  {
+    middleware: [
+      {
+        element: CrossDockRouteMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/master/cross-dock",
+        element: (
+          <Page component={ListCrossDocke} layout={"vertical-default"} />
+        ),
+      },
+      {
+        path: "/master/cross-dock/add",
+        element: (
+          <Page component={AddCrossDocke} layout={"vertical-default"} />
+        ),
+      },
+      {
+        path: "/master/cross-dock/edit",
+        element: (
+          <Page component={AddCrossDocke} layout={"vertical-default"} />
         ),
       },
     ],

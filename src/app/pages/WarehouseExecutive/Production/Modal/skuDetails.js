@@ -37,11 +37,17 @@ export const SkuDetails = ({ open, setOpen, rowData, onSelect }) => {
               <TableRow sx={{ bgcolor: "#202020", color: "white" }}>
                 <TableCell sx={{ color: "white", px: 1 }}>Select</TableCell>
                 <TableCell sx={{ color: "white", px: 1 }}>SKU Code</TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>Storage Type</TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>Customer Code</TableCell>
+                <TableCell sx={{ color: "white", px: 1 }}>
+                  Storage Type
+                </TableCell>
+                <TableCell sx={{ color: "white", px: 1 }}>
+                  Customer Code
+                </TableCell>
                 <TableCell sx={{ color: "white", px: 1 }}>SKU Dec</TableCell>
                 <TableCell sx={{ color: "white", px: 1 }}>SKU Group</TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>Pallet Qty.</TableCell>
+                <TableCell sx={{ color: "white", px: 1 }}>
+                  Pallet Qty.
+                </TableCell>
                 <TableCell sx={{ color: "white", px: 1 }}>Vendor No.</TableCell>
                 <TableCell sx={{ color: "white", px: 1 }}>SUT</TableCell>
               </TableRow>
@@ -61,8 +67,8 @@ export const SkuDetails = ({ open, setOpen, rowData, onSelect }) => {
                   <TableCell sx={{ px: 1 }}>{item.customer_code}</TableCell>
                   <TableCell sx={{ px: 1 }}>{item.sku_description}</TableCell>
                   <TableCell sx={{ px: 1 }}>{item.sku_grp}</TableCell>
-                  <TableCell sx={{ px: 1 }}>{item.pallet_qty}</TableCell>
-                  <TableCell sx={{ px: 1 }}>{item.vendor_no}</TableCell>
+                  <TableCell sx={{ px: 1 }}>{item.pallete_qty}</TableCell>
+                  <TableCell sx={{ px: 1 }}>{item.vendor_code}</TableCell>
                   <TableCell sx={{ px: 1 }}>{item.sut}</TableCell>
                 </TableRow>
               ))}
