@@ -36,10 +36,6 @@ export default function ListForkliftOperatortTable({
 
   const user = useSelector((state) => state?.userReducer.user[0]);
   const isAdmin = user?.role_id.role_name === "Admin";
-  // Filter the forkliftOperator list
-  const modifiedList = isAdmin
-    ? forkliftOperator // If admin, show all forkliftOperator entries
-    : forkliftOperator.filter((item) => item.assigned_user._id === user._id);
 
   // Otherwise, filter by assigned_user._id
   const permissions = useSelector(
@@ -395,7 +391,7 @@ export default function ListForkliftOperatortTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {modifiedList?.map((row, i) => (
+            {forkliftOperator?.map((row, i) => (
               <TableRow key={i}>
                 <TableCell
                   sx={{
@@ -451,7 +447,6 @@ export default function ListForkliftOperatortTable({
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.status || "-"}
                 </TableCell>
-
                 {permissions?.forklift_operator_master_edit == true && (
                   <TableCell
                     sx={{

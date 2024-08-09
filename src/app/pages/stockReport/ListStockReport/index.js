@@ -2,7 +2,7 @@ import Div from "@jumbo/shared/Div/Div";
 import { Suspense, useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Button, InputAdornment, TextField, Typography } from "@mui/material";
-import { getAllUnit } from "app/redux/actions/masterAction";
+import { getAllStock } from "app/redux/actions/masterAction";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ export default function ListStockReport() {
   //debouncing for search
   const handleSearch = (value) => {
     setPage(1);
-    dispatch(getAllUnit(value, sort, sortBy, 1));
+    dispatch(getAllStock(value, sort, sortBy, 1));
   };
 
   const debouncedHandleSearch = debounce(handleSearch, 500);
@@ -37,13 +37,13 @@ export default function ListStockReport() {
   }, [searchTerm]);
 
   useEffect(() => {
-    dispatch(getAllUnit(searchTerm, sort, sortBy, page));
+    dispatch(getAllStock(searchTerm, sort, sortBy, page));
   }, [sort, page]);
 
   return (
     <>
       <Div sx={{ mt: -4 }}>
-        <Typography variant="h1">Transfer Order Table</Typography>
+        <Typography variant="h1">Stock Report Table</Typography>
         <Div
           sx={{
             display: "flex",
@@ -62,7 +62,7 @@ export default function ListStockReport() {
               if (e.target.value == "") {
                 setSort("desc");
                 setSortBy("updated_at");
-                dispatch(getAllUnit("", "desc", "updated_at", 1));
+                dispatch(getAllStock("", "desc", "updated_at", 1));
               }
             }}
             sx={{ width: 300, mb: 5, mt: 4 }}
@@ -76,7 +76,7 @@ export default function ListStockReport() {
               ),
             }}
           />
-          <Div>
+          {/* <Div>
             {permissions?.material_master_create == true && (
               <Button
                 variant="contained"
@@ -86,7 +86,7 @@ export default function ListStockReport() {
                 Add Inbound
               </Button>
             )}
-          </Div>
+          </Div> */}
         </Div>
         <Suspense fallback={<div>Loading...</div>}>
           <ListStockReportTable

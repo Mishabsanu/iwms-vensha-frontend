@@ -12,7 +12,7 @@ const stockReport = [
     ],
     routes: [
       {
-        path: "/dashboard/transfer-order",
+        path: "/dashboard/stock-report",
         element: (
           <Page component={ListStockReport} layout={"vertical-default"} />
         ),

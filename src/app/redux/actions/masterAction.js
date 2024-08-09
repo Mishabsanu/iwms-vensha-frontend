@@ -44,6 +44,15 @@ import {
   ALL_BIN_TABLE_REQUEST,
   ALL_BIN_TABLE_SUCCESS,
   ALL_BIN_TABLE_FAIL,
+  ALL_STOCK_REPORT_REQUEST,
+  ALL_STOCK_REPORT_SUCCESS,
+  ALL_STOCK_REPORT_FAIL,
+  ALL_TRANSACTION_REQUEST,
+  ALL_TRANSACTION_SUCCESS,
+  ALL_TRANSACTION_FAIL,
+  ALL_OUTBOUND_REQUEST,
+  ALL_OUTBOUND_SUCCESS,
+  ALL_OUTBOUND_FAIL,
 } from "app/utils/constants/masterConstants";
 import axios from "axios";
 
@@ -456,6 +465,148 @@ export const getAllUnit =
     } catch (error) {
       dispatch({
         type: ALL_UNIT_MASTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+//getAllTransaction master
+export const getAllTransaction =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_TRANSACTION_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+        }/production/list-transaction?${urlParams.toString()}`,
+        { ...body },
+        config
+      );
+
+      dispatch({
+        type: ALL_TRANSACTION_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_TRANSACTION_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
+//outBond master
+export const getAllOutbound =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_OUTBOUND_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+        }/outbound/list-outbound?${urlParams.toString()}`,
+        { ...body },
+        config
+      );
+
+      dispatch({
+        type: ALL_OUTBOUND_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_OUTBOUND_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
+
+
+///stock  master
+export const getAllStock =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_STOCK_REPORT_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+        }/production/list-stock-table?${urlParams.toString()}`,
+        { ...body },
+        config
+      );
+
+      dispatch({
+        type: ALL_STOCK_REPORT_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_STOCK_REPORT_FAIL,
         payload: error?.response?.data?.message,
       });
     }

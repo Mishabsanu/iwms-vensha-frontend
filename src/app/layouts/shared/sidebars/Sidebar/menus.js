@@ -190,6 +190,14 @@ const menus = [
         type: "nav-item",
         icon: <ScaleIcon sx={{ fontSize: 20 }} />,
       },
+      {
+        uri: "/dashboard/warehouseexecutive/outbound",
+        label: "sidebar.menuItem.WarehouseExecutive.outbound",
+        isActiveUri: ["/master/outbound/add", "/master/outbound/edit"],
+        permission: "outbound_master_view",
+        type: "nav-item",
+        icon: <ScaleIcon sx={{ fontSize: 20 }} />,
+      },
     ],
   },
   {
@@ -209,7 +217,7 @@ const menus = [
       "/dashboard/edittransfer-order",
       "/dashboard/addtransfer-order",
     ],
-    label: "sidebar.menuItem.trasnferOrder",
+    label: "sidebar.menuItem.transaction",
     type: "nav-item",
     permission: "transfer_order_view",
     icon: <MoveUpIcon sx={{ fontSize: 20 }} />,

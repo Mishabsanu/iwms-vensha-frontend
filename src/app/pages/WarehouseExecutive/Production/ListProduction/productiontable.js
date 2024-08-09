@@ -22,6 +22,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { DockEntry } from "../Modal/dockEntry";
 export default function ListProductionTable({
   searchTerm,
   page,
@@ -37,6 +38,7 @@ export default function ListProductionTable({
     (state) => state.masterReducer
   );
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
@@ -66,11 +68,11 @@ export default function ListProductionTable({
   const handleCheckbox = (e, row) => {
     if (e.target.checked == true) {
       const selectedArr = [...addGroup];
-      const data = {
-        _id: row._id,
-      };
+      // const data = {
+      //   _id: row._id,
+      // };
 
-      selectedArr.push(data);
+      selectedArr.push(row);
 
       setAddGroup(selectedArr);
     } else {
@@ -122,43 +124,7 @@ export default function ListProductionTable({
   };
 
   const handleAddCrossDocker = async () => {
-    try {
-      setIsLoading(true);
-
-      const config = {
-        withCredentials: true,
-        headers: {
-          withCredentials: true,
-        },
-      };
-      const res = await Axios.post(
-        AllApis.crossDocker,
-        { item_details: addGroup },
-        config
-      );
-
-      if (res?.data.status) {
-        Swal.fire({ icon: "success", title: "Allocat successfully" });
-        dispatch(getAllVendor(searchTerm, sort, sortBy, page));
-        setAddGroup([]);
-        navigate("/dashboard/production");
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: res.data.message || "Unknown error occurred",
-        });
-      }
-    } catch (error) {
-      console.log(error, "error");
-      Swal.fire({
-        title: error.response ? error.response.data.message : error.message,
-        icon: "error",
-
-        showConfirmButton: true,
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    setIsModalOpen(true);
   };
   return (
     <>
@@ -223,9 +189,9 @@ export default function ListProductionTable({
                     onClick={(event) => {
                       if (event?.target?.checked) {
                         // Select all non-Allocated items
-                        const nonAllocatedIds = production
-                          ?.filter((ele) => ele.status !== "Allocated")
-                          .map((ele) => ({ _id: ele._id }));
+                        const nonAllocatedIds = production?.filter(
+                          (ele) => ele.status !== "Allocated"
+                        );
 
                         const newItems = nonAllocatedIds.filter(
                           (newItem) =>
@@ -648,6 +614,21 @@ export default function ListProductionTable({
               </TableRow>
             ))}
           </TableBody>
+          {isModalOpen && (
+            <DockEntry
+              searchTerm={searchTerm}
+              page={page}
+              setPage={setPage}
+              sort={sort}
+              sortBy={sortBy}
+              setSort={setSort}
+              setSortBy={setSortBy}
+              open={isModalOpen}
+              setOpen={setIsModalOpen} // Ensure this matches the prop expected by DockEntry
+              rowData={addGroup}
+              setAddGroup={setAddGroup}
+            />
+          )}
         </Table>
         <Pagination
           size="medium"

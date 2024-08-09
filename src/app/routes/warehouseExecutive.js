@@ -4,6 +4,9 @@ import AddProduction from "app/pages/WarehouseExecutive/Production/AddProduction
 import ProductionRouteMiddleware from "./middleware/auth/productionValidRoute";
 import AllocateBinRouteMiddleware from "./middleware/auth/AllocateBinRouteMiddleware";
 import ListAllocateBin from "app/pages/BinTable/ListBinTable";
+import OutboundRouteMiddleware from "./middleware/auth/outboundRouteMiddleware";
+import AddOutbound from "app/pages/WarehouseExecutive/Outbound/AddOutbound";
+import ListOutbound from "app/pages/WarehouseExecutive/Outbound/ListOutbound";
 
 const warehouseExecutive = [
   {
@@ -44,6 +47,29 @@ const warehouseExecutive = [
         element: (
           <Page component={ListAllocateBin} layout={"vertical-default"} />
         ),
+      },
+    ],
+  },
+  {
+    middleware: [
+      {
+        element: OutboundRouteMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/warehouseexecutive/outbound",
+        element: <Page component={ListOutbound} layout={"vertical-default"} />,
+      },
+      {
+        path: "/dashboard/addoutbound",
+        element: <Page component={AddOutbound} layout={"vertical-default"} />,
+      },
+      {
+        path: "/dashboard/editoutbound",
+
+        element: <Page component={AddOutbound} layout={"vertical-default"} />,
       },
     ],
   },

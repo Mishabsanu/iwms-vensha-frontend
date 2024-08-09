@@ -17,7 +17,7 @@
       "Pallet": "BIN ",
       "ForkliftOperator": "Forklift Operator",
       "stockReport": "Stock Report",
-      "trasnferOrder": "Trasnfer Order",
+      "transaction": "Transaction Order",
       "master": {
         "material": "Materials",
         "inbound": "Inbound",
@@ -36,6 +36,7 @@
       },
       "WarehouseExecutive": {
         "production": "production",
+        "outbound": "Outbound",
         "binAllocation": "Bin Table"
       }
     }

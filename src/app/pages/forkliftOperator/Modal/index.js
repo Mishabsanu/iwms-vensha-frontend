@@ -81,13 +81,13 @@ const BinNumberModal = ({ open, onClose, rawData }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backdropFilter: 'blur(5px)', // Apply a blur effect to the background
-        backgroundColor: 'rgba(0, 0, 0, 0.4)', // Slightly transparent background
+        backdropFilter: "blur(5px)", // Apply a blur effect to the background
+        backgroundColor: "rgba(0, 0, 0, 0.4)", // Slightly transparent background
       }}
     >
       <Box
         sx={{
-          width: { xs: '90%', sm: 500 },
+          width: { xs: "90%", sm: 500 },
           bgcolor: "rgba(255, 255, 255, 0.9)", // Set background color with slight transparency
           borderRadius: 2,
           position: "relative",

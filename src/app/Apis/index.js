@@ -1,6 +1,7 @@
 const AllApis = {
   dropdownList: {
     grade: "/grade-master/dropdown-grade-master",
+    crossDockerList: "/cross-dock/dropdown-cross-dock-master",
     pallete: "/pallete-master/dropdown-pallete-master",
     productionLine: "/production-line/dropdown-produntion-line-master",
     skuSearch: "/production/sku-details",

@@ -50,6 +50,15 @@ import {
   ALL_BIN_TABLE_FAIL,
   ALL_BIN_TABLE_REQUEST,
   ALL_BIN_TABLE_SUCCESS,
+  ALL_STOCK_REPORT_FAIL,
+  ALL_STOCK_REPORT_REQUEST,
+  ALL_STOCK_REPORT_SUCCESS,
+  ALL_TRANSACTION_FAIL,
+  ALL_TRANSACTION_REQUEST,
+  ALL_TRANSACTION_SUCCESS,
+  ALL_OUTBOUND_FAIL,
+  ALL_OUTBOUND_REQUEST,
+  ALL_OUTBOUND_SUCCESS,
 } from "app/utils/constants/masterConstants";
 
 const INIT_STATE = {
@@ -70,6 +79,9 @@ const INIT_STATE = {
   production: [],
   forkliftOperator: [],
   crossDock: [],
+  stockReport: [],
+  transaction: [],
+  outbound: [],
   TotalPage: null,
 };
 
@@ -156,6 +168,69 @@ export const masterReducer = (state = INIT_STATE, action) => {
         ...state,
         loading: false,
         loadingMaster: [],
+        error: action.payload,
+      };
+    //OUTBOUND master
+    case ALL_OUTBOUND_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_OUTBOUND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        outbound: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_OUTBOUND_FAIL:
+      return {
+        ...state,
+        loading: false,
+        outbound: [],
+        error: action.payload,
+      };
+    //LAODING master
+    case ALL_STOCK_REPORT_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_STOCK_REPORT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        stockReport: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_STOCK_REPORT_FAIL:
+      return {
+        ...state,
+        loading: false,
+        stockReport: [],
+        error: action.payload,
+      };
+    //TRANSACTION master
+    case ALL_TRANSACTION_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_TRANSACTION_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        transaction: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_TRANSACTION_FAIL:
+      return {
+        ...state,
+        loading: false,
+        transaction: [],
         error: action.payload,
       };
     //LAODING master
