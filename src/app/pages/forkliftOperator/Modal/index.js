@@ -58,7 +58,7 @@ const BinNumberModal = ({ open, onClose, rawData }) => {
           timer: 1000,
           showConfirmButton: false,
         });
-        dispatch(getAllForkliftOperator("", "", "", 1));
+        dispatch(getAllForkliftOperator("", "desc", "updated_at", 1));
       } else {
         handleClose();
         throw new Error(response.data?.message);

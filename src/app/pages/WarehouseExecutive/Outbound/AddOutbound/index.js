@@ -21,7 +21,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import * as yup from "yup";
 
-
 import { addOutbound } from "app/services/apis/addOutbound";
 import { updateOutbound } from "app/services/apis/updateOutbound";
 import { SkuDetails } from "../Modal/skuDetails";
@@ -34,14 +33,13 @@ export default function AddOutbound() {
   const [selectedSku, setSelectedSku] = useState({});
   const [open, setOpen] = useState(false);
   const [loadingSkuOptions, setLoadingSkuOptions] = useState(false);
-
   const [customer, setCustomer] = useState([]);
   const data = state;
 
   const user = {
     date: data?.date || null,
     order_type: data?.order_type || "select",
-    entity_name: data?.customer_name || data?.plant_name || "Select",
+    entity_name: data?.entity_name || data?.entity_name || "Select",
     sku_code: data?.sku_code || "",
     sku_description: data?.sku_description || "",
     sut: data?.sut || "",
@@ -257,7 +255,7 @@ export default function AddOutbound() {
                         <MenuItem value="Select">Select</MenuItem>
                         {customer.map((item) => (
                           <MenuItem key={item._id} value={item._id}>
-                            {item.customer_name}
+                            {item?.customer_name}
                           </MenuItem>
                         ))}
                       </TextField>
