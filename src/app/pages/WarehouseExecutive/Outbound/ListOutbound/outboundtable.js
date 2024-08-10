@@ -33,18 +33,20 @@ export default function ListOutboundTable({
     const customer = acc.find(
       (item) => item.customer_name === current.customerDetails?.customer_name
     );
-
+    console.log("customerssss", customer);
     if (customer) {
-      customer.order_count += current.order_count;
-      customer.sku_count += current.sku_count;
-      customer.order_qty_count += current.order_qty_count;
+      customer.order_count = current.order_count;
+      customer.sku_count += current.sku_count-1;
+      customer.stock_qty += current.stock_qty;
     } else {
       acc.push({
         _id: current._id,
         customer_name: current.customerDetails?.customer_name,
         order_count: current.order_count,
         sku_count: current.sku_count,
-        order_qty_count: current.order_qty_count,
+        
+stock_qty: current.
+        stock_qty,
         date: current.date,
         status: current.status,
       });
@@ -52,6 +54,7 @@ export default function ListOutboundTable({
 
     return acc;
   }, []);
+  console.log("groupedData", groupedData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
@@ -180,9 +183,9 @@ export default function ListOutboundTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "order_qty_count"}
+                  active={sortBy === "stock_qty"}
                   direction={sort}
-                  onClick={() => handleSort("order_qty_count")}
+                  onClick={() => handleSort("stock_qty")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -234,7 +237,7 @@ export default function ListOutboundTable({
                   {row.sku_count}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.order_qty_count}
+                  {row.stock_qty}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.customer_name}
