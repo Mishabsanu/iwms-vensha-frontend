@@ -29,11 +29,35 @@ export default function ListOutboundTable({
     (state) => state.masterReducer
   );
 
+  const groupedData = outbound.reduce((acc, current) => {
+    const customer = acc.find(
+      (item) => item.customer_name === current.customerDetails?.customer_name
+    );
+
+    if (customer) {
+      customer.order_count += current.order_count;
+      customer.sku_count += current.sku_count;
+      customer.order_qty_count += current.order_qty_count;
+    } else {
+      acc.push({
+        _id: current._id,
+        customer_name: current.customerDetails?.customer_name,
+        order_count: current.order_count,
+        sku_count: current.sku_count,
+        order_qty_count: current.order_qty_count,
+        date: current.date,
+        status: current.status,
+      });
+    }
+
+    return acc;
+  }, []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
   const [selectedItem, setSelectedItem] = useState(null);
+  console.log(selectedItem, "selectedItem");
 
   const handleSort = (property) => {
     setSort(sort === "asc" ? "desc" : "asc");
@@ -184,12 +208,11 @@ export default function ListOutboundTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {outbound?.map((row, i) => (
+            {groupedData?.map((row, i) => (
               <TableRow key={i}>
-                {permissions?.material_master_create && (
+                {permissions?.outbound_master_create && (
                   <TableCell sx={{ textAlign: "left", px: 1 }}>
                     <Checkbox
-                      disabled={row.status === "Allocated"}
                       onClick={(event) => handleCheckbox(event, row)}
                       color="primary"
                       checked={selectedItem?._id === row._id}
@@ -214,7 +237,7 @@ export default function ListOutboundTable({
                   {row.order_qty_count}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.customerDetails.customer_name}
+                  {row?.customer_name}
                 </TableCell>
               </TableRow>
             ))}

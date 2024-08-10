@@ -1,7 +1,13 @@
 import Div from "@jumbo/shared/Div";
 import SearchIcon from "@mui/icons-material/Search";
 import { LoadingButton } from "@mui/lab";
-import { Button, InputAdornment, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { handleLogs } from "app/components/Function/logsDownloadFunction";
 import { getAllSuppliers } from "app/redux/actions/masterAction";
 import { debounce } from "lodash";
@@ -58,7 +64,11 @@ export default function ListMaterial() {
     try {
       const formData = new FormData();
       formData.append("excelFile", file); // Append your Excel file to the FormData
-      const response = await Axios.post(AllApis.bulk.material, formData, config);
+      const response = await Axios.post(
+        AllApis.bulk.material,
+        formData,
+        config
+      );
       if (response?.data?.status === true) {
         dispatch(getAllSuppliers(searchTerm, sort, sortBy, page, ""));
         Swal.fire({
@@ -95,6 +105,8 @@ export default function ListMaterial() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          mb: 5,
+          mt: 4,
         }}
       >
         <TextField
@@ -105,13 +117,13 @@ export default function ListMaterial() {
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
-            if (e.target.value == "") {
+            if (e.target.value === "") {
               setSort("desc");
               setSortBy("updated_at");
               dispatch(getAllSuppliers("", "desc", "updated_at", 1));
             }
           }}
-          sx={{ width: 300, mb: 5, mt: 4 }}
+          sx={{ width: 300 }}
           InputProps={{
             endAdornment: (
               <Div sx={{ cursor: "pointer" }}>
@@ -122,25 +134,15 @@ export default function ListMaterial() {
             ),
           }}
         />
-        <Div>
-          {permissions?.supplier_master_view == true && (
-            <LoadingButton
-              variant="contained"
-              sx={{
-                mr: 2,
-                p: 1,
-                pl: 4,
-                pr: 4,
-              }}
-              onClick={() =>
-                handleLogs("supplier-master/supplier-logs", "suppliers")
-              }
-            >
-              Log
-            </LoadingButton>
-          )}
-
-          {permissions?.material_master_create == true && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 2, // Adds space between buttons
+            alignItems: "center",
+          }}
+        >
+          {permissions?.material_master_create && (
             <Button
               variant="contained"
               sx={{ p: 1, pl: 4, pr: 4 }}
@@ -160,7 +162,6 @@ export default function ListMaterial() {
                 />
                 <label htmlFor="fileInput">
                   <Button
-                    size="small"
                     variant="contained"
                     color="primary"
                     component="span"
@@ -172,7 +173,7 @@ export default function ListMaterial() {
               </form>
             </Div>
           )}
-        </Div>
+        </Box>
       </Div>
       <ListMaterialTable
         searchTerm={searchTerm}
