@@ -10,10 +10,14 @@ import {
   TableRow,
   Typography,
   Radio,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 
 export const SkuDetails = ({ open, setOpen, rowData, onSelect }) => {
   const [selectedSku, setSelectedSku] = useState(null);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleClose = () => {
     setOpen(false);
@@ -26,54 +30,60 @@ export const SkuDetails = ({ open, setOpen, rowData, onSelect }) => {
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="lg">
+    <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
       <DialogContent>
-        <Typography variant="h3" color="initial" fontWeight={600}>
+        <Typography variant="h6" color="initial" fontWeight={600}>
           Select
         </Typography>
         <Div>
-          <Table>
-            <TableHead>
-              <TableRow sx={{ bgcolor: "#202020", color: "white" }}>
-                <TableCell sx={{ color: "white", px: 1 }}>Select</TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>SKU Code</TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>
-                  Storage Type
-                </TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>
-                  Customer Code
-                </TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>SKU Dec</TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>SKU Group</TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>
-                  Pallet Qty.
-                </TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>Vendor No.</TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>SUT</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rowData?.map((item) => (
-                <TableRow key={item.sku_code} sx={{ bgcolor: "#EDEBEB" }}>
-                  <TableCell sx={{ px: 1 }}>
-                    <Radio
-                      checked={selectedSku?._id === item._id}
-                      onChange={() => handleSelect(item)}
-                      value={item.sku_code}
-                    />
+          <div style={{ overflowX: "auto", marginTop: theme.spacing(2) }}>
+            <Table>
+              <TableHead>
+                <TableRow sx={{ bgcolor: "#202020", color: "white" }}>
+                  <TableCell sx={{ color: "white", px: 1 }}>Select</TableCell>
+                  <TableCell sx={{ color: "white", px: 1 }}>SKU Code</TableCell>
+                  <TableCell sx={{ color: "white", px: 1 }}>
+                    Storage Type
                   </TableCell>
-                  <TableCell sx={{ px: 1 }}>{item.sku_code}</TableCell>
-                  <TableCell sx={{ px: 1 }}>{item.storage_type}</TableCell>
-                  <TableCell sx={{ px: 1 }}>{item.customer_code}</TableCell>
-                  <TableCell sx={{ px: 1 }}>{item.sku_description}</TableCell>
-                  <TableCell sx={{ px: 1 }}>{item.sku_grp}</TableCell>
-                  <TableCell sx={{ px: 1 }}>{item.pallete_qty}</TableCell>
-                  <TableCell sx={{ px: 1 }}>{item.vendor_code}</TableCell>
-                  <TableCell sx={{ px: 1 }}>{item.sut}</TableCell>
+                  <TableCell sx={{ color: "white", px: 1 }}>
+                    Customer Code
+                  </TableCell>
+                  <TableCell sx={{ color: "white", px: 1 }}>SKU Dec</TableCell>
+                  <TableCell sx={{ color: "white", px: 1 }}>
+                    SKU Group
+                  </TableCell>
+                  <TableCell sx={{ color: "white", px: 1 }}>
+                    Pallet Qty.
+                  </TableCell>
+                  <TableCell sx={{ color: "white", px: 1 }}>
+                    Vendor No.
+                  </TableCell>
+                  <TableCell sx={{ color: "white", px: 1 }}>SUT</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHead>
+              <TableBody>
+                {rowData?.map((item) => (
+                  <TableRow key={item.sku_code} sx={{ bgcolor: "#EDEBEB" }}>
+                    <TableCell sx={{ px: 1 }}>
+                      <Radio
+                        checked={selectedSku?._id === item._id}
+                        onChange={() => handleSelect(item)}
+                        value={item.sku_code}
+                      />
+                    </TableCell>
+                    <TableCell sx={{ px: 1 }}>{item.sku_code}</TableCell>
+                    <TableCell sx={{ px: 1 }}>{item.storage_type}</TableCell>
+                    <TableCell sx={{ px: 1 }}>{item.customer_code}</TableCell>
+                    <TableCell sx={{ px: 1 }}>{item.sku_description}</TableCell>
+                    <TableCell sx={{ px: 1 }}>{item.sku_grp}</TableCell>
+                    <TableCell sx={{ px: 1 }}>{item.pallete_qty}</TableCell>
+                    <TableCell sx={{ px: 1 }}>{item.vendor_code}</TableCell>
+                    <TableCell sx={{ px: 1 }}>{item.sut}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </Div>
       </DialogContent>
     </Dialog>

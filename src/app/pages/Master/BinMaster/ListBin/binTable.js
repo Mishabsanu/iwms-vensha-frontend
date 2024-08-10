@@ -1,5 +1,4 @@
 import JumboDdMenu from "@jumbo/components/JumboDdMenu/JumboDdMenu";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
@@ -14,13 +13,10 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
-import { getAllBin } from "app/redux/actions/masterAction";
-import { updateBin } from "app/services/apis/updateBin";
 import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 
 export default function ListBinTable({
   searchTerm,
@@ -122,9 +118,9 @@ export default function ListBinTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "bind_no"}
+                  active={sortBy === "bin_no"}
                   direction={sort}
-                  onClick={() => handleSort("bind_no")}
+                  onClick={() => handleSort("bin_no")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -134,6 +130,29 @@ export default function ListBinTable({
                   }}
                 >
                   Bin No
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "80px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "bin_combination"}
+                  direction={sort}
+                  onClick={() => handleSort("bin_combination")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white",
+                    },
+                  }}
+                >
+                 Bin Combination
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -181,6 +200,14 @@ export default function ListBinTable({
                   color: "white",
                 }}
               >
+               Type
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  color: "white",
+                }}
+              >
                 Created Date
               </TableCell>
               {permissions?.bin_master_edit === true && (
@@ -204,7 +231,8 @@ export default function ListBinTable({
                 <TableCell sx={{ textAlign: "left", px: 1 }}>
                   {row.storage_section}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row.bind_no}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row.bin_no}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row.bin_combination}</TableCell>
                 <TableCell sx={{ textAlign: "left", px: 1 }}>
                   {row.description}
                 </TableCell>
@@ -213,6 +241,9 @@ export default function ListBinTable({
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row.digit_3_code}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row.type}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {displayDateFun(row.created_at)}

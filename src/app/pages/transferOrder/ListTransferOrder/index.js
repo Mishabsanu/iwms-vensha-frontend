@@ -90,7 +90,7 @@ export default function ListTransferOrder() {
   return (
     <>
       <Div sx={{ mt: -4 }}>
-        <Typography variant="h1">Transaction Order</Typography>
+        <Typography variant="h1">Transaction Table</Typography>
         <Div
           sx={{
             display: "flex",
@@ -124,22 +124,7 @@ export default function ListTransferOrder() {
             }}
           />
           <Div>
-            {/* {permissions?.user_view == true && (
-              <LoadingButton
-                variant="contained"
-                sx={{
-                  mr: 2,
-                  p: 1,
-                  pl: 4,
-                  pr: 4,
-                }}
-                onClick={() => handleLogs("user/user-logs", "users")}
-              >
-                Log
-              </LoadingButton>
-            )} */}
-
-            {permissions?.material_master_create == true && (
+            {/* {permissions?.material_master_create == true && (
               <Button
                 variant="contained"
                 sx={{ p: 1, pl: 4, pr: 4 }}
@@ -148,29 +133,7 @@ export default function ListTransferOrder() {
                 Add Inbound
               </Button>
             )}
-            {/* {permissions?.material_master_view && (
-              <Div>
-                <form>
-                  <input
-                    type="file"
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
-                    id="fileInput"
-                  />
-                  <label htmlFor="fileInput">
-                    <Button
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      component="span"
-                      sx={{ height: "100%" }}
-                    >
-                      Import
-                    </Button>
-                  </label>
-                </form>
-              </Div>
-            )} */}
+    */}
           </Div>
         </Div>
         <Suspense fallback={<div>Loading...</div>}>

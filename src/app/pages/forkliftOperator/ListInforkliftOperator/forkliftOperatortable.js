@@ -17,7 +17,7 @@ import { displayDateFun } from "app/utils/constants/functions";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BinNumberModal from "../Modal";
+import BinNumberModal from "../Modal/verifyModal";
 export default function ListForkliftOperatortTable({
   searchTerm,
   page,

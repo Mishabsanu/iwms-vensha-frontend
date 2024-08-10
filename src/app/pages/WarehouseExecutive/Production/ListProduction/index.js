@@ -1,17 +1,25 @@
 import Div from "@jumbo/shared/Div/Div";
 import { Suspense, useEffect, useState } from "react";
 
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, InputAdornment, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  Grid,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
+import AllApis from "app/Apis";
 import { getAllProduction } from "app/redux/actions/masterAction";
-import { getAllUsers } from "app/redux/actions/userAction";
+import Documents1 from "app/shared/widgets/Documents1";
+import { Axios } from "index";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ListProductionTable from "./productiontable";
-import { Axios } from "index";
-import AllApis from "app/Apis";
 import Swal from "sweetalert2";
+import ListProductionTable from "./productiontable";
 
 export default function ListProduction() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -21,6 +29,7 @@ export default function ListProduction() {
   const [logLoader, setLogLoader] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [guestCount, setGuestCount] = useState({});
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
@@ -87,6 +96,19 @@ export default function ListProduction() {
     dispatch(getAllProduction(searchTerm, sort, sortBy, page));
   }, [sort, page]);
 
+  const getAllGuestCount = async (id, sessionId) => {
+    try {
+      const response = await Axios.get(
+        `/room/get-guest-count?roomId=${id}&sessionId=${sessionId}`
+      );
+      setGuestCount(response.data.data);
+    } catch (error) {
+      console.error("Error:", error);
+
+      return null;
+    }
+  };
+
   return (
     <>
       <Div sx={{ mt: -4 }}>
@@ -123,23 +145,31 @@ export default function ListProduction() {
               ),
             }}
           />
+          <Grid container spacing={3.75}>
+            <Grid item maxWidth={600}>
+              <Documents1
+                icone={<MeetingRoomIcon sx={{ fontSize: 36 }} />}
+                field="Session Name"
+                data={20}
+              />
+            </Grid>
+            <Grid item>
+              <Documents1
+                icone={<PeopleAltIcon sx={{ fontSize: 36 }} />}
+                field="Total Guest"
+                data={10}
+              />
+            </Grid>
+            <Grid item>
+              <Documents1
+                icone={<PeopleAltIcon sx={{ fontSize: 36 }} />}
+                field="Total Guest"
+                data={10}
+              />
+            </Grid>
+          </Grid>
           <Div>
-            {/* {permissions?.user_view == true && (
-              <LoadingButton
-                variant="contained"
-                sx={{
-                  mr: 2,
-                  p: 1,
-                  pl: 4,
-                  pr: 4,
-                }}
-                onClick={() => handleLogs("user/user-logs", "users")}
-              >
-                Log
-              </LoadingButton>
-            )} */}
-
-            {permissions?.material_master_create == true && (
+            {permissions?.production_master_create == true && (
               <Button
                 variant="contained"
                 sx={{ p: 1, pl: 4, pr: 4 }}
@@ -148,31 +178,9 @@ export default function ListProduction() {
                 Add Production
               </Button>
             )}
-            {/* {permissions?.material_master_view && (
-              <Div>
-                <form>
-                  <input
-                    type="file"
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
-                    id="fileInput"
-                  />
-                  <label htmlFor="fileInput">
-                    <Button
-                      size="small"
-                      variant="contained"
-                      color="primary"
-                      component="span"
-                      sx={{ height: "100%" }}
-                    >
-                      Import
-                    </Button>
-                  </label>
-                </form>
-              </Div>
-            )} */}
           </Div>
         </Div>
+
         <Suspense fallback={<div>Loading...</div>}>
           <ListProductionTable
             searchTerm={searchTerm}

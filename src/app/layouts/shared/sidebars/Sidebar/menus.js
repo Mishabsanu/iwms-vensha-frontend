@@ -61,28 +61,6 @@ const menus = [
         type: "nav-item",
         icon: <CategoryIcon sx={{ fontSize: 20 }} />,
       },
-      {
-        uri: "/dashboard/master/inbound",
-        label: "sidebar.menuItem.master.inbound",
-        isActiveUri: [
-          "/master/inbound/add",
-          "/dashboards/material/category/edit",
-        ],
-        permission: "material_master_view",
-        type: "nav-item",
-        icon: <CategoryIcon sx={{ fontSize: 20 }} />,
-      },
-      {
-        uri: "/dashboard/master/outbound",
-        label: "sidebar.menuItem.master.outbound",
-        isActiveUri: [
-          "/master/outbound/add",
-          "/dashboards/material/category/edit",
-        ],
-        permission: "material_master_view",
-        type: "nav-item",
-        icon: <CategoryIcon sx={{ fontSize: 20 }} />,
-      },
 
       {
         uri: "/dashboard/master/vendor",
@@ -116,6 +94,7 @@ const menus = [
         type: "nav-item",
         icon: <LocalOfferOutlinedIcon sx={{ fontSize: 20 }} />,
       },
+
       {
         uri: "/dashboard/master/cross-dock",
         label: "sidebar.menuItem.master.cross_dock",
@@ -170,26 +149,44 @@ const menus = [
     ],
   },
   {
-    label: "sidebar.menu.WarehouseExecutive",
+    label: "sidebar.menu.ProductionExecutive",
     type: "collapsible",
     icon: <StarBorderPurple500Icon sx={{ fontSize: 20 }} />,
     children: [
       {
         uri: "/dashboard/warehouseexecutive/production",
-        label: "sidebar.menuItem.WarehouseExecutive.production",
+        label: "sidebar.menuItem.ProductionExecutive.production",
         isActiveUri: ["/master/production/add", "/master/production/edit"],
         permission: "production_master_view",
         type: "nav-item",
         icon: <ScaleIcon sx={{ fontSize: 20 }} />,
       },
+    ],
+  },
+  {
+    label: "sidebar.menu.WarehouseExecutive",
+    type: "collapsible",
+    icon: <StarBorderPurple500Icon sx={{ fontSize: 20 }} />,
+    children: [
       {
-        uri: "/dashboard/warehouseexecutive/bin",
-        label: "sidebar.menuItem.WarehouseExecutive.binAllocation",
-        isActiveUri: ["/master/bin/add", "/master/bin/edit"],
-        permission: "bin_master_view",
+        uri: "/dashboard/master/inbound",
+        label: "sidebar.menuItem.WarehouseExecutive.inbound",
+        isActiveUri: [
+          "/master/inbound/add",
+          "/dashboards/material/category/edit",
+        ],
+        permission: "material_master_view",
         type: "nav-item",
-        icon: <ScaleIcon sx={{ fontSize: 20 }} />,
+        icon: <CategoryIcon sx={{ fontSize: 20 }} />,
       },
+      // {
+      //   uri: "/dashboard/warehouseexecutive/bin",
+      //   label: "sidebar.menuItem.WarehouseExecutive.binAllocation",
+      //   isActiveUri: ["/master/bin/add", "/master/bin/edit"],
+      //   permission: "bin_master_view",
+      //   type: "nav-item",
+      //   icon: <ScaleIcon sx={{ fontSize: 20 }} />,
+      // },
       {
         uri: "/dashboard/warehouseexecutive/outbound",
         label: "sidebar.menuItem.WarehouseExecutive.outbound",
@@ -200,16 +197,35 @@ const menus = [
       },
     ],
   },
+
   {
-    uri: "/dashboard/forklift-operator",
-    isActiveUri: [
-      "/dashboard/editforklift-operator",
-      "/dashboard/addforklift-operator",
+    label: "sidebar.menu.ForkliftOperator",
+    type: "collapsible",
+    icon: <StarBorderPurple500Icon sx={{ fontSize: 20 }} />,
+    children: [
+      {
+        uri: "/dashboard/forklift-operator-inbound",
+        isActiveUri: [
+          "/dashboard/editforklift-operator-inbound",
+          "/dashboard/addforklift-operator-inbound",
+        ],
+        label: "sidebar.menuItem.ForkliftOperator.inbound",
+        type: "nav-item",
+        permission: "forklift_operator_master_view",
+        icon: <BikeScooterIcon sx={{ fontSize: 20 }} />,
+      },
+      {
+        uri: "/dashboard/forklift-operator-outbound",
+        isActiveUri: [
+          "/dashboard/editforklift-operator-outbound",
+          "/dashboard/addforklift-operator-outbound",
+        ],
+        label: "sidebar.menuItem.ForkliftOperator.outbound",
+        type: "nav-item",
+        permission: "forklift_operator_master_view",
+        icon: <BikeScooterIcon sx={{ fontSize: 20 }} />,
+      },
     ],
-    label: "sidebar.menuItem.ForkliftOperator",
-    type: "nav-item",
-    permission: "forklift_operator_master_view",
-    icon: <BikeScooterIcon sx={{ fontSize: 20 }} />,
   },
   {
     uri: "/dashboard/transfer-order",
