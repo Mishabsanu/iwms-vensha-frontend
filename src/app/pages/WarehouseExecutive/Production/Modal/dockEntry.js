@@ -345,7 +345,7 @@ export const DockEntry = ({
 
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
             <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Update
+              Send to dock
             </Button>
           </Box>
         </Div>

@@ -351,18 +351,6 @@ export default function AddMaterial() {
                       label="Excel File Name *"
                     />
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="sku_grp" label="SKU Group *" />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="ssi" label="SSI *" />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1
-                      name="sub_category"
-                      label="Sub Category *"
-                    />
-                  </Grid>
                 </Grid>
 
                 <Div

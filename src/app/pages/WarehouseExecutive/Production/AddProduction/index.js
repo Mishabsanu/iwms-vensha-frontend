@@ -17,7 +17,7 @@ import AllApis from "app/Apis";
 import { addProduction } from "app/services/apis/addProduction";
 import { updateProduction } from "app/services/apis/updateProduction";
 import dayjs from "dayjs";
-import { ErrorMessage, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import { Axios } from "index";
 import debounce from "lodash/debounce";
 import { useEffect, useState } from "react";
@@ -26,8 +26,8 @@ import Swal from "sweetalert2";
 import * as yup from "yup";
 import { SkuDetails } from "../Modal/skuDetails";
 
-import Select from "@mui/material/Select";
 import { useTheme } from "@emotion/react";
+import Select from "@mui/material/Select";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -39,8 +39,6 @@ const MenuProps = {
     },
   },
 };
-
-
 
 function getStyles(name, personName, theme) {
   return {
@@ -64,7 +62,7 @@ export default function AddProduction() {
   const initialData = state || {};
 
   const user = {
-    production_line: initialData?.production_line || "Select",
+    production_line: initialData?.production_line || "",
     process_order: initialData?.process_order || "",
     date: initialData?.date || "",
     sku_code: initialData?.sku_code || "",
@@ -87,17 +85,20 @@ export default function AddProduction() {
     sku_description: yup.string().required("SKU Description is required"),
     sut: yup.string().required("SUT is required"),
     batch: yup.string().required("Batch is required"),
-    pallete_qty: yup.string().required("Pallet Qty is required"),
+    pallete_qty: yup
+      .number("Enter a valid Pallet Qty")
+      .required("Pallet Qty is required"),
     process_order_qty: yup
-      .string("Enter Process Order Qty")
+      .number("Enter a valid Process Order Qty")
       .required("Process Order Qty is required"),
     assigned_to: yup
       .array()
       .of(yup.string())
       .min(1, "At least one assignee is required")
-      .required("Assigned To is required")
-      .test("not-select", "Please select a valid Assignee", (value) =>
-        value && value[0] !== "Select" ? true : false
+      .test(
+        "not-select",
+        "Please select a valid Assignee",
+        (value) => value && !value.includes("Select") && value.length > 0
       ),
   });
   useEffect(() => {
@@ -228,10 +229,9 @@ export default function AddProduction() {
         >
           {({ values, setFieldValue, errors }) => (
             <Form>
-              {console.log(values, "values")}
               <Div sx={{ mt: 4 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={3} sm={4}>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField
                         label="Production Line"
@@ -261,7 +261,7 @@ export default function AddProduction() {
                     </FormControl>
                   </Grid>
 
-                  <Grid item xs={3} sm={4}>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField
                         label="Process Order"
@@ -274,7 +274,7 @@ export default function AddProduction() {
                     </FormControl>
                   </Grid>
 
-                  <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         label="Date"
@@ -299,18 +299,18 @@ export default function AddProduction() {
                             }}
                           />
                         )}
+                        sx={{ width: "100%" }}
                       />
                     </LocalizationProvider>
                   </Grid>
-
-                  <Grid item xs={3} sm={4}>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField
                         label="SKU Code"
                         name="sku_code"
                         value={values.sku_code}
                         onChange={(e) => handleSkuInputChange(e, setFieldValue)}
-                        onFocus={() => fetchSkuOptions(values.sku_code)}
+                        // onFocus={() => fetchSkuOptions(values.sku_code)}
                         InputProps={{
                           endAdornment: loadingSkuOptions ? (
                             <CircularProgress size={24} />
@@ -320,7 +320,7 @@ export default function AddProduction() {
                     </FormControl>
                   </Grid>
 
-                  <Grid item xs={6} sm={4}>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField
                         label="SKU Description"
@@ -329,7 +329,7 @@ export default function AddProduction() {
                         onChange={(e) =>
                           handleSkuDesInputChange(e, setFieldValue)
                         }
-                        onFocus={() => fetchSkuOptions(values.sku_description)}
+                        // onFocus={() => fetchSkuOptions(values.sku_description)}
                         InputProps={{
                           endAdornment: loadingSkuOptions ? (
                             <CircularProgress size={24} />
@@ -339,7 +339,7 @@ export default function AddProduction() {
                     </FormControl>
                   </Grid>
 
-                  <Grid item xs={6} sm={4}>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField
                         label="SUT"
@@ -349,7 +349,7 @@ export default function AddProduction() {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={6} sm={4}>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField
                         label="Pallete Qty"
@@ -362,7 +362,7 @@ export default function AddProduction() {
                     </FormControl>
                   </Grid>
 
-                  <Grid item xs={6} sm={4}>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField
                         label="Batch"
@@ -373,7 +373,7 @@ export default function AddProduction() {
                     </FormControl>
                   </Grid>
 
-                  <Grid item xs={12} sm={4}>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField
                         error={errors.process_order_qty}
@@ -387,7 +387,7 @@ export default function AddProduction() {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid item xs={12} sm={4}>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <InputLabel id="demo-multiple-name-label">
                         Assigned To
@@ -396,6 +396,8 @@ export default function AddProduction() {
                         labelId="demo-multiple-name-label"
                         id="demo-multiple-name"
                         multiple
+                        error={errors.assigned_to}
+                        helperText={errors.assigned_to}
                         value={personName}
                         onChange={(event) => {
                           handleChange(event, setFieldValue);

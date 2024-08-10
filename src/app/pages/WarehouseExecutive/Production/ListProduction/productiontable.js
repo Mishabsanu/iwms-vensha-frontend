@@ -1,4 +1,8 @@
+import JumboDdMenu from "@jumbo/components/JumboDdMenu/JumboDdMenu";
 import Div from "@jumbo/shared/Div";
+import EditIcon from "@mui/icons-material/Edit";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { LoadingButton } from "@mui/lab";
 import {
   Checkbox,
@@ -15,7 +19,7 @@ import {
 } from "@mui/material";
 import AllApis from "app/Apis";
 import FullScreenLoader from "app/components/ListingPageLoader";
-import { getAllProduction, getAllVendor } from "app/redux/actions/masterAction";
+import { getAllProduction } from "app/redux/actions/masterAction";
 import { displayDateFun } from "app/utils/constants/functions";
 import { Axios } from "index";
 import { useState } from "react";
@@ -130,39 +134,40 @@ export default function ListProductionTable({
     <>
       {loading && <FullScreenLoader />}
 
-      {addGroup?.length > 0 && permissions?.material_master_create == true && (
-        <Div
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 1,
-            bgcolor: "#7352C7",
-            p: 2,
-            borderRadius: "5px",
-          }}
-        >
-          <Typography variant="h5" sx={{ color: "white", mt: 1 }}>
-            {addGroup?.length} Item Selected
-          </Typography>
-          <Div sx={{ display: "flex", columnGap: 3 }}>
-            <LoadingButton
-              variant="contained"
-              color="success"
-              onClick={() => handleAddBinAllocate()}
-            >
-              Send To Bin Allocat
-            </LoadingButton>
-            <LoadingButton
-              variant="contained"
-              color="success"
-              onClick={() => handleAddCrossDocker()}
-            >
-              Send To Cross Dock
-            </LoadingButton>
+      {addGroup?.length > 0 &&
+        permissions?.production_master_create == true && (
+          <Div
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: 1,
+              bgcolor: "#7352C7",
+              p: 2,
+              borderRadius: "5px",
+            }}
+          >
+            <Typography variant="h5" sx={{ color: "white", mt: 1 }}>
+              {addGroup?.length} Item Selected
+            </Typography>
+            <Div sx={{ display: "flex", columnGap: 3 }}>
+              <LoadingButton
+                variant="contained"
+                color="success"
+                onClick={() => handleAddBinAllocate()}
+              >
+                Send To Bin Allocat
+              </LoadingButton>
+              <LoadingButton
+                variant="contained"
+                color="success"
+                onClick={() => handleAddCrossDocker()}
+              >
+                Send To Cross Dock
+              </LoadingButton>
+            </Div>
           </Div>
-        </Div>
-      )}
+        )}
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead>
@@ -175,7 +180,7 @@ export default function ListProductionTable({
                 },
               }}
             >
-              {permissions?.material_master_create == true && (
+              {permissions?.production_master_create == true && (
                 <TableCell
                   sx={{
                     textAlign: "left",
@@ -190,7 +195,9 @@ export default function ListProductionTable({
                       if (event?.target?.checked) {
                         // Select all non-Allocated items
                         const nonAllocatedIds = production?.filter(
-                          (ele) => ele.status !== "Allocated"
+                          (ele) =>
+                            ele.status !== "Allocated" ||
+                            ele.status !== "verified"
                         );
 
                         const newItems = nonAllocatedIds.filter(
@@ -207,8 +214,9 @@ export default function ListProductionTable({
                             (item) =>
                               !production.some(
                                 (packItem) =>
-                                  packItem._id === item._id &&
-                                  packItem.status !== "Allocated"
+                                  (packItem._id === item._id &&
+                                    packItem.status !== "Allocated") ||
+                                  packItem.status !== "verified"
                               )
                           )
                         );
@@ -218,7 +226,11 @@ export default function ListProductionTable({
                     checked={
                       addGroup?.length > 0 &&
                       production
-                        ?.filter((item) => item.status !== "Allocated")
+                        ?.filter(
+                          (item) =>
+                            item.status !== "Allocated" ||
+                            item.status !== "verified"
+                        )
                         ?.map((item) => item._id)
                         ?.every((id) =>
                           addGroup?.some((groupItem) => groupItem._id === id)
@@ -544,15 +556,33 @@ export default function ListProductionTable({
                   Status
                 </TableSortLabel>
               </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "40px",
+                  verticalAlign: "middle",
+                  color: "white",
+
+                  position: "sticky",
+                  right: 0,
+                  height: "58px",
+                  zIndex: 1,
+                  bgcolor: "#7352C7",
+                }}
+              >
+                Action
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {production?.map((row, i) => (
               <TableRow key={i}>
-                {permissions?.material_master_create && (
+                {permissions?.production_master_create && (
                   <TableCell sx={{ textAlign: "left", px: 1 }}>
                     <Checkbox
-                      disabled={row.status === "Allocated"}
+                      disabled={
+                        row.status === "Allocated" || row.status === "verified"
+                      }
                       onClick={(event) => handleCheckbox(event, row)}
                       color="primary"
                       checked={addGroup?.some((ele) => ele._id == row._id)}
@@ -611,6 +641,33 @@ export default function ListProductionTable({
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.status || "-"}
                 </TableCell>
+                <TableCell
+                  sx={{
+                    textAlign: "left",
+                    px: 1,
+                    position: "sticky",
+                    right: 0,
+                    zIndex: 1,
+                    bgcolor: "white",
+                  }}
+                >
+                  <JumboDdMenu
+                    icon={<MoreHorizIcon />}
+                    menuItems={
+                      permissions.production_master_edit == true
+                        ? [
+                            {
+                              icon: <EditIcon />,
+                              title: "Edit Production Details",
+                              action: "edit",
+                              data: row,
+                            },
+                          ]
+                        : [{ title: "No Actions" }]
+                    }
+                    onClickCallback={handleItemAction}
+                  />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -624,7 +681,7 @@ export default function ListProductionTable({
               setSort={setSort}
               setSortBy={setSortBy}
               open={isModalOpen}
-              setOpen={setIsModalOpen} // Ensure this matches the prop expected by DockEntry
+              setOpen={setIsModalOpen}
               rowData={addGroup}
               setAddGroup={setAddGroup}
             />

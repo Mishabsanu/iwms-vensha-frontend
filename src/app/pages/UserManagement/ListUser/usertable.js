@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
 import { displayDateFun } from "app/utils/constants/functions";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export default function ListUserTable({
@@ -28,7 +28,7 @@ export default function ListUserTable({
   setSortBy,
 }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
   const { allUsers, TotalPage, loading } = useSelector(
     (state) => state.userReducer
   );
@@ -64,11 +64,15 @@ export default function ListUserTable({
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead>
-            <TableRow sx={{
-              bgcolor: "#7352C7", color: "white", "& .MuiTableCell-root": {
-                py: 2,
-              },
-            }}>
+            <TableRow
+              sx={{
+                bgcolor: "#7352C7",
+                color: "white",
+                "& .MuiTableCell-root": {
+                  py: 2,
+                },
+              }}
+            >
               <TableCell
                 sx={{
                   textAlign: "left",
@@ -412,8 +416,7 @@ export default function ListUserTable({
                   minWidth: "40px",
                   verticalAlign: "middle",
                   color: "white",
-                  verticalAlign: "middle",
-                  color: "white",
+
                   position: "sticky",
                   right: 0,
                   height: "58px",
@@ -479,16 +482,11 @@ export default function ListUserTable({
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row.status === false ? "Inactive" : "Active"}
-                  {/* {row.status} */}
-                  {/* {console.log(row.status + "status")} */}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left", px: 1 }}>
                   {row?.user_remarks ? row?.user_remarks : "-"}
                 </TableCell>
                 <TableCell sx={{ textTransform: "capitalize" }}>
-                  {/*  {row?.created_employee_id?.first_name}{" "}
-                  {row?.created_employee_id?.last_name} ?   {row?.created_employee_id?.first_name}{" "}
-                  {row?.created_employee_id?.last_name} : "null"} */}
                   {row?.created_employee_id?.first_name}{" "}
                   {row?.created_employee_id?.last_name}
                 </TableCell>
@@ -499,7 +497,6 @@ export default function ListUserTable({
                   {row.updated_at == null
                     ? "N/A"
                     : displayDateFun(row.updated_at)}
-                  {/* // : displayDateFun(row.user_update_date)} */}
                 </TableCell>
                 <TableCell
                   sx={{
@@ -538,7 +535,8 @@ export default function ListUserTable({
             ))}
           </TableBody>
         </Table>
-        <Pagination size="medium"
+        <Pagination
+          size="medium"
           count={TotalPage || 1}
           page={page}
           onChange={handleChangePage}
@@ -548,7 +546,7 @@ export default function ListUserTable({
             left: 0,
             backgroundColor: "white",
             borderTop: "1px solid #ddd",
-            py:1
+            py: 1,
           }}
         />
       </TableContainer>

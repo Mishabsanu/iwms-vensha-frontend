@@ -7,7 +7,7 @@ import { debounce } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ListBinTable from "./Bin";
+import ListBinTable from "./binTable";
 
 export default function ListBin() {
   const [searchTerm, setSearchTerm] = useState("");

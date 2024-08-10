@@ -4,6 +4,7 @@
       "users&roles": "Users & Roles",
       "master": "Master",
       "inventory": "Inventory",
+      "ProductionExecutive": "Production Executive",
       "WarehouseExecutive": "Warehouse Executive",
       "ProductionBooking": "Production Booking",
       "Pallet": "Pallet",
@@ -15,13 +16,10 @@
       "roleAndPermission": "Roles And Permissions",
       "ProductionBooking": "Pallet",
       "Pallet": "BIN ",
-      "ForkliftOperator": "Forklift Operator",
       "stockReport": "Stock Report",
-      "transaction": "Transaction Order",
+      "transaction": "Transaction Table",
       "master": {
         "material": "Materials",
-        "inbound": "Inbound",
-        "outbound": "Outbound",
         "productionLine": "Production Line",
         "vehicle": "Vehicle",
         "customer": "Customer",
@@ -35,9 +33,16 @@
         "unloading": "Unloading"
       },
       "WarehouseExecutive": {
-        "production": "production",
         "outbound": "Outbound",
+        "inbound": "Inbound",
         "binAllocation": "Bin Table"
+      },
+      "ProductionExecutive": {
+        "production": "production"
+      },
+      "ForkliftOperator": {
+        "inbound": "inbound",
+        "outbound": "Outbound"
       }
     }
   },

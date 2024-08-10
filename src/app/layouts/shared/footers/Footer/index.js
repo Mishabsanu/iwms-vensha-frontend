@@ -22,7 +22,7 @@ const Footer = () => {
         }}
       >
         <Typography variant={"body1"} color={"text.primary"}>
-          Copyright  INBOUND ENHANCEMENTS © {new Date().getFullYear()}
+          Copyright  Vensha Techsoft © {new Date().getFullYear()}
         </Typography>
         {/* <Div sx={{display: 'flex', alignItems: 'center'}}>
                     <Typography variant="h5"  sx={{display: { xs: 'none', sm: 'block' }, mb: 0, mr: 2, color: 'primary.main'}}>$24 Only</Typography>

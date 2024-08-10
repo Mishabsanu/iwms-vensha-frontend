@@ -30,7 +30,8 @@ export default function AddBin() {
   const bin = {
     storage_type: state?.storage_type || "Select",
     storage_section: state?.storage_section || "",
-    bind_no: state?.bind_no || "",
+    bin_no: state?.bin_no || "",
+    type: state?.type || "",
     description: state?.description || "",
     bin_capacity: state?.bin_capacity || "",
     digit_3_code: state?.digit_3_code || "",
@@ -48,7 +49,8 @@ export default function AddBin() {
     storage_section: yup
       .string("Enter Storage Section")
       .required("Storage Section is required"),
-    bind_no: yup.string("Enter Bin Number").required("Bin Number is required"),
+    bin_no: yup.string("Enter Bin Number").required("Bin Number is required"),
+    type: yup.string("Enter Type").required("Type is required"),
     description: yup
       .string("Enter Description")
       .required("Description is required"),
@@ -168,7 +170,7 @@ export default function AddBin() {
                       />
                     </Grid>
                     <Grid item xs={4}>
-                      <FormTextField1 name="bind_no" label="Bin Number*" />
+                      <FormTextField1 name="bin_no" label="Bin Number*" />
                     </Grid>
                     <Grid item xs={4}>
                       <FormTextField1 name="description" label="Description*" />
@@ -184,6 +186,9 @@ export default function AddBin() {
                         name="digit_3_code"
                         label="3 Digit Code*"
                       />
+                    </Grid>
+                    <Grid item xs={4}>
+                      <FormTextField1 name="type" label="Type*" />
                     </Grid>
                   </Grid>
                 </Div>

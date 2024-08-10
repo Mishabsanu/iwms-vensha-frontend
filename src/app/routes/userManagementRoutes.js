@@ -4,7 +4,6 @@ import ConfigureRole from "app/pages/RoleManagement/ConfigureRole";
 import ListRole from "app/pages/RoleManagement/ListRole";
 import AddUser from "app/pages/UserManagement/AddUser";
 import ListUser from "app/pages/UserManagement/ListUser";
-import UserLogTable from "app/pages/UserManagement/UserLog";
 import RoleMngtRouteMiddleware from "./middleware/auth/roleMngtValidRoute";
 import UserRouteMiddleware from "./middleware/auth/userValidRoute";
 
@@ -29,10 +28,6 @@ const userManagementRoutes = [
       {
         path: "/dashboard/edituser",
         element: <Page component={AddUser} layout={"vertical-default"} />,
-      },
-      {
-        path: "/dashboard/user/log",
-        element: <Page component={UserLogTable} layout={"vertical-default"} />,
       },
       {
         path: "/changepassword",
