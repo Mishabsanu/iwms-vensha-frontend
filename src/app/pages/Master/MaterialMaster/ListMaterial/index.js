@@ -41,9 +41,7 @@ export default function ListMaterial() {
   const debouncedHandleSearch = debounce(handleSearch, 500);
 
   useEffect(() => {
-    if (searchTerm !== "") {
-      debouncedHandleSearch(searchTerm);
-    }
+    debouncedHandleSearch(searchTerm);
     return () => {
       debouncedHandleSearch.cancel();
     };
@@ -103,74 +101,87 @@ export default function ListMaterial() {
       <Typography variant="h1" sx={{ mb: 2 }}>
         Material Master
       </Typography>
+
       <Box
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
-          alignItems: "center",
+          alignItems: { xs: "flex-start", sm: "center" },
           mb: 3,
           width: "100%",
-          gap: { xs: 1, sm: 2 },
+          gap: { xs: 2, sm: 2, xl: 3 },
         }}
       >
-        <SearchGlobal
-          sx={{
-            maxWidth: { xs: 240, sm: 280, md: 320 },
-            mb: { xs: 2, sm: 0 },
-            mt: 4,
-            flex: 1,
-          }}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
         <Box
           sx={{
-            display: "flex",
-            gap: 2,
-            flexDirection: { xs: "column", sm: "row" },
             flex: 1,
-            justifyContent: { xs: "center", sm: "flex-end" },
+            width: { xs: "100%", sm: "auto" },
+            mt: { xs: 2, sm: 0, xl: 4 },
           }}
         >
-          {permissions?.production_line_master_create && (
+          <SearchGlobal
+            sx={{
+              maxWidth: { xs: "100%", sm: 280, md: 320, xl: 400 },
+              width: "100%",
+            }}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </Box>
+        {permissions?.material_master_create && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: { xs: "stretch", sm: "center" },
+              justifyContent: { xs: "flex-start", sm: "flex-end" },
+              width: { xs: "100%", xl: "auto" },
+              gap: 2,
+              mt: { xs: 2, sm: 0, xl: 4 },
+            }}
+          >
+            <form>
+              <input
+                type="file"
+                onChange={handleFileChange}
+                style={{ display: "none" }}
+                id="fileInput"
+              />
+              <label htmlFor="fileInput">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  component="span"
+                  sx={{
+                    p: 1,
+                    pl: 4,
+                    pr: 4,
+                    width: { xs: "100%", sm: "auto" },
+                    maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
+                    boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
+                  }}
+                >
+                  Import
+                </Button>
+              </label>
+            </form>
             <Button
               variant="contained"
               sx={{
                 p: 1,
-                pl: 2,
-                pr: 2,
-                minWidth: 160,
-                flexShrink: 0,
+                pl: 4,
+                pr: 4,
+                width: { xs: "100%", sm: "auto" },
+                maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
+                boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
               }}
               onClick={() => navigate("/master/material/add")}
             >
               Add New Material
             </Button>
-          )}
-          {permissions?.material_master_create && (
-            <Div>
-              <form>
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  style={{ display: "none" }}
-                  id="fileInput"
-                />
-                <label htmlFor="fileInput">
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    component="span"
-                    sx={{ height: "100%", minWidth: 160 }}
-                  >
-                    Import
-                  </Button>
-                </label>
-              </form>
-            </Div>
-          )}
-        </Box>
+          </Box>
+        )}
       </Box>
       <ListMaterialTable
         searchTerm={searchTerm}

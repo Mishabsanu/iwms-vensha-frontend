@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ListProductionTable from "./productiontable";
 import SearchGlobal from "app/shared/SearchGlobal";
+import axios from "axios";
 
 export default function ListProduction() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -51,7 +52,19 @@ export default function ListProduction() {
 
   const getAllStatusCount = async () => {
     try {
-      const response = await Axios.get(`/production/get-all-status-count`);
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+      const body = {};
+      const response = await axios.post(
+        `${process.env.REACT_APP_URL}/production/get-all-status-count`,
+        body,
+        config
+      );
+      // const response = await Axios.get(`/production/get-all-status-count`);
       setStatusCount(response.data.data);
     } catch (error) {
       console.error("Error:", error);
@@ -72,54 +85,91 @@ export default function ListProduction() {
           }}
         >
           <Grid container spacing={3.75} justifyContent="center">
-            <Grid item maxWidth={600} xs={12} md={4}>
+            <Grid item maxWidth={600} xs={12} md={3}>
               <Documents1
                 icone={<MeetingRoomIcon sx={{ fontSize: 36 }} />}
                 field="Total Pending"
                 data={statusCount?.pending}
               />
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
               <Documents1
                 icone={<PeopleAltIcon sx={{ fontSize: 36 }} />}
                 field="Total Allocated"
                 data={statusCount?.allocated}
               />
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
               <Documents1
                 icone={<PeopleAltIcon sx={{ fontSize: 36 }} />}
                 field="Total Confirm"
                 data={statusCount?.verified}
               />
             </Grid>
+            <Grid item xs={12} md={3}>
+              <Documents1
+                icone={<PeopleAltIcon sx={{ fontSize: 36 }} />}
+                field="Total Deleted"
+                data={statusCount?.deleted}
+              />
+            </Grid>
           </Grid>
         </Div>
+
         <Box
           sx={{
             display: "flex",
             flexDirection: { xs: "column", sm: "row" },
             justifyContent: "space-between",
             alignItems: "center",
-            mb: 4,
+            mb: 3,
             width: "100%",
+            gap: { xs: 1, sm: 2, xl: 3 },
           }}
         >
-          <SearchGlobal
+          <Box
             sx={{
-              maxWidth: { xs: 240, md: 320 },
+              display: "flex",
+              flexDirection: "column",
+              width: { xs: "100%", sm: "auto" },
+              mb: { xs: 2, sm: 0 },
+              mt: { xs: 2, sm: 0, xl: 4 },
+              flex: 1,
             }}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          {permissions?.production_master_create === true && (
-            <Button
-              variant="contained"
-              sx={{ p: 1, pl: 4, pr: 4 }}
-              onClick={() => navigate("/dashboard/addproduction")}
+          >
+            <SearchGlobal
+              sx={{
+                maxWidth: { xs: "100%", sm: 280, md: 320, xl: 400 },
+                width: "100%",
+              }}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Box>
+          {permissions?.production_master_create && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "center", sm: "flex-end" },
+                width: { xs: "100%", xl: "auto" },
+                mt: { xs: 2, sm: 0, xl: 4 },
+              }}
             >
-              Add Production
-            </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  p: 1,
+                  pl: 4,
+                  pr: 4,
+                  width: { xs: "100%", sm: "auto" },
+                  maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
+                  boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
+                }}
+                onClick={() => navigate("/dashboard/addproduction")}
+              >
+                Add Production
+              </Button>
+            </Box>
           )}
         </Box>
 

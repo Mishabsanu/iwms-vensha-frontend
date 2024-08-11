@@ -1,12 +1,13 @@
 import Div from "@jumbo/shared/Div";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, Button, InputAdornment, TextField, Typography } from "@mui/material";
 import { getAllUnLoading } from "app/redux/actions/masterAction";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ListUnLoadingTable from "./unLoadingTable";
+import SearchGlobal from "app/shared/SearchGlobal";
 
 export default function ListUnLoading() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +20,7 @@ export default function ListUnLoading() {
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
 
-  //debouncing for search
+
   const handleSearch = (value) => {
     setPage(1);
     dispatch(getAllUnLoading(value, sort, sortBy, 1));
@@ -28,13 +29,12 @@ export default function ListUnLoading() {
   const debouncedHandleSearch = debounce(handleSearch, 500);
 
   useEffect(() => {
-    if (searchTerm !== "") {
-      debouncedHandleSearch(searchTerm);
-    }
+    debouncedHandleSearch(searchTerm);
     return () => {
       debouncedHandleSearch.cancel();
     };
   }, [searchTerm]);
+  
 
   useEffect(() => {
     dispatch(getAllUnLoading(searchTerm, sort, sortBy, page));
@@ -42,50 +42,63 @@ export default function ListUnLoading() {
   return (
     <Div sx={{ mt: -4 }}>
       <Typography variant="h1">UnLoading </Typography>
-      <Div
+     
+      <Box
         sx={{
           display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
           alignItems: "center",
+          mb: 3,
+          width: "100%",
+          gap: { xs: 1, sm: 2, xl: 3 },
         }}
       >
-        <TextField
-          size="small"
-          id="search"
-          type="search"
-          label="Search"
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            if (e.target.value == "") {
-              setSort("desc");
-              setSortBy("updated_at");
-              dispatch(getAllUnLoading("", "desc", "updated_at", 1));
-            }
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: { xs: "100%", sm: "auto" },
+            mb: { xs: 2, sm: 0 },
+            mt: { xs: 2, sm: 0, xl: 4 },
+            flex: 1,
           }}
-          sx={{ width: 300, mb: 5, mt: 4 }}
-          InputProps={{
-            endAdornment: (
-              <Div sx={{ cursor: "pointer" }}>
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              </Div>
-            ),
-          }}
-        />
-        <Div>
-          {permissions?.unloading_master_create == true && (
+        >
+          <SearchGlobal
+            sx={{
+              maxWidth: { xs: "100%", sm: 280, md: 320, xl: 400 },
+              width: "100%",
+            }}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </Box>
+        {permissions?.unloading_master_create && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: { xs: "center", sm: "flex-end" },
+              width: { xs: "100%", xl: "auto" },
+              mt: { xs: 2, sm: 0, xl: 4 },
+            }}
+          >
             <Button
               variant="contained"
-              sx={{ p: 1, pl: 4, pr: 4 }}
+              sx={{
+                p: 1,
+                pl: 4,
+                pr: 4,
+                width: { xs: "100%", sm: "auto" },
+                maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
+                boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
+              }}
               onClick={() => navigate("/master/unloading/add")}
             >
               Add Unloading
             </Button>
-          )}
-        </Div>
-      </Div>
+          </Box>
+        )}
+      </Box>
       <ListUnLoadingTable
         searchTerm={searchTerm}
         page={page}
