@@ -238,7 +238,7 @@ export default function ListProductionTable({
                       const isChecked = event?.target?.checked;
                       const nonAllocatedItems = production?.filter(
                         (ele) =>
-                          !["Allocated", "Overflow", "verified"].includes(
+                          !["Allocated", "Overflow", "Verified"].includes(
                             ele.status
                           )
                       );
@@ -632,7 +632,7 @@ export default function ListProductionTable({
                     <Checkbox
                       disabled={
                         row.status === "Allocated" ||
-                        row.status === "verified" ||
+                        row.status === "Verified" ||
                         row.status === "Overflow"
                       }
                       onClick={(event) => handleCheckbox(event, row)}
@@ -707,7 +707,7 @@ export default function ListProductionTable({
                     bgcolor: "white",
                   }}
                 >
-                  {row.status !== "verified" && (
+                  {row.status !== "Verified" && (
                     <JumboDdMenu
                       icon={<MoreHorizIcon />}
                       menuItems={
