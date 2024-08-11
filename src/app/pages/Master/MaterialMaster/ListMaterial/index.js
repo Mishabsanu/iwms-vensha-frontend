@@ -18,6 +18,7 @@ import ListMaterialTable from "./materialTable";
 import { Axios } from "index";
 import AllApis from "app/Apis";
 import Swal from "sweetalert2";
+import SearchGlobal from "app/shared/SearchGlobal";
 
 export default function ListMaterial() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -99,53 +100,49 @@ export default function ListMaterial() {
 
   return (
     <Div sx={{ mt: -4 }}>
-      <Typography variant="h1">Material Master</Typography>
-      <Div
+      <Typography variant="h1" sx={{ mb: 2 }}>
+        Material Master
+      </Typography>
+      <Box
         sx={{
           display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 5,
-          mt: 4,
+          mb: 3,
+          width: "100%",
+          gap: { xs: 1, sm: 2 },
         }}
       >
-        <TextField
-          size="small"
-          id="search"
-          type="search"
-          label="Search"
+        <SearchGlobal
+          sx={{
+            maxWidth: { xs: 240, sm: 280, md: 320 },
+            mb: { xs: 2, sm: 0 },
+            mt: 4,
+            flex: 1,
+          }}
           value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            if (e.target.value === "") {
-              setSort("desc");
-              setSortBy("updated_at");
-              dispatch(getAllSuppliers("", "desc", "updated_at", 1));
-            }
-          }}
-          sx={{ width: 300 }}
-          InputProps={{
-            endAdornment: (
-              <Div sx={{ cursor: "pointer" }}>
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              </Div>
-            ),
-          }}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <Box
           sx={{
             display: "flex",
-            justifyContent: "flex-end",
-            gap: 2, // Adds space between buttons
-            alignItems: "center",
+            gap: 2,
+            flexDirection: { xs: "column", sm: "row" },
+            flex: 1,
+            justifyContent: { xs: "center", sm: "flex-end" },
           }}
         >
-          {permissions?.material_master_create && (
+          {permissions?.production_line_master_create && (
             <Button
               variant="contained"
-              sx={{ p: 1, pl: 4, pr: 4 }}
+              sx={{
+                p: 1,
+                pl: 2,
+                pr: 2,
+                minWidth: 160,
+                flexShrink: 0,
+              }}
               onClick={() => navigate("/master/material/add")}
             >
               Add New Material
@@ -165,7 +162,7 @@ export default function ListMaterial() {
                     variant="contained"
                     color="primary"
                     component="span"
-                    sx={{ height: "100%" }}
+                    sx={{ height: "100%", minWidth: 160 }}
                   >
                     Import
                   </Button>
@@ -174,7 +171,7 @@ export default function ListMaterial() {
             </Div>
           )}
         </Box>
-      </Div>
+      </Box>
       <ListMaterialTable
         searchTerm={searchTerm}
         setPage={setPage}

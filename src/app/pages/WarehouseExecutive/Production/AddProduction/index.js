@@ -59,6 +59,7 @@ export default function AddProduction() {
   const [loadingSkuOptions, setLoadingSkuOptions] = useState(false);
   const [assignedTo, setAssignedTo] = useState([]);
   const [productionLine, setProductionLine] = useState([]);
+  const [itemId, setItemId] = useState([]);
   const initialData = state || {};
 
   const user = {
@@ -69,9 +70,9 @@ export default function AddProduction() {
     sku_description: initialData?.sku_description || "",
     sut: initialData?.sut || "",
     batch: initialData?.batch || "",
-    pallete_qty: initialData?.pallete_qty || "",
+    pallet_qty: initialData?.pallet_qty || "",
     process_order_qty: initialData?.process_order_qty || "",
-    assigned_to: initialData?.assigned_to || "Select",
+    assigned_to: initialData?.assigned_to || [],
   };
 
   const validationSchema = yup.object({
@@ -85,7 +86,7 @@ export default function AddProduction() {
     sku_description: yup.string().required("SKU Description is required"),
     sut: yup.string().required("SUT is required"),
     batch: yup.string().required("Batch is required"),
-    pallete_qty: yup
+    pallet_qty: yup
       .number("Enter a valid Pallet Qty")
       .required("Pallet Qty is required"),
     process_order_qty: yup
@@ -139,9 +140,7 @@ export default function AddProduction() {
   };
 
   const onUserSave = async (values) => {
-    console.log(values, "values");
-
-    const body = { ...values, assigned_to: personName };
+    const body = { ...values, material_id: itemId, assigned_to: personName };
     setSubmitting(true);
     try {
       const response =
@@ -205,12 +204,12 @@ export default function AddProduction() {
 
   const handleSelectSku = (sku, setFieldValue) => {
     setSelectedSku(sku);
-
+    setItemId(sku._id);
     // Update form fields based on the selected SKU
     setFieldValue("sku_code", sku.sku_code);
     setFieldValue("sku_description", sku.sku_description);
     setFieldValue("sut", sku.sut);
-    setFieldValue("pallete_qty", sku.pallete_qty);
+    setFieldValue("pallet_qty", sku.pallet_qty);
     setOpen(false);
   };
 
@@ -260,7 +259,7 @@ export default function AddProduction() {
                       </TextField>
                     </FormControl>
                   </Grid>
-
+                  {console.log(values, "values")}
                   <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField
@@ -353,10 +352,10 @@ export default function AddProduction() {
                     <FormControl fullWidth>
                       <TextField
                         label="Pallete Qty"
-                        name="pallete_qty"
-                        value={values.pallete_qty}
+                        name="pallet_qty"
+                        value={values.pallet_qty}
                         onChange={(e) =>
-                          setFieldValue("pallete_qty", e.target.value)
+                          setFieldValue("pallet_qty", e.target.value)
                         }
                       />
                     </FormControl>

@@ -1,23 +1,22 @@
-import React, { useState } from "react";
 import Div from "@jumbo/shared/Div";
 import {
   Dialog,
   DialogContent,
+  Radio,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
   Typography,
-  Radio,
-  useMediaQuery,
-  useTheme,
+  useTheme
 } from "@mui/material";
+import { useState } from "react";
 
 export const SkuDetails = ({ open, setOpen, rowData, onSelect }) => {
   const [selectedSku, setSelectedSku] = useState(null);
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
 
   const handleClose = () => {
     setOpen(false);
@@ -75,8 +74,8 @@ export const SkuDetails = ({ open, setOpen, rowData, onSelect }) => {
                     <TableCell sx={{ px: 1 }}>{item.storage_type}</TableCell>
                     <TableCell sx={{ px: 1 }}>{item.customer_code}</TableCell>
                     <TableCell sx={{ px: 1 }}>{item.sku_description}</TableCell>
-                    <TableCell sx={{ px: 1 }}>{item.sku_grp}</TableCell>
-                    <TableCell sx={{ px: 1 }}>{item.pallete_qty}</TableCell>
+                    <TableCell sx={{ px: 1 }}>{item.sku_group}</TableCell>
+                    <TableCell sx={{ px: 1 }}>{item.pallet_qty}</TableCell>
                     <TableCell sx={{ px: 1 }}>{item.vendor_code}</TableCell>
                     <TableCell sx={{ px: 1 }}>{item.sut}</TableCell>
                   </TableRow>
