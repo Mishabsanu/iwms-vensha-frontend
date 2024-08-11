@@ -104,13 +104,6 @@ const Header = () => {
         spacing={1.25}
         sx={{ ml: "auto" }}
       >
-        {/* <JumboIconButton
-          elevation={25}
-          onClick={() => setDropdownSearchVisibility(true)}
-        >
-          <SearchIcon fontSize={"small"} />
-        </JumboIconButton> */}
-
         <AuthUserDropdown />
       </Stack>
     </React.Fragment>

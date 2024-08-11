@@ -234,6 +234,40 @@ export default function ListVehicleTable({
               >
                 Vehicle Insurance Date
               </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "140px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "created_employee_id.first_name"}
+                  direction={sort}
+                  onClick={() => handleSort("created_employee_id.first_name")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Created By
+                </TableSortLabel>
+              </TableCell>
+
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "140px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                Created Date
+              </TableCell>
               {permissions?.vehicle_master_edit && (
                 <TableCell
                   sx={{
@@ -286,6 +320,13 @@ export default function ListVehicleTable({
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {displayDateFun(row.vehicle_insurance_date)}
+                </TableCell>
+                <TableCell sx={{ textTransform: "capitalize" }}>
+                  {row?.created_employee_id?.first_name}{" "}
+                  {row?.created_employee_id?.last_name}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {displayDateFun(row.created_at)}
                 </TableCell>
                 {permissions?.vehicle_master_edit && (
                   <TableCell sx={{ textAlign: "left" }}>

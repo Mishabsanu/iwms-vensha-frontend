@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const updateProduction = async (details, id) => {
+export const updateProductionPartialToDelete = async (details, id) => {
   try {
     const config = {
       withCredentials: true,
@@ -9,7 +9,7 @@ export const updateProduction = async (details, id) => {
       },
     };
     const data = await axios.post(
-      `${process.env.REACT_APP_URL}/production/update-production?id=${id}`,
+      `${process.env.REACT_APP_URL}/production/update-partial-to-delete-production?id=${id}`,
       details,
       config
     );

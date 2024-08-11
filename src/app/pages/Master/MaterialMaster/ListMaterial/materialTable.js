@@ -283,9 +283,9 @@ export default function ListMaterialTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "pallete_qty"}
+                  active={sortBy === "pallet_qty"}
                   direction={sort}
-                  onClick={() => handleSort("pallete_qty")}
+                  onClick={() => handleSort("pallet_qty")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -306,9 +306,9 @@ export default function ListMaterialTable({
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "sku_grp"}
+                  active={sortBy === "sku_group"}
                   direction={sort}
-                  onClick={() => handleSort("sku_grp")}
+                  onClick={() => handleSort("sku_group")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
@@ -494,12 +494,12 @@ export default function ListMaterialTable({
                     textTransform: "uppercase",
                   }}
                 >
-                  {row?.pallete_qty}
+                  {row?.pallet_qty}
                 </TableCell>
                 <TableCell
                   sx={{ textAlign: "left", px: 1, textTransform: "uppercase" }}
                 >
-                  {row?.sku_grp}
+                  {row?.sku_group}
                 </TableCell>
                 <TableCell
                   sx={{

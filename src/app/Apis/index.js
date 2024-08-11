@@ -24,5 +24,6 @@ const AllApis = {
   },
   allocateBin: "/production/allocate-bin",
   crossDocker: "/production/cross-docker-allocate",
+  binOverFlow: "/production/bin-overflow-allocate",
 };
 export default AllApis;

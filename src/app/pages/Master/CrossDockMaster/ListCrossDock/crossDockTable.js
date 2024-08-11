@@ -15,7 +15,7 @@ import {
 import FullScreenLoader from "app/components/ListingPageLoader";
 import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export default function CrossDockeTable({
@@ -32,12 +32,11 @@ export default function CrossDockeTable({
   );
   const [loader, setLoader] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
   const handleSort = (property) => {
-    setSort(sort == "asc" ? "desc" : "asc");
+    setSort(sort === "asc" ? "desc" : "asc");
     setSortBy(property);
     setPage(1);
   };
@@ -153,7 +152,7 @@ export default function CrossDockeTable({
                 Created Date
               </TableCell>
 
-              {permissions?.cross_dock_master_edit == true && (
+              {permissions?.cross_dock_master_edit === true && (
                 <TableCell
                   sx={{
                     textAlign: "left",
@@ -190,14 +189,14 @@ export default function CrossDockeTable({
                 <TableCell sx={{ textAlign: "left" }}>
                   {displayDateFun(row.created_at)}
                 </TableCell>
-                {permissions?.cross_dock_master_edit == true && (
+                {permissions?.cross_dock_master_edit === true && (
                   <TableCell sx={{ textAlign: "left" }}>
                     <JumboDdMenu
                       icon={<MoreHorizIcon />}
                       menuItems={[
                         {
                           icon: <EditIcon />,
-                          title: "Edit Pallet Details",
+                          title: "Edit Cross Dock Details",
                           action: "edit",
                           data: row,
                         },

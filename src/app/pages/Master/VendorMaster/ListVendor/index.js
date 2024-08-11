@@ -1,12 +1,19 @@
 import Div from "@jumbo/shared/Div";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, InputAdornment, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { getAllVendor } from "app/redux/actions/masterAction";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ListVendorTable from "./vendorTable";
+import SearchGlobal from "app/shared/SearchGlobal";
 
 export default function ListVendor() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,50 +49,44 @@ export default function ListVendor() {
   return (
     <Div sx={{ mt: -4 }}>
       <Typography variant="h1">Vendor Master</Typography>
-      <Div
+
+      <Box
         sx={{
           display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
           alignItems: "center",
+          mb: 3,
+          width: "100%",
+          gap: { xs: 1, sm: 2 },
         }}
       >
-        <TextField
-          size="small"
-          id="search"
-          type="search"
-          label="Search"
+        <SearchGlobal
+          sx={{
+            maxWidth: { xs: 240, sm: 280, md: 320 },
+            mb: { xs: 2, sm: 0 },
+            mt: 4,
+          }}
           value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            if (e.target.value == "") {
-              setSort("desc");
-              setSortBy("updated_at");
-              dispatch(getAllVendor("", "desc", "updated_at", 1));
-            }
-          }}
-          sx={{ width: 300, mb: 5, mt: 4 }}
-          InputProps={{
-            endAdornment: (
-              <Div sx={{ cursor: "pointer" }}>
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              </Div>
-            ),
-          }}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <Div>
-          {permissions?.vendor_master_create == true && (
-            <Button
-              variant="contained"
-              sx={{ p: 1, pl: 4, pr: 4 }}
-              onClick={() => navigate("/master/vendor/add")}
-            >
-              Add New Vendor
-            </Button>
-          )}
-        </Div>
-      </Div>
+        {permissions?.vendor_master_create && (
+          <Button
+            variant="contained"
+            sx={{
+              p: 1,
+              pl: 4,
+              pr: 4,
+              ml: { xs: 0, sm: "auto" },
+              mt: { xs: 0, sm: "auto" },
+            }}
+            onClick={() => navigate("/master/vendor/add")}
+          >
+            Add New Vendor
+          </Button>
+        )}
+      </Box>
+
       <ListVendorTable
         searchTerm={searchTerm}
         page={page}

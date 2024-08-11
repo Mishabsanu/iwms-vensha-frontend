@@ -1,12 +1,12 @@
 import Div from "@jumbo/shared/Div";
-import SearchIcon from "@mui/icons-material/Search";
-import { Button, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { getAllCrossDock } from "app/redux/actions/masterAction";
+import SearchGlobal from "app/shared/SearchGlobal";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import CrossDockTable from "././crossDockTable";
+import CrossDockTable from "./crossDockTable";
 
 export default function ListCrossDock() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +19,7 @@ export default function ListCrossDock() {
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
 
-  //debouncing for search
+  // Debounced search handling
   const handleSearch = (value) => {
     setPage(1);
     dispatch(getAllCrossDock(value, sort, sortBy, 1));
@@ -30,6 +30,8 @@ export default function ListCrossDock() {
   useEffect(() => {
     if (searchTerm !== "") {
       debouncedHandleSearch(searchTerm);
+    } else {
+      dispatch(getAllCrossDock("", "desc", "updated_at", 1));
     }
     return () => {
       debouncedHandleSearch.cancel();
@@ -39,53 +41,47 @@ export default function ListCrossDock() {
   useEffect(() => {
     dispatch(getAllCrossDock(searchTerm, sort, sortBy, page));
   }, [sort, page]);
+
   return (
     <Div sx={{ mt: -4 }}>
-      <Typography variant="h1">Cross Dock Master</Typography>
-      <Div
+      <Typography variant="h1"> Cross Dock Master</Typography>
+
+      <Box
         sx={{
           display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
           alignItems: "center",
+          mb: 3,
+          width: "100%",
+          gap: { xs: 1, sm: 2 },
         }}
       >
-        <TextField
-          size="small"
-          id="search"
-          type="search"
-          label="Search"
+        <SearchGlobal
+          sx={{
+            maxWidth: { xs: 240, sm: 280, md: 320 },
+            mb: { xs: 2, sm: 0 },
+            mt: 4,
+          }}
           value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            if (e.target.value == "") {
-              setSort("desc");
-              setSortBy("updated_at");
-              dispatch(getAllCrossDock("", "desc", "updated_at", 1));
-            }
-          }}
-          sx={{ width: 300, mb: 5, mt: 4 }}
-          InputProps={{
-            endAdornment: (
-              <Div sx={{ cursor: "pointer" }}>
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              </Div>
-            ),
-          }}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <Div>
-          {permissions?.cross_dock_master_create == true && (
-            <Button
-              variant="contained"
-              sx={{ p: 1, pl: 4, pr: 4 }}
-              onClick={() => navigate("/master/cross-dock/add")}
-            >
-              Add Cross Dock
-            </Button>
-          )}
-        </Div>
-      </Div>
+        {permissions?.cross_dock_master_create && (
+          <Button
+            variant="contained"
+            sx={{
+              p: 1,
+              pl: 4,
+              pr: 4,
+              ml: { xs: 0, sm: "auto" },
+              mt: { xs: 0, sm: "auto" },
+            }}
+            onClick={() => navigate("/master/cross-dock/add")}
+          >
+            Add Cross Dock
+          </Button>
+        )}
+      </Box>
       <CrossDockTable
         searchTerm={searchTerm}
         page={page}

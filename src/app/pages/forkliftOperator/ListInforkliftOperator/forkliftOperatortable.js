@@ -1,5 +1,6 @@
 import JumboDdMenu from "@jumbo/components/JumboDdMenu";
 import EditIcon from "@mui/icons-material/Edit";
+import CheckIcon from "@mui/icons-material/Check";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
   Pagination,
@@ -17,7 +18,8 @@ import { displayDateFun } from "app/utils/constants/functions";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BinNumberModal from "../Modal";
+import BinNumberModal from "../Modal/verifyModal";
+import EditBinDetails from "../Modal/editModal";
 export default function ListForkliftOperatortTable({
   searchTerm,
   page,
@@ -29,7 +31,9 @@ export default function ListForkliftOperatortTable({
 }) {
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [selected, setSelected] = useState(null);
   const { forkliftOperator, TotalPage, loading } = useSelector(
     (state) => state.masterReducer
   );
@@ -49,10 +53,15 @@ export default function ListForkliftOperatortTable({
 
   const handleItemAction = (menuItem) => {
     switch (menuItem.action) {
-      case "edit":
+      case "confirm":
         setSelectedRow(menuItem.data);
         setModalOpen(true);
         break;
+      case "edit":
+        setSelected(menuItem.data);
+        setOpen(true);
+        break;
+      default:
     }
   };
 
@@ -462,11 +471,21 @@ export default function ListForkliftOperatortTable({
                       icon={<MoreHorizIcon />}
                       menuItems={[
                         {
-                          icon: <EditIcon />,
+                          icon: <CheckIcon />,
                           title: "Confirm",
-                          action: "edit",
+                          action: "confirm",
                           data: row,
                         },
+                        ...(row?.status === "Overflow"
+                          ? [
+                              {
+                                icon: <EditIcon />,
+                                title: "Edit",
+                                action: "edit",
+                                data: row,
+                              },
+                            ]
+                          : []),
                       ]}
                       onClickCallback={handleItemAction}
                     />
@@ -476,7 +495,20 @@ export default function ListForkliftOperatortTable({
                   <BinNumberModal
                     open={modalOpen}
                     rawData={selectedRow}
-                    onClose={() => setModalOpen(false)}
+                    onClose={() => {
+                      setModalOpen(false);
+                      setSelectedRow(null); // Clear state when closing
+                    }}
+                  />
+                )}
+                {selected && (
+                  <EditBinDetails
+                    open={open}
+                    rawData={selected}
+                    onClose={() => {
+                      setOpen(false);
+                      setSelected(null); // Clear state when closing
+                    }}
                   />
                 )}
               </TableRow>

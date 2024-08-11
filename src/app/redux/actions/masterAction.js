@@ -563,8 +563,6 @@ export const getAllOutbound =
     }
   };
 
-
-
 ///stock  master
 export const getAllStock =
   (search_value, sort, sortBy, page) => async (dispatch) => {
@@ -661,18 +659,7 @@ export const getAllStorageSearch =
 export const getAllPallete =
   (search_value, sort, sortBy, page) => async (dispatch) => {
     try {
-      const body = {
-        filters: {},
-        searchFields: {
-          string: [
-            "production_line_name",
-            "created_employee_id.first_name",
-            "created_employee_id.last_name",
-            "status",
-            "production_line_description",
-          ],
-        },
-      };
+      const body = {};
       if (!search_value) {
         search_value = "";
       }

@@ -1,11 +1,17 @@
 import Div from "@jumbo/shared/Div";
 import { LoadingButton } from "@mui/lab";
-import { Button, Grid, MenuItem, Select, Typography } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Grid,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
 import AllApis from "app/Apis";
-import FormTextField1 from "app/components/InputField/FormTextField1";
 import { addMaterial } from "app/services/apis/addMaterial";
 import { updateMaterial } from "app/services/apis/updateMaterial";
-import { ErrorMessage, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import { Axios } from "index";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -17,22 +23,22 @@ export default function AddMaterial() {
   const { pathname } = useLocation();
   const { state } = useLocation();
   const [isSubmitting, setSubmitting] = useState(false);
-  const supplier = {
+  console.log(state, "state");
+
+  const material = {
     warehouse_code: state?.warehouse_code || "",
     item_type: state?.item_type || "",
-    storage_type: state?.storage_type || "Select",
+    storage_type: state?.storage_type || "",
     customer_code: state?.customer_code || "",
     unit: state?.unit || "",
     vendor_code: state?.vendor_code || "",
     sku_code: state?.sku_code || "",
     sut_qty: state?.sut_qty || "",
-    material_detail: state?.material_detail || "",
     item_life: state?.item_life || "",
     sut: state?.sut || "",
     pallet_qty: state?.pallet_qty || "",
-    sku_group: state?.sku_group || "",
     sku_description: state?.sku_description || "",
-    sii: state?.sii || "",
+    ssi: state?.ssi || "",
     sub_category: state?.sub_category || "",
     combination: state?.combination || "",
     bulk_structure: state?.bulk_structure || "",
@@ -43,38 +49,37 @@ export default function AddMaterial() {
     gross_weight: state?.gross_weight || "",
     actual_weight: state?.actual_weight || "",
     excel_filename: state?.excel_filename || "",
-    sku_grp: state?.sku_grp || "",
-    ssi: state?.ssi || "",
+    sku_group: state?.sku_group || "",
   };
   const [vendorData, setVendorData] = useState([]);
   const [storageType, setStorageType] = useState([]);
-
+  const [customerCode, setCustomerCode] = useState([]);
   useEffect(async () => {
     const vendors = await Axios.get(`${AllApis.dropdownList.vendor}`);
     setVendorData(vendors?.data?.result);
     const response = await Axios.get(AllApis.dropdownList.storage_type);
     setStorageType(response?.data?.result);
+    const customerResponse = await Axios.get(AllApis.dropdownList.customer);
+    setCustomerCode(customerResponse?.data?.result);
   }, []);
+
   const validationSchema = yup.object({
     warehouse_code: yup.string().required("Warehouse code is required"),
     item_type: yup.string("Enter Item Type").required("Item Type is required"),
     storage_type: yup.string().required("Storage Type is required"),
-    sku_description: yup.string().required("SKU Desc is required"),
+    sku_description: yup.string().required("SKU Description is required"),
     customer_code: yup.string().required("Customer Code is required"),
     vendor_code: yup
       .string("Enter Vendor Code")
       .required("Vendor Code is required"),
     sku_code: yup.string("Enter SKU Code").required("SKU Code is required"),
-    material_detail: yup
-      .string("Enter Material Details")
-      .required("Material Details is required"),
     item_life: yup.string("Enter Item Life").required("Item Life is required"),
     sut: yup.string("Enter SUT").required("SUT is required"),
     pallet_qty: yup
-      .string("Enter Pallet Qty")
+      .string("Enter Pallet Qty") // corrected from 'pallet_qty'
       .required("Pallet Qty is required"),
-    sku_group: yup.string("Enter Sku Group").required("Pallet Qty is required"),
-    sii: yup.string("Enter Sii").required("Sii is required"),
+    sku_group: yup.string("Enter SKU Group").required("SKU Group is required"),
+    ssi: yup.string("Enter SSI").required("SSI is required"),
     sub_category: yup
       .string("Enter Sub Category")
       .required("Sub Category is required"),
@@ -93,39 +98,15 @@ export default function AddMaterial() {
     gross_weight: yup
       .string("Enter Gross Weight")
       .required("Gross Weight is required"),
-    sut_qty: yup.string("Enter Sut Qty").required("Sut Qty is required"),
+    sut_qty: yup.string("Enter SUT Qty").required("SUT Qty is required"),
     unit: yup.string("Enter Unit").required("Unit is required"),
     actual_weight: yup
       .string("Enter Actual Weight")
       .required("Actual Weight is required"),
-    excel_filename: yup
-      .string("Enter Excel File Name")
-      .required("Excel File Name is required"),
-    sku_grp: yup.string("Enter SKU Group").required("SKU Group is required"),
-    ssi: yup.string("Enter SSI").required("SSI is required"),
   });
-  const onUserSave = async (values) => {
-    const body = { ...values };
-    for (let key in body) {
-      if (
-        key !== "warehouse_code" &&
-        key !== "item_type" &&
-        key !== "storage_type" &&
-        key !== "customer_code" &&
-        key !== "sku_code" &&
-        key !== "material_detail" &&
-        key !== "sut" &&
-        key !== "pallet_qty" &&
-        key !== "sku_group" &&
-        key != "sii" &&
-        key != "sub_category"
-      ) {
-        if (typeof body[key] === "string") {
-          body[key] = body[key].toUpperCase();
-        }
-      }
-    }
 
+  const onMaterialSave = async (values) => {
+    const body = { ...values };
     setSubmitting(true);
     if (pathname == "/master/material/edit") {
       const data = await updateMaterial(body, state._id);
@@ -177,44 +158,68 @@ export default function AddMaterial() {
       <Div>
         <Formik
           validateOnChange={true}
-          initialValues={supplier}
+          initialValues={material}
           enableReinitialize={true}
           validationSchema={validationSchema}
-          onSubmit={onUserSave}
-          // onSubmit={(values) => console.log(values)}
+          onSubmit={onMaterialSave}
         >
-          {({ values, setFieldValue, errors }) => (
+          {({ values, setFieldValue, errors, touched, isSubmitting }) => (
             <Form noValidate autoComplete="off">
               <Div sx={{ mt: 4 }}>
                 <Grid container rowSpacing={3} columnSpacing={3}>
-                  <Grid item xs={3}>
-                    <FormTextField1
-                      name="warehouse_code"
-                      label="Warehouse Code *"
-                    />
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={
+                          touched.warehouse_code &&
+                          Boolean(errors.warehouse_code)
+                        }
+                        helperText={
+                          touched.warehouse_code && errors.warehouse_code
+                        }
+                        label="Warehouse Code*"
+                        name="warehouse_code"
+                        value={values.warehouse_code}
+                        onChange={(e) =>
+                          setFieldValue("warehouse_code", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="item_type" label="Item Type *" />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.item_type && Boolean(errors.item_type)}
+                        helperText={touched.item_type && errors.item_type}
+                        label="Item Type*"
+                        name="item_type"
+                        value={values.item_type}
+                        onChange={(e) =>
+                          setFieldValue("item_type", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <Div
-                      sx={{
-                        marginBottom: 2,
-                        display: "flex",
-                        width: "100%",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <Typography variant="h5">Storage Type *</Typography>
-                      <Select
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="Storage Type"
                         name="storage_type"
                         value={values.storage_type}
-                        onChange={(event) =>
-                          setFieldValue("storage_type", event.target.value)
+                        onChange={(e) =>
+                          setFieldValue("storage_type", e.target.value)
                         }
-                        sx={{
-                          ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
-                            { padding: 1.2 },
+                        select
+                        fullWidth
+                        error={errors.storage_type}
+                        helperText={errors.storage_type}
+                        InputLabelProps={{
+                          shrink: values.storage_type,
+                        }}
+                        SelectProps={{
+                          native: false,
                         }}
                       >
                         <MenuItem value="Select">Select</MenuItem>
@@ -223,33 +228,58 @@ export default function AddMaterial() {
                             {item.storage_type}
                           </MenuItem>
                         ))}
-                      </Select>
-                      <ErrorMessage
-                        name="storage_type"
-                        component="div"
-                        style={{ color: "red" }}
-                      />
-                    </Div>
+                      </TextField>
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <Div
-                      sx={{
-                        marginBottom: 2,
-                        display: "flex",
-                        width: "100%",
-                        flexDirection: "column",
-                      }}
-                    >
-                      <Typography variant="h5">Vendor Code*</Typography>
-                      <Select
-                        name="vendor_code"
-                        value={values?.vendor_code}
-                        onChange={(event) =>
-                          setFieldValue("vendor_code", event.target.value)
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="Customer Code"
+                        name="customer_code"
+                        value={values.customer_code}
+                        onChange={(e) =>
+                          setFieldValue("customer_code", e.target.value)
                         }
-                        sx={{
-                          ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
-                            { padding: 1.2 },
+                        select
+                        fullWidth
+                        error={errors.customer_code}
+                        helperText={errors.customer_code}
+                        InputLabelProps={{
+                          shrink: values.customer_code,
+                        }}
+                        SelectProps={{
+                          native: false,
+                        }}
+                      >
+                        <MenuItem value="Select">Select</MenuItem>
+                        {customerCode.map((item) => (
+                          <MenuItem key={item._id} value={item.customer_code}>
+                            {item.customer_code}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="Vendor Code"
+                        name="vendor_code"
+                        value={values.vendor_code}
+                        onChange={(e) =>
+                          setFieldValue("vendor_code", e.target.value)
+                        }
+                        select
+                        fullWidth
+                        error={errors.vendor_code}
+                        helperText={errors.vendor_code}
+                        InputLabelProps={{
+                          shrink: values.vendor_code,
+                        }}
+                        SelectProps={{
+                          native: false,
                         }}
                       >
                         <MenuItem value="Select">Select</MenuItem>
@@ -258,110 +288,291 @@ export default function AddMaterial() {
                             {item.vendor_code}
                           </MenuItem>
                         ))}
-                      </Select>
-                      <ErrorMessage
-                        name="vendor_code"
-                        component="div"
-                        style={{ color: "red" }}
+                      </TextField>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.unit && Boolean(errors.unit)}
+                        helperText={touched.unit && errors.unit}
+                        label="Unit*"
+                        name="unit"
+                        value={values.unit}
+                        onChange={(e) => setFieldValue("unit", e.target.value)}
                       />
-                    </Div>
+                    </FormControl>
                   </Grid>
 
-                  <Grid item xs={3}>
-                    <FormTextField1
-                      name="customer_code"
-                      label="Customer Code*"
-                    />
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.sut_qty && Boolean(errors.sut_qty)}
+                        helperText={touched.sut_qty && errors.sut_qty}
+                        label="SUT Qty*"
+                        name="sut_qty"
+                        value={values.sut_qty}
+                        onChange={(e) =>
+                          setFieldValue("sut_qty", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="sku_code" label="SKU Code *" />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.sut && Boolean(errors.sut)}
+                        helperText={touched.sut && errors.sut}
+                        label="SUT*"
+                        name="sut"
+                        value={values.sut}
+                        onChange={(e) => setFieldValue("sut", e.target.value)}
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="sku_description" label="SKU Desc *" />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.item_life && Boolean(errors.item_life)}
+                        helperText={touched.item_life && errors.item_life}
+                        label="Item Life*"
+                        name="item_life"
+                        value={values.item_life}
+                        onChange={(e) =>
+                          setFieldValue("item_life", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1
-                      name="material_detail"
-                      label="Material Detail *"
-                    />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.pallet_qty && Boolean(errors.pallet_qty)}
+                        helperText={touched.pallet_qty && errors.pallet_qty}
+                        label="Pallet Qty*"
+                        name="pallet_qty"
+                        value={values.pallet_qty}
+                        onChange={(e) =>
+                          setFieldValue("pallet_qty", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="item_life" label="Item Life *" />
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.sku_code && Boolean(errors.sku_code)}
+                        helperText={touched.sku_code && errors.sku_code}
+                        label="SKU Code*"
+                        name="sku_code"
+                        value={values.sku_code}
+                        onChange={(e) =>
+                          setFieldValue("sku_code", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="unit" label="Unit *" />
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={
+                          touched.sku_description &&
+                          Boolean(errors.sku_description)
+                        }
+                        helperText={
+                          touched.sku_description && errors.sku_description
+                        }
+                        label="SKU Description*"
+                        name="sku_description"
+                        value={values.sku_description}
+                        onChange={(e) =>
+                          setFieldValue("sku_description", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="sut_qty" label="Sut Qty *" />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.sku_group && Boolean(errors.sku_group)}
+                        helperText={touched.sku_group && errors.sku_group}
+                        label="SKU Group*"
+                        name="sku_group"
+                        value={values.sku_group}
+                        onChange={(e) =>
+                          setFieldValue("sku_group", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="sut" label="SUT *" />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.ssi && Boolean(errors.ssi)}
+                        helperText={touched.ssi && errors.ssi}
+                        label="SSI*"
+                        name="ssi"
+                        value={values.ssi}
+                        onChange={(e) => setFieldValue("ssi", e.target.value)}
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="pallet_qty" label="Pallet Qty *" />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={
+                          touched.sub_category && Boolean(errors.sub_category)
+                        }
+                        helperText={touched.sub_category && errors.sub_category}
+                        label="Sub Category*"
+                        name="sub_category"
+                        value={values.sub_category}
+                        onChange={(e) =>
+                          setFieldValue("sub_category", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="sku_group" label="SKU Group *" />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={
+                          touched.combination && Boolean(errors.combination)
+                        }
+                        helperText={touched.combination && errors.combination}
+                        label="Combination*"
+                        name="combination"
+                        value={values.combination}
+                        onChange={(e) =>
+                          setFieldValue("combination", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="sii" label="Sii *" />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={
+                          touched.bulk_structure &&
+                          Boolean(errors.bulk_structure)
+                        }
+                        helperText={
+                          touched.bulk_structure && errors.bulk_structure
+                        }
+                        label="Bulk Structure*"
+                        name="bulk_structure"
+                        value={values.bulk_structure}
+                        onChange={(e) =>
+                          setFieldValue("bulk_structure", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1
-                      name="sub_category"
-                      label="Sub Category *"
-                    />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.length && Boolean(errors.length)}
+                        helperText={touched.length && errors.length}
+                        label="Length*"
+                        name="length"
+                        value={values.length}
+                        onChange={(e) =>
+                          setFieldValue("length", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="combination" label="Combination *" />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.breadth && Boolean(errors.breadth)}
+                        helperText={touched.breadth && errors.breadth}
+                        label="Breadth*"
+                        name="breadth"
+                        value={values.breadth}
+                        onChange={(e) =>
+                          setFieldValue("breadth", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1
-                      name="bulk_structure"
-                      label="Bulk Structure *"
-                    />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.height && Boolean(errors.height)}
+                        helperText={touched.height && errors.height}
+                        label="Height*"
+                        name="height"
+                        value={values.height}
+                        onChange={(e) =>
+                          setFieldValue("height", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="length" label="Length *" />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={
+                          touched.total_craft && Boolean(errors.total_craft)
+                        }
+                        helperText={touched.total_craft && errors.total_craft}
+                        label="Total Craft*"
+                        name="total_craft"
+                        value={values.total_craft}
+                        onChange={(e) =>
+                          setFieldValue("total_craft", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="breadth" label="Breadth *" />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={
+                          touched.gross_weight && Boolean(errors.gross_weight)
+                        }
+                        helperText={touched.gross_weight && errors.gross_weight}
+                        label="Gross Weight*"
+                        name="gross_weight"
+                        value={values.gross_weight}
+                        onChange={(e) =>
+                          setFieldValue("gross_weight", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="height" label="Height *" />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="total_craft" label="Total Craft *" />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1
-                      name="gross_weight"
-                      label="Gross Weight *"
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1
-                      name="actual_weight"
-                      label="Actual Weight *"
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1
-                      name="excel_filename"
-                      label="Excel File Name *"
-                    />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="sku_grp" label="SKU Group *" />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1 name="ssi" label="SSI *" />
-                  </Grid>
-                  <Grid item xs={3}>
-                    <FormTextField1
-                      name="sub_category"
-                      label="Sub Category *"
-                    />
+
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={
+                          touched.actual_weight && Boolean(errors.actual_weight)
+                        }
+                        helperText={
+                          touched.actual_weight && errors.actual_weight
+                        }
+                        label="Actual Weight*"
+                        name="actual_weight"
+                        value={values.actual_weight}
+                        onChange={(e) =>
+                          setFieldValue("actual_weight", e.target.value)
+                        }
+                      />
+                    </FormControl>
                   </Grid>
                 </Grid>
 
@@ -386,7 +597,7 @@ export default function AddMaterial() {
                         cancelButtonText: "No",
                       }).then((result) => {
                         if (result.isConfirmed) {
-                          navigate("/dashboard/master/supplier");
+                          navigate("/dashboard/master/pallet");
                         }
                       });
                     }}

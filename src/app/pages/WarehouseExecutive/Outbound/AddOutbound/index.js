@@ -38,8 +38,8 @@ export default function AddOutbound() {
 
   const user = {
     date: data?.date || null,
-    order_type: data?.order_type || "select",
-    entity_name: data?.entity_name || data?.entity_name || "Select",
+    order_type: data?.order_type || "",
+    entity_name: data?.entity_name || data?.entity_name || "",
     sku_code: data?.sku_code || "",
     sku_description: data?.sku_description || "",
     sut: data?.sut || "",
@@ -173,7 +173,7 @@ export default function AddOutbound() {
               {console.log(values, "values")}
               <Div sx={{ mt: 4 }}>
                 <Grid container spacing={2}>
-                  <Grid item xs={3} sm={4}>
+                  <Grid item xs={12} sm={4}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         label="Date"
@@ -188,7 +188,6 @@ export default function AddOutbound() {
                             fullWidth
                             InputProps={{
                               ...params.InputProps,
-                              style: { width: "100%" },
                             }}
                             sx={{
                               width: "100%", // Ensure the TextField takes full width
@@ -198,6 +197,7 @@ export default function AddOutbound() {
                             }}
                           />
                         )}
+                        sx={{ width: "100%" }}
                       />
                     </LocalizationProvider>
                   </Grid>
@@ -269,7 +269,7 @@ export default function AddOutbound() {
                         name="sku_code"
                         value={values.sku_code}
                         onChange={(e) => handleSkuInputChange(e, setFieldValue)}
-                        onFocus={() => fetchSkuOptions(values.sku_code)}
+                        // onFocus={() => fetchSkuOptions(values.sku_code)}
                         InputProps={{
                           endAdornment: loadingSkuOptions ? (
                             <CircularProgress size={24} />
@@ -288,7 +288,7 @@ export default function AddOutbound() {
                         onChange={(e) =>
                           handleSkuDesInputChange(e, setFieldValue)
                         }
-                        onFocus={() => fetchSkuOptions(values.sku_description)}
+                        // onFocus={() => fetchSkuOptions(values.sku_description)}
                         InputProps={{
                           endAdornment: loadingSkuOptions ? (
                             <CircularProgress size={24} />

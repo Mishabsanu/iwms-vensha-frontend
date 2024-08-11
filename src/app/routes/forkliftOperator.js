@@ -12,20 +12,26 @@ const forkliftOperator = [
     ],
     routes: [
       {
-        path: "/dashboard/forklift-operator",
+        path: "/dashboard/forklift-operator-outbound",
+        element: (
+          <Page component={ListForkliftOperator} layout={"vertical-default"} />
+        ),
+      },
+      {
+        path: "/dashboard/forklift-operator-inbound",
         element: (
           <Page component={ListForkliftOperator} layout={"vertical-default"} />
         ),
       },
 
-    //   {
-    //     path: "/dashboard/addproduction",
-    //     element: <Page component={AddProduction} layout={"vertical-default"} />,
-    //   },
-    //   {
-    //     path: "/dashboard/editproduction",
-    //     element: <Page component={AddProduction} layout={"vertical-default"} />,
-    //   },
+      //   {
+      //     path: "/dashboard/addproduction",
+      //     element: <Page component={AddProduction} layout={"vertical-default"} />,
+      //   },
+      //   {
+      //     path: "/dashboard/editproduction",
+      //     element: <Page component={AddProduction} layout={"vertical-default"} />,
+      //   },
     ],
   },
 ];

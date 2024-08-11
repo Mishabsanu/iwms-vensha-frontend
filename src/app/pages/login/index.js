@@ -74,11 +74,21 @@ const Login = ({ disableSmLogin }) => {
 
   return (
     <FullViewContent>
+      {/* <Typography
+      variant="h1"
+      sx={{
+        fontSize: { xs: '2.5rem', sm: '3rem', md: '3.5rem' },
+        color: 'purple',
+        textAlign: 'center',
+      }}
+    >
+      Vensha Techsoft Pvt Ltd
+    </Typography> */}
+
       <Div
         sx={{
           width: 800,
           maxWidth: "100%",
-          
         }}
       >
         <Card

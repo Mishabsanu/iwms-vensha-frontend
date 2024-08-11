@@ -5,6 +5,7 @@ const FullViewContent = ({ children }) => {
     return (
         <Box
             sx={{
+           
                 width: "100vw",
                 height: "100%",
                 margin: "auto",

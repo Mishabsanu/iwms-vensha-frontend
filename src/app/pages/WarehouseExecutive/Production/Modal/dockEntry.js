@@ -193,6 +193,7 @@ import { getAllProduction } from "app/redux/actions/masterAction";
 import { Axios } from "index";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import Swal from "sweetalert2";
 
 export const DockEntry = ({
   searchTerm,
@@ -203,10 +204,8 @@ export const DockEntry = ({
   setOpen,
   rowData,
   setAddGroup,
+  refreshStatusCounts,
 }) => {
-  console.log(rowData, "rowData");
-
-  // Store the selected cross dock for all items
   const [selectedCrossDock, setSelectedCrossDock] = useState("");
   const [crossDock, setCrossDock] = useState([]);
   const [errors, setErrors] = useState({});
@@ -272,9 +271,15 @@ export const DockEntry = ({
       console.log(response, "response");
       if (response.status === 200 || response.status === 201) {
         dispatch(getAllProduction(searchTerm, sort, sortBy, page, ""));
+        await refreshStatusCounts();
         setAddGroup([]);
-        // navigate("/dashboard/warehouseexecutive/production");
         handleClose();
+        Swal.fire({
+          title: "Success!",
+          text: "Dock Allocated successfully.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
       } else {
         console.error("Error submitting data.");
       }
@@ -345,7 +350,7 @@ export const DockEntry = ({
 
           <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2 }}>
             <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Update
+              Send to dock
             </Button>
           </Box>
         </Div>

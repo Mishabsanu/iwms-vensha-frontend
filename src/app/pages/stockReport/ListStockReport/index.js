@@ -76,17 +76,7 @@ export default function ListStockReport() {
               ),
             }}
           />
-          {/* <Div>
-            {permissions?.material_master_create == true && (
-              <Button
-                variant="contained"
-                sx={{ p: 1, pl: 4, pr: 4 }}
-                onClick={() => navigate("/master/inbound/add")}
-              >
-                Add Inbound
-              </Button>
-            )}
-          </Div> */}
+     
         </Div>
         <Suspense fallback={<div>Loading...</div>}>
           <ListStockReportTable

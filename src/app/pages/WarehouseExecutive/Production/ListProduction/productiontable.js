@@ -1,4 +1,7 @@
+import JumboDdMenu from "@jumbo/components/JumboDdMenu/JumboDdMenu";
 import Div from "@jumbo/shared/Div";
+import EditIcon from "@mui/icons-material/Edit";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { LoadingButton } from "@mui/lab";
 import {
   Checkbox,
@@ -15,14 +18,19 @@ import {
 } from "@mui/material";
 import AllApis from "app/Apis";
 import FullScreenLoader from "app/components/ListingPageLoader";
-import { getAllProduction, getAllVendor } from "app/redux/actions/masterAction";
-import { displayDateFun } from "app/utils/constants/functions";
+import { getAllProduction } from "app/redux/actions/masterAction";
+import {
+  displayDateAndTimeFun,
+  displayDateFun,
+} from "app/utils/constants/functions";
 import { Axios } from "index";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import AllocationModal from "../Modal/AllocationModal";
 import { DockEntry } from "../Modal/dockEntry";
+import ProductionEdit from "../Modal/ProductionEdit";
 export default function ListProductionTable({
   searchTerm,
   page,
@@ -31,6 +39,7 @@ export default function ListProductionTable({
   sortBy,
   setSort,
   setSortBy,
+  refreshStatusCounts,
 }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,6 +48,10 @@ export default function ListProductionTable({
   );
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [unallocatedItems, setUnallocatedItems] = useState([]);
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
@@ -53,11 +66,10 @@ export default function ListProductionTable({
   const handleItemAction = (menuItem) => {
     switch (menuItem.action) {
       case "edit":
-        navigate("/dashboard/edituser", { state: menuItem.data });
+        setSelectedRow(menuItem.data);
+        setOpen(true);
         break;
-      case "configure":
-        navigate("/changepassword", { state: menuItem.data });
-        break;
+      default:
     }
   };
 
@@ -82,7 +94,6 @@ export default function ListProductionTable({
       setAddGroup(deletedIds);
     }
   };
-
   const handleAddBinAllocate = async () => {
     try {
       setIsLoading(true);
@@ -93,6 +104,7 @@ export default function ListProductionTable({
           withCredentials: true,
         },
       };
+
       const res = await Axios.post(
         AllApis.allocateBin,
         { item_details: addGroup },
@@ -100,22 +112,30 @@ export default function ListProductionTable({
       );
 
       if (res?.data.status) {
-        Swal.fire({ icon: "success", title: "Allocat successfully" });
+        Swal.fire({ icon: "success", title: "Allocated successfully" });
         dispatch(getAllProduction(searchTerm, sort, sortBy, page));
+        await refreshStatusCounts();
         setAddGroup([]);
         navigate("/dashboard/warehouseexecutive/production");
       } else {
-        Swal.fire({
-          icon: "error",
-          title: res.data.message || "Unknown error occurred",
-        });
+        if (res?.data.data && res.data.data.length > 0) {
+          setUnallocatedItems(res.data.data);
+          setModalOpen(true); // Ensure this opens the modal
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: res.data.message || "Unknown error occurred",
+          });
+        }
       }
     } catch (error) {
-      console.log(error, "error");
-      Swal.fire({
-        title: error.response ? error.response.data.message : error.message,
-        icon: "error",
+      console.error("Error occurred while allocating bins:", error);
+      const errorMessage =
+        error.response?.data?.message || "An unexpected error occurred";
 
+      Swal.fire({
+        title: errorMessage,
+        icon: "error",
         showConfirmButton: true,
       });
     } finally {
@@ -123,6 +143,9 @@ export default function ListProductionTable({
     }
   };
 
+  const closeModal = () => {
+    setModalOpen(false);
+  };
   const handleAddCrossDocker = async () => {
     setIsModalOpen(true);
   };
@@ -130,39 +153,40 @@ export default function ListProductionTable({
     <>
       {loading && <FullScreenLoader />}
 
-      {addGroup?.length > 0 && permissions?.material_master_create == true && (
-        <Div
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 1,
-            bgcolor: "#7352C7",
-            p: 2,
-            borderRadius: "5px",
-          }}
-        >
-          <Typography variant="h5" sx={{ color: "white", mt: 1 }}>
-            {addGroup?.length} Item Selected
-          </Typography>
-          <Div sx={{ display: "flex", columnGap: 3 }}>
-            <LoadingButton
-              variant="contained"
-              color="success"
-              onClick={() => handleAddBinAllocate()}
-            >
-              Send To Bin Allocat
-            </LoadingButton>
-            <LoadingButton
-              variant="contained"
-              color="success"
-              onClick={() => handleAddCrossDocker()}
-            >
-              Send To Cross Dock
-            </LoadingButton>
+      {addGroup?.length > 0 &&
+        permissions?.production_master_create == true && (
+          <Div
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              mb: 1,
+              bgcolor: "#7352C7",
+              p: 2,
+              borderRadius: "5px",
+            }}
+          >
+            <Typography variant="h5" sx={{ color: "white", mt: 1 }}>
+              {addGroup?.length} Item Selected
+            </Typography>
+            <Div sx={{ display: "flex", columnGap: 3 }}>
+              <LoadingButton
+                variant="contained"
+                color="success"
+                onClick={() => handleAddBinAllocate()}
+              >
+                Send To Bin Allocat
+              </LoadingButton>
+              <LoadingButton
+                variant="contained"
+                color="success"
+                onClick={() => handleAddCrossDocker()}
+              >
+                Send To Cross Dock
+              </LoadingButton>
+            </Div>
           </Div>
-        </Div>
-      )}
+        )}
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead>
@@ -175,7 +199,7 @@ export default function ListProductionTable({
                 },
               }}
             >
-              {permissions?.material_master_create == true && (
+              {permissions?.production_master_create == true && (
                 <TableCell
                   sx={{
                     textAlign: "left",
@@ -187,48 +211,40 @@ export default function ListProductionTable({
                 >
                   <Checkbox
                     onClick={(event) => {
-                      if (event?.target?.checked) {
-                        // Select all non-Allocated items
-                        const nonAllocatedIds = production?.filter(
-                          (ele) => ele.status !== "Allocated"
-                        );
-
-                        const newItems = nonAllocatedIds.filter(
-                          (newItem) =>
-                            !addGroup.some(
-                              (existingItem) => existingItem._id === newItem._id
-                            )
-                        );
-                        setAddGroup([...addGroup, ...newItems]);
-                      } else {
-                        // Deselect all non-Allocated items
-                        setAddGroup(
-                          addGroup.filter(
+                      const isChecked = event?.target?.checked;
+                      const nonAllocatedItems = production?.filter(
+                        (ele) =>
+                          !["Allocated", "Overflow", "verified"].includes(
+                            ele.status
+                          )
+                      );
+                      const newItems = isChecked
+                        ? nonAllocatedItems.filter(
                             (item) =>
-                              !production.some(
-                                (packItem) =>
-                                  packItem._id === item._id &&
-                                  packItem.status !== "Allocated"
+                              !addGroup.some(
+                                (groupItem) => groupItem._id === item._id
                               )
                           )
-                        );
-                      }
+                        : [];
+                      setAddGroup(isChecked ? [...addGroup, ...newItems] : []);
                     }}
                     color="primary"
                     checked={
-                      addGroup?.length > 0 &&
+                      addGroup.length > 0 &&
                       production
-                        ?.filter((item) => item.status !== "Allocated")
-                        ?.map((item) => item._id)
-                        ?.every((id) =>
-                          addGroup?.some((groupItem) => groupItem._id === id)
+                        .filter(
+                          (item) =>
+                            !["Allocated", "Overflow", "verified"].includes(
+                              item.status
+                            )
+                        )
+                        .every((item) =>
+                          addGroup.some(
+                            (groupItem) => groupItem._id === item._id
+                          )
                         )
                     }
-                    sx={{
-                      "&.Mui-checked": {
-                        color: "white",
-                      },
-                    }}
+                    sx={{ "&.Mui-checked": { color: "white" } }}
                   />
                 </TableCell>
               )}
@@ -530,6 +546,29 @@ export default function ListProductionTable({
                 }}
               >
                 <TableSortLabel
+                  active={sortBy === "confirm_date"}
+                  direction={sort}
+                  onClick={() => handleSort("confirm_date")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Confirm Date
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "80px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
                   active={sortBy === "status"}
                   direction={sort}
                   onClick={() => handleSort("status")}
@@ -544,15 +583,34 @@ export default function ListProductionTable({
                   Status
                 </TableSortLabel>
               </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "40px",
+                  verticalAlign: "middle",
+                  color: "white",
+                  position: "sticky",
+                  right: 0,
+                  height: "58px",
+                  zIndex: 1,
+                  bgcolor: "#7352C7",
+                }}
+              >
+                Action
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {production?.map((row, i) => (
               <TableRow key={i}>
-                {permissions?.material_master_create && (
+                {permissions?.production_master_create && (
                   <TableCell sx={{ textAlign: "left", px: 1 }}>
                     <Checkbox
-                      disabled={row.status === "Allocated"}
+                      disabled={
+                        row.status === "Allocated" ||
+                        row.status === "verified" ||
+                        row.status === "Overflow"
+                      }
                       onClick={(event) => handleCheckbox(event, row)}
                       color="primary"
                       checked={addGroup?.some((ele) => ele._id == row._id)}
@@ -607,9 +665,42 @@ export default function ListProductionTable({
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.digit_3_codes || "-"}
                 </TableCell>
-
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row.confirm_date
+                    ? displayDateAndTimeFun(row.confirm_date)
+                    : "-"}
+                </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.status || "-"}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    textAlign: "left",
+                    px: 1,
+                    position: "sticky",
+                    right: 0,
+                    zIndex: 1,
+                    bgcolor: "white",
+                  }}
+                >
+                  {row.status !== "verified" && (
+                    <JumboDdMenu
+                      icon={<MoreHorizIcon />}
+                      menuItems={
+                        permissions.production_master_edit
+                          ? [
+                              {
+                                icon: <EditIcon />,
+                                title: "Edit Production Details",
+                                action: "edit",
+                                data: row,
+                              },
+                            ]
+                          : [{ title: "No Actions" }]
+                      }
+                      onClickCallback={handleItemAction}
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             ))}
@@ -624,12 +715,37 @@ export default function ListProductionTable({
               setSort={setSort}
               setSortBy={setSortBy}
               open={isModalOpen}
-              setOpen={setIsModalOpen} // Ensure this matches the prop expected by DockEntry
+              setOpen={setIsModalOpen}
               rowData={addGroup}
               setAddGroup={setAddGroup}
+              refreshStatusCounts={refreshStatusCounts}
             />
           )}
         </Table>
+        <AllocationModal
+          open={modalOpen}
+          onClose={closeModal}
+          unallocatedItems={unallocatedItems}
+          searchTerm={searchTerm}
+          page={page}
+          setPage={setPage}
+          sort={sort}
+          sortBy={sortBy}
+          setSort={setSort}
+          setSortBy={setSortBy}
+          refreshStatusCounts={refreshStatusCounts}
+          setAddGroup={setAddGroup}
+        />
+        {selectedRow && (
+          <ProductionEdit
+            open={open}
+            rawData={selectedRow}
+            onClose={() => {
+              setModalOpen(false);
+              setSelectedRow(null);
+            }}
+          />
+        )}
         <Pagination
           size="medium"
           count={TotalPage || 1}
