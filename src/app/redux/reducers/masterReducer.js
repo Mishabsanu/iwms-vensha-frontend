@@ -41,6 +41,9 @@ import {
   ALL_FORKLIFT_OPERATOR_MASTER_FAIL,
   ALL_FORKLIFT_OPERATOR_MASTER_REQUEST,
   ALL_FORKLIFT_OPERATOR_MASTER_SUCCESS,
+  ALL_FORKLIFT_OPERATOR_OUTBOUND_MASTER_FAIL,
+  ALL_FORKLIFT_OPERATOR_OUTBOUND_MASTER_REQUEST,
+  ALL_FORKLIFT_OPERATOR_OUTBOUND_MASTER_SUCCESS,
   ALL_CROSS_DOCK_MASTER_FAIL,
   ALL_CROSS_DOCK_MASTER_REQUEST,
   ALL_CROSS_DOCK_MASTER_SUCCESS,
@@ -78,6 +81,7 @@ const INIT_STATE = {
   unLoadingMaster: [],
   production: [],
   forkliftOperator: [],
+  forkliftOperatorOutbound: [],
   crossDock: [],
   stockReport: [],
   transaction: [],
@@ -212,6 +216,27 @@ export const masterReducer = (state = INIT_STATE, action) => {
         stockReport: [],
         error: action.payload,
       };
+
+    case ALL_FORKLIFT_OPERATOR_OUTBOUND_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_FORKLIFT_OPERATOR_OUTBOUND_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        forkliftOperatorOutbound: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+    case ALL_FORKLIFT_OPERATOR_OUTBOUND_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        forkliftOperatorOutbound: [],
+        error: action.payload,
+      };
+
     //TRANSACTION master
     case ALL_TRANSACTION_REQUEST:
       return {

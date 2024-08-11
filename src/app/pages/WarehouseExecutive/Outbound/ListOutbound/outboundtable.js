@@ -35,14 +35,14 @@ export default function ListOutboundTable({
     );
     console.log("customerssss", customer);
     if (customer) {
-      customer.order_count = current.order_count;
-      customer.sku_count += current.sku_count-1;
+      customer.order_number = current.order_number;
+      customer.sku_count += current.sku_count;
       customer.stock_qty += current.stock_qty;
     } else {
       acc.push({
         _id: current._id,
         customer_name: current.customerDetails?.customer_name,
-        order_count: current.order_count,
+        order_number: current.order_number,
         sku_count: current.sku_count,
         
 stock_qty: current.
@@ -150,7 +150,7 @@ stock_qty: current.
                     },
                   }}
                 >
-                  Order Count
+                  Order Number
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -231,7 +231,7 @@ stock_qty: current.
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.order_count}
+                  {row.order_number}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row.sku_count}

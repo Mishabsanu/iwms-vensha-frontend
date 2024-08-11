@@ -1,5 +1,6 @@
 import Page from "@jumbo/shared/Page/Page";
 import ListForkliftOperator from "app/pages/forkliftOperator/ListInforkliftOperator";
+import ListForkliftOperatorOutbound from "app/pages/forkliftOperator/ListInforkliftOperatorOutbound";
 import ForkliftOperatorMiddleware from "./middleware/auth/forkliftOperatorMiddleware";
 
 const forkliftOperator = [
@@ -14,7 +15,7 @@ const forkliftOperator = [
       {
         path: "/dashboard/forklift-operator-outbound",
         element: (
-          <Page component={ListForkliftOperator} layout={"vertical-default"} />
+          <Page component={ListForkliftOperatorOutbound} layout={"vertical-default"} />
         ),
       },
       {
