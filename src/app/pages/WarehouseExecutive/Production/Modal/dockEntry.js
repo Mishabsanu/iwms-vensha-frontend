@@ -1,4 +1,3 @@
-
 import Div from "@jumbo/shared/Div";
 import {
   Box,
@@ -151,26 +150,17 @@ export const DockEntry = ({
                 <TableCell sx={{ color: "white", px: 1 }}>
                   Pallet Qty.
                 </TableCell>
-                <TableCell sx={{ color: "white", px: 1 }}>
-                  Selected Cross Dock
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rowData?.map((rowItem) => (
-                <TableRow key={rowItem._id} sx={{ bgcolor: "#EDEBEB" }}>
-                  <TableCell sx={{ px: 1 }}>{rowItem.sku_code}</TableCell>
+                <TableRow key={rowItem?._id} sx={{ bgcolor: "#EDEBEB" }}>
+                  <TableCell sx={{ px: 1 }}>{rowItem?.sku_code}</TableCell>
                   <TableCell sx={{ px: 1 }}>
-                    {rowItem.sku_description}
+                    {rowItem?.sku_description}
                   </TableCell>
-                  <TableCell sx={{ px: 1 }}>{rowItem.sut}</TableCell>
-                  <TableCell sx={{ px: 1 }}>{rowItem.pallet_qty}</TableCell>
-                  <TableCell sx={{ px: 1 }}>
-                    {/* Display the selected cross dock */}
-                    {selectedCrossDock
-                      ? dockNameMap[selectedCrossDock]
-                      : "Not selected"}
-                  </TableCell>
+                  <TableCell sx={{ px: 1 }}>{rowItem?.sut}</TableCell>
+                  <TableCell sx={{ px: 1 }}>{rowItem?.pallet_qty}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -2,7 +2,13 @@ import Div from "@jumbo/shared/Div/Div";
 import { Suspense, useEffect, useState } from "react";
 
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, InputAdornment, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { getAllUsers } from "app/redux/actions/userAction";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +17,7 @@ import ListUserTable from "./usertable";
 import axios from "axios";
 import { handleLogs } from "app/components/Function/logsDownloadFunction";
 import { LoadingButton } from "@mui/lab";
+import SearchGlobal from "app/shared/SearchGlobal";
 
 export default function ListUser() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -41,7 +48,6 @@ export default function ListUser() {
       debouncedHandleSearch.cancel();
     };
   }, [searchTerm]);
-  
 
   useEffect(() => {
     dispatch(getAllUsers(searchTerm, sort, sortBy, page));
@@ -51,65 +57,63 @@ export default function ListUser() {
     <>
       <Div sx={{ mt: -4 }}>
         <Typography variant="h1">User Management </Typography>
-        <Div
+
+        <Box
           sx={{
             display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
             justifyContent: "space-between",
             alignItems: "center",
+            mb: 3,
+            width: "100%",
+            gap: { xs: 1, sm: 2, xl: 3 },
           }}
         >
-          <TextField
-            size="small"
-            id="search"
-            type="search"
-            label="Search"
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              if (e.target.value == "") {
-                setSort("desc");
-                setSortBy("updated_at");
-                dispatch(getAllUsers("", "desc", "updated_at", 1));
-              }
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: { xs: "100%", sm: "auto" },
+              mb: { xs: 2, sm: 0 },
+              mt: { xs: 2, sm: 0, xl: 4 },
+              flex: 1,
             }}
-            sx={{ width: 300, mb: 5, mt: 4 }}
-            InputProps={{
-              endAdornment: (
-                <Div sx={{ cursor: "pointer" }}>
-                  <InputAdornment position="end">
-                    <SearchIcon />
-                  </InputAdornment>
-                </Div>
-              ),
-            }}
-          />
-          <Div>
-            {/* {permissions?.user_view == true && (
-              <LoadingButton
+          >
+            <SearchGlobal
+              sx={{
+                maxWidth: { xs: "100%", sm: 280, md: 320, xl: 400 },
+                width: "100%",
+              }}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Box>
+          {permissions?.user_create && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "center", sm: "flex-end" },
+                width: { xs: "100%", xl: "auto" },
+                mt: { xs: 2, sm: 0, xl: 4 },
+              }}
+            >
+              <Button
                 variant="contained"
                 sx={{
-                  mr: 2,
                   p: 1,
                   pl: 4,
                   pr: 4,
+                  width: { xs: "100%", sm: "auto" },
+                  maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
+                  boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
                 }}
-                onClick={() => handleLogs("user/user-logs", "users")}
-              >
-                Log
-              </LoadingButton>
-            )} */}
-
-            {permissions?.user_create == true && (
-              <Button
-                variant="contained"
-                sx={{ p: 1, pl: 4, pr: 4 }}
                 onClick={() => navigate("/dashboard/adduser")}
               >
                 Add User
               </Button>
-            )}
-          </Div>
-        </Div>
+            </Box>
+          )}
+        </Box>
         <Suspense fallback={<div>Loading...</div>}>
           <ListUserTable
             searchTerm={searchTerm}
