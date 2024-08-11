@@ -195,6 +195,7 @@ const AllocationModal = ({
             </TableBody>
           </Table>
         </TableContainer>
+        
         <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
           <Button
             variant="contained"

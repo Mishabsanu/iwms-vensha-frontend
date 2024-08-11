@@ -36,13 +36,12 @@ export default function ListBin() {
   const debouncedHandleSearch = debounce(handleSearch, 500);
 
   useEffect(() => {
-    if (searchTerm !== "") {
-      debouncedHandleSearch(searchTerm);
-    }
+    debouncedHandleSearch(searchTerm);
     return () => {
       debouncedHandleSearch.cancel();
     };
   }, [searchTerm]);
+  
 
   useEffect(() => {
     dispatch(getAllBin(searchTerm, sort, sortBy, page));
@@ -59,32 +58,52 @@ export default function ListBin() {
           alignItems: "center",
           mb: 3,
           width: "100%",
-          gap: { xs: 1, sm: 2 },
+          gap: { xs: 1, sm: 2, xl: 3 },
         }}
       >
-        <SearchGlobal
+        <Box
           sx={{
-            maxWidth: { xs: 240, sm: 280, md: 320 },
+            display: "flex",
+            flexDirection: "column",
+            width: { xs: "100%", sm: "auto" },
             mb: { xs: 2, sm: 0 },
-            mt: 4,
+            mt: { xs: 2, sm: 0, xl: 4 },
+            flex: 1,
           }}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        {permissions?.bin_master_create && (
-          <Button
-            variant="contained"
+        >
+          <SearchGlobal
             sx={{
-              p: 1,
-              pl: 4,
-              pr: 4,
-              ml: { xs: 0, sm: "auto" },
-              mt: { xs: 0, sm: "auto" },
+              maxWidth: { xs: "100%", sm: 280, md: 320, xl: 400 },
+              width: "100%",
             }}
-            onClick={() => navigate("/master/bin/add")}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </Box>
+        {permissions?.bin_master_create && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: { xs: "center", sm: "flex-end" },
+              width: { xs: "100%", xl: "auto" },
+              mt: { xs: 2, sm: 0, xl: 4 },
+            }}
           >
-            Add New Bin
-          </Button>
+            <Button
+              variant="contained"
+              sx={{
+                p: 1,
+                pl: 4,
+                pr: 4,
+                width: { xs: "100%", sm: "auto" },
+                maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
+                boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
+              }}
+              onClick={() => navigate("/master/bin/add")}
+            >
+              Add New Bin
+            </Button>
+          </Box>
         )}
       </Box>
       <ListBinTable

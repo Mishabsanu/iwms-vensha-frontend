@@ -1,20 +1,20 @@
 import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    TextField,
-    useMediaQuery,
-    useTheme
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { getAllProduction } from "app/redux/actions/masterAction";
 import { updateProductionPartialToDelete } from "app/services/apis/updateProductionPartialToDelete";
@@ -71,15 +71,17 @@ const ProductionEdit = ({ open, rawData, onClose }) => {
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      onClose={handleClose}
       fullScreen={fullScreen}
       PaperProps={{
         sx: {
           borderRadius: 2,
           padding: theme.spacing(2),
-          width: fullScreen ? "100%" : "700px", // Increase width as needed
-          height: fullScreen ? "100%" : "auto", // Adjust height as needed
+          width: fullScreen ? "100%" : "600px", // Adjust width for better fit
           maxWidth: "100%",
+          height: "auto",
+          maxHeight: "80vh", // Restrict height to prevent overflowing
+          overflowY: "auto", // Enable vertical scrolling if content overflows
         },
       }}
     >
@@ -90,7 +92,7 @@ const ProductionEdit = ({ open, rawData, onClose }) => {
         <TableContainer
           component={Paper}
           sx={{
-            maxWidth: { xs: "100%", sm: 600, md: 800, lg: 1000 }, // Responsive maxWidth
+            maxWidth: "100%",
             margin: "auto",
             overflowX: "auto", // Horizontal scrolling for small screens
             boxShadow: 3,
@@ -98,21 +100,17 @@ const ProductionEdit = ({ open, rawData, onClose }) => {
         >
           <Table>
             <TableHead>
-              <TableRow sx={{ bgcolor: "#202020", color: "white" }}>
+              <TableRow sx={{ bgcolor: "#7352C7", color: "white" }}>
                 <TableCell
                   sx={{
-                    fontWeight: "bold",
-                    backgroundColor: "#f5f5f5",
-                    borderBottom: "2px solid #ddd",
+                    fontWeight: "bold",color: "white" 
                   }}
                 >
                   SKU Code
                 </TableCell>
                 <TableCell
                   sx={{
-                    fontWeight: "bold",
-                    backgroundColor: "#f5f5f5",
-                    borderBottom: "2px solid #ddd",
+                    fontWeight: "bold",color: "white" 
                   }}
                 >
                   SKU Description
@@ -120,36 +118,28 @@ const ProductionEdit = ({ open, rawData, onClose }) => {
 
                 <TableCell
                   sx={{
-                    fontWeight: "bold",
-                    backgroundColor: "#f5f5f5",
-                    borderBottom: "2px solid #ddd",
+                    fontWeight: "bold",color: "white" 
                   }}
                 >
                   SUT
                 </TableCell>
                 <TableCell
                   sx={{
-                    fontWeight: "bold",
-                    backgroundColor: "#f5f5f5",
-                    borderBottom: "2px solid #ddd",
+                    fontWeight: "bold",color: "white" 
                   }}
                 >
                   Batch
                 </TableCell>
                 <TableCell
                   sx={{
-                    fontWeight: "bold",
-                    backgroundColor: "#f5f5f5",
-                    borderBottom: "2px solid #ddd",
+                    fontWeight: "bold",color: "white" 
                   }}
                 >
                   Transfer Order No
                 </TableCell>
                 <TableCell
                   sx={{
-                    fontWeight: "bold",
-                    backgroundColor: "#f5f5f5",
-                    borderBottom: "2px solid #ddd",
+                    fontWeight: "bold",color: "white" 
                   }}
                 >
                   Status
@@ -182,14 +172,13 @@ const ProductionEdit = ({ open, rawData, onClose }) => {
           </Table>
         </TableContainer>
 
-        {/* Bottom Section for Editable Inputs */}
         <Box
           component="form"
           sx={{
             display: "flex",
             flexDirection: "column",
             gap: 2,
-            marginTop: 3, // Add some space between the table and inputs
+            marginTop: 3,
           }}
         >
           <TextField
@@ -213,7 +202,7 @@ const ProductionEdit = ({ open, rawData, onClose }) => {
         </Box>
       </DialogContent>
       <DialogActions sx={{ justifyContent: "center", paddingTop: 2 }}>
-        <Button onClick={onClose} color="secondary" variant="outlined">
+        <Button onClick={handleClose} color="secondary" variant="outlined">
           Cancel
         </Button>
         <Button onClick={handleSubmit} color="primary" variant="contained">

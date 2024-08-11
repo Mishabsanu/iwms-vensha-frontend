@@ -36,13 +36,12 @@ export default function ListRole() {
   const debouncedHandleSearch = debounce(handleSearch, 500);
 
   useEffect(() => {
-    if (searchTerm !== "") {
-      debouncedHandleSearch(searchTerm);
-    }
+    debouncedHandleSearch(searchTerm);
     return () => {
       debouncedHandleSearch.cancel();
     };
   }, [searchTerm]);
+  
 
   useEffect(() => {
     dispatch(getAllRoles(searchTerm, sort, sortBy, page));
@@ -74,13 +73,14 @@ export default function ListRole() {
         {permissions?.cross_dock_master_create && (
           <Button
             variant="contained"
-            sx={{
-              p: 1,
-              pl: 4,
-              pr: 4,
-              ml: { xs: 0, sm: "auto" },
-              mt: { xs: 0, sm: "auto" },
-            }}
+             sx={{
+                p: 1,
+                pl: 4,
+                pr: 4,
+                width: { xs: "100%", sm: "auto" },
+                maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
+                boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
+              }}
             onClick={() => navigate("/dashboard/addrole")}
           >
             Add Role

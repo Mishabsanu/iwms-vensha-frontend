@@ -4,6 +4,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { LoadingButton } from "@mui/lab";
 import {
+  Box,
+  Button,
   Checkbox,
   Pagination,
   Paper,
@@ -153,40 +155,62 @@ export default function ListProductionTable({
     <>
       {loading && <FullScreenLoader />}
 
-      {addGroup?.length > 0 &&
-        permissions?.production_master_create == true && (
-          <Div
+      {addGroup?.length > 0 && permissions?.production_master_create && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "column", md: "row" },
+            justifyContent: { xs: "center", sm: "center", md: "space-between" },
+            alignItems: "center",
+            mb: 1,
+            bgcolor: "#7352C7",
+            p: 2,
+            borderRadius: "5px",
+          }}
+        >
+          <Typography
+            variant="h5"
             sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 1,
-              bgcolor: "#7352C7",
-              p: 2,
-              borderRadius: "5px",
+              color: "white",
+              mt: { xs: 0, md: 1 },
             }}
           >
-            <Typography variant="h5" sx={{ color: "white", mt: 1 }}>
-              {addGroup?.length} Item Selected
-            </Typography>
-            <Div sx={{ display: "flex", columnGap: 3 }}>
-              <LoadingButton
-                variant="contained"
-                color="success"
-                onClick={() => handleAddBinAllocate()}
-              >
-                Send To Bin Allocat
-              </LoadingButton>
-              <LoadingButton
-                variant="contained"
-                color="success"
-                onClick={() => handleAddCrossDocker()}
-              >
-                Send To Cross Dock
-              </LoadingButton>
-            </Div>
-          </Div>
-        )}
+            {addGroup?.length} Item Selected
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              columnGap: { xs: 0, sm: 3 },
+              rowGap: { xs: 1, sm: 0 },
+              mt: { xs: 2, sm: 0 },
+            }}
+          >
+            <LoadingButton
+              variant="contained"
+              color="success"
+              sx={{
+                width: { xs: "100%", sm: "auto" },
+                mb: { xs: 1, sm: 0 },
+              }}
+              onClick={() => handleAddBinAllocate()}
+            >
+              Send To Bin Allocate
+            </LoadingButton>
+            <LoadingButton
+              variant="contained"
+              color="success"
+              sx={{
+                width: { xs: "100%", sm: "auto" },
+              }}
+              onClick={() => handleAddCrossDocker()}
+            >
+              Send To Cross Dock
+            </LoadingButton>
+          </Box>
+        </Box>
+      )}
+
       <TableContainer component={Paper}>
         <Table size="small">
           <TableHead>
