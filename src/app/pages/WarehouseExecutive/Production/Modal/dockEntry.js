@@ -154,13 +154,13 @@ export const DockEntry = ({
             </TableHead>
             <TableBody>
               {rowData?.map((rowItem) => (
-                <TableRow key={rowItem._id} sx={{ bgcolor: "#EDEBEB" }}>
-                  <TableCell sx={{ px: 1 }}>{rowItem.sku_code}</TableCell>
+                <TableRow key={rowItem?._id} sx={{ bgcolor: "#EDEBEB" }}>
+                  <TableCell sx={{ px: 1 }}>{rowItem?.sku_code}</TableCell>
                   <TableCell sx={{ px: 1 }}>
-                    {rowItem.sku_description}
+                    {rowItem?.sku_description}
                   </TableCell>
-                  <TableCell sx={{ px: 1 }}>{rowItem.sut}</TableCell>
-                  <TableCell sx={{ px: 1 }}>{rowItem.pallet_qty}</TableCell>
+                  <TableCell sx={{ px: 1 }}>{rowItem?.sut}</TableCell>
+                  <TableCell sx={{ px: 1 }}>{rowItem?.pallet_qty}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
