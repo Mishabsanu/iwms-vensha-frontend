@@ -1,9 +1,5 @@
 import Div from "@jumbo/shared/Div";
-import {
-  Box,
-  Button,
-  Typography
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { getAllCrossDock } from "app/redux/actions/masterAction";
 import SearchGlobal from "app/shared/SearchGlobal";
 import { debounce } from "lodash";
@@ -48,50 +44,61 @@ export default function ListCrossDock() {
 
   return (
     <Div sx={{ mt: -4 }}>
-      <Typography variant="h1" sx={{ mb: 4 }}>
-        Cross Dock Master
-      </Typography>
+      <Typography variant="h1"> Cross Dock Master</Typography>
       <Box
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
           alignItems: "center",
-          mb: 4,
+          mb: 3,
           width: "100%",
+          gap: { xs: 1, sm: 2, xl: 3 },
         }}
       >
-        {/* <TextField
-          size="small"
-          id="search"
-          type="search"
-          label="Search"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{ width: { xs: "100%", sm: "auto" }, maxWidth: 300, mb: { xs: 2, sm: 0 } }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        /> */}
-        <SearchGlobal
+        <Box
           sx={{
-            maxWidth: { xs: 240, md: 320 },
+            display: "flex",
+            flexDirection: "column",
+            width: { xs: "100%", sm: "auto" },
+            mb: { xs: 2, sm: 0 },
+            mt: { xs: 2, sm: 0, xl: 4 },
+            flex: 1,
           }}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+        >
+          <SearchGlobal
+            sx={{
+              maxWidth: { xs: "100%", sm: 280, md: 320, xl: 400 },
+              width: "100%",
+            }}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </Box>
         {permissions?.cross_dock_master_create && (
-          <Button
-            variant="contained"
-            sx={{ p: 1, pl: 4, pr: 4, ml: { xs: 0, sm: "auto" } }}
-            onClick={() => navigate("/master/cross-dock/add")}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: { xs: "center", sm: "flex-end" },
+              width: { xs: "100%", xl: "auto" },
+              mt: { xs: 2, sm: 0, xl: 4 },
+            }}
           >
-            Add Cross Dock
-          </Button>
+            <Button
+              variant="contained"
+              sx={{
+                p: 1,
+                pl: 4,
+                pr: 4,
+                width: { xs: "100%", sm: "auto" },
+                maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
+                boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
+              }}
+              onClick={() => navigate("/master/cross-dock/add")}
+            >
+              Add Cross Dock
+            </Button>
+          </Box>
         )}
       </Box>
       <CrossDockTable

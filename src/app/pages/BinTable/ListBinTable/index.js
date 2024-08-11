@@ -31,13 +31,12 @@ export default function ListAllocateBin() {
   const debouncedHandleSearch = debounce(handleSearch, 500);
 
   useEffect(() => {
-    if (searchTerm !== "") {
-      debouncedHandleSearch(searchTerm);
-    }
+    debouncedHandleSearch(searchTerm);
     return () => {
       debouncedHandleSearch.cancel();
     };
   }, [searchTerm]);
+  
 
   useEffect(() => {
     dispatch(getAllBinTable(searchTerm, sort, sortBy, page));
@@ -79,8 +78,6 @@ export default function ListAllocateBin() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     importRawMaterial(file);
-
-    // Reset the file input value to allow multiple uploads
     e.target.value = null;
   };
   return (
@@ -169,6 +166,7 @@ export default function ListAllocateBin() {
             </Div>
           )}
         </Div>
+        
         <Suspense fallback={<div>Loading...</div>}>
           <ListAllocateBinTable
             searchTerm={searchTerm}
@@ -180,7 +178,7 @@ export default function ListAllocateBin() {
             setSortBy={setSortBy}
           />
         </Suspense>
-      </Div>
+      </Div>  
     </>
   );
 }

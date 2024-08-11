@@ -5,7 +5,7 @@ import Div from "@jumbo/shared/Div";
 import CitiesGraph from "./CitiesGraph";
 import {useTranslation} from "react-i18next";
 
-const Cities = () => {
+const Cities = ({data}) => {
     const {t} = useTranslation();
     return (
         <JumboCardQuick
@@ -14,7 +14,10 @@ const Cities = () => {
                     variant={"h6"}
                     mb={0}
                     sx={{fontSize: 12, color: "common.white", letterSpacing: 1.5}}
-                >{t("widgets.title.cities")}</Typography>
+                >
+                          Allocated Production
+                    {/* {t("widgets.title.cities")} */}
+                </Typography>
             }
             sx={{color: "common.white"}}
             bgColor={"#EF5350"}
@@ -30,8 +33,8 @@ const Cities = () => {
                     position: 'absolute',
                 }}
             >
-                <Typography variant={"h2"} color={"common.white"}>26,873</Typography>
-                <Typography variant={"h6"} color={"common.white"} mb={0}>{"03% This Week"}</Typography>
+                <Typography variant={"h2"} color={"common.white"}>{data?.allocated}</Typography>
+                <Typography variant={"h6"} color={"common.white"} mb={0}></Typography>
             </Div>
             <CitiesGraph/>
         </JumboCardQuick>

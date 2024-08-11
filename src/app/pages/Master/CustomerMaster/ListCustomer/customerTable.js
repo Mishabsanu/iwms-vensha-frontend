@@ -16,6 +16,7 @@ import {
 import FullScreenLoader from "app/components/ListingPageLoader";
 import { getAllVehicle } from "app/redux/actions/masterAction";
 import { updateVendor } from "app/services/apis/updateVendor";
+import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -250,6 +251,40 @@ export default function ListCustomerTable({
               >
                 Credit Limit
               </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "140px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "created_employee_id.first_name"}
+                  direction={sort}
+                  onClick={() => handleSort("created_employee_id.first_name")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Created By
+                </TableSortLabel>
+              </TableCell>
+
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "140px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                Created Date
+              </TableCell>
               {permissions?.customer_master_edit && (
                 <TableCell
                   sx={{
@@ -296,6 +331,13 @@ export default function ListCustomerTable({
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row.credit_limit}
+                </TableCell>
+                <TableCell sx={{ textTransform: "capitalize" }}>
+                  {row?.created_employee_id?.first_name}{" "}
+                  {row?.created_employee_id?.last_name}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {displayDateFun(row.created_at)}
                 </TableCell>
                 {permissions?.vendor_master_edit && (
                   <TableCell sx={{ textAlign: "left" }}>

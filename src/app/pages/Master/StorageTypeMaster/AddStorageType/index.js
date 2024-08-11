@@ -1,5 +1,11 @@
 import Div from "@jumbo/shared/Div";
-import { Button, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Form, Formik } from "formik";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -82,32 +88,42 @@ export default function AddStorageType() {
           validationSchema={validationSchema}
           onSubmit={onUserSave}
         >
-          {({ values }) => (
+          {({ values, setFieldValue, errors }) => (
             <Form noValidate autoComplete="off">
               <Div sx={{ mt: 4 }}>
-                <Div
-                  sx={{
-                    display: "flex",
-                    width: "100%",
-                    flexWrap: "wrap",
-                    columnGap: 5,
-                  }}
-                >
-                  <Grid container rowSpacing={3} columnSpacing={3}>
-                    <Grid item xs={12} md={6} lg={3}>
-                      <FormTextField1
-                        name="storage_type"
+                <Grid container rowSpacing={3} columnSpacing={3}>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={errors.storage_type}
+                        helperText={errors.storage_type}
                         label="Storage Type *"
+                        name="storage_type"
+                        value={values.storage_type}
+                        onChange={(e) =>
+                          setFieldValue("storage_type", e.target.value)
+                        }
                       />
-                    </Grid>
-                    <Grid item xs={12} md={6} lg={3}>
-                      <FormTextField1
-                        name="storage_type_description"
-                        label="Storage Type Description"
-                      />
-                    </Grid>
+                    </FormControl>
                   </Grid>
-                </Div>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={errors.storage_type_description}
+                        helperText={errors.storage_type_description}
+                        label="Storage Type Description"
+                        name="storage_type_description"
+                        value={values.storage_type_description}
+                        onChange={(e) =>
+                          setFieldValue(
+                            "storage_type_description",
+                            e.target.value
+                          )
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                </Grid>
                 <Div
                   sx={{
                     width: "93.5%",
@@ -129,7 +145,7 @@ export default function AddStorageType() {
                         cancelButtonText: "No",
                       }).then((result) => {
                         if (result.isConfirmed) {
-                          navigate("/dashboard/master/party");
+                          navigate("/dashboard/master/storage-type");
                         }
                       });
                     }}

@@ -1,5 +1,4 @@
 import JumboDdMenu from "@jumbo/components/JumboDdMenu/JumboDdMenu";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
@@ -14,12 +13,10 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
-import { getAllVendor } from "app/redux/actions/masterAction";
-import { updateVendor } from "app/services/apis/updateVendor";
+import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 
 export default function ListVendorTable({
   searchTerm,
@@ -36,7 +33,6 @@ export default function ListVendorTable({
 
   const [loader, setLoader] = useState(false);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
@@ -53,46 +49,7 @@ export default function ListVendorTable({
       case "edit":
         navigate("/master/vendor/edit", { state: menuItem?.data });
         break;
-      case "editStatus":
-        Swal.fire({
-          title: `Are you sure you want to ${
-            menuItem.data.status === "active" ? "Deactivate ?" : "Activate ?"
-          }`,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Yes",
-          cancelButtonText: "No",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            handleStatusChange(menuItem.data);
-          }
-        });
-        break;
-    }
-  };
-
-  const handleStatusChange = async (row) => {
-    try {
-      setLoader(true);
-      const data = await updateVendor(
-        {
-          status: row.status === "active" ? "inactive" : "active",
-        },
-        row._id
-      );
-      if (data?.status === 200) {
-        dispatch(getAllVendor("", "desc", "updated_at", 1));
-        Swal.fire({
-          icon: "success",
-          title: "Status Updated",
-          text: "",
-          timer: 1000,
-          showConfirmButton: false,
-        });
-      }
-    } catch (error) {
-    } finally {
-      setLoader(false);
+      default:
     }
   };
 
@@ -121,13 +78,13 @@ export default function ListVendorTable({
               }}
             >
               <TableCell
-                 sx={{
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "white" },
+                  "&.MuiTableSortLabel-root.Mui-active": {
                     color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
+                  },
+                }}
               >
                 <TableSortLabel
                   active={sortBy === "vendor_code"}
@@ -145,13 +102,13 @@ export default function ListVendorTable({
                 </TableSortLabel>
               </TableCell>
               <TableCell
-                 sx={{
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "white" },
+                  "&.MuiTableSortLabel-root.Mui-active": {
                     color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
+                  },
+                }}
               >
                 <TableSortLabel
                   active={sortBy === "vendor_name"}
@@ -169,7 +126,7 @@ export default function ListVendorTable({
                 </TableSortLabel>
               </TableCell>
               <TableCell
-                 sx={{
+                sx={{
                   color: "white",
                   "&:hover": { color: "white" },
                   "&.MuiTableSortLabel-root.Mui-active": {
@@ -180,117 +137,6 @@ export default function ListVendorTable({
                 Address
               </TableCell>
               <TableCell
-                 sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
-              >
-                City
-              </TableCell>
-              <TableCell
-                 sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
-              >
-                State
-              </TableCell>
-              <TableCell
-                 sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
-              >
-                Pin Code
-              </TableCell>
-              <TableCell
-                 sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
-              >
-                Contact Person
-              </TableCell>
-              <TableCell
-                 sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
-              >
-                Phone Number
-              </TableCell>
-              <TableCell
-                 sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
-              >
-                Email
-              </TableCell>
-              <TableCell
-                 sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
-              >
-                Vendor Type
-              </TableCell>
-              <TableCell
-                 sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
-              >
-                GST Number
-              </TableCell>
-              <TableCell
-                 sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
-              >
-                PAN Number
-              </TableCell>
-              <TableCell
-                 sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
-              >
-                Bank Details
-              </TableCell>
-              {permissions?.vendor_master_edit && (
-                <TableCell
                 sx={{
                   color: "white",
                   "&:hover": { color: "white" },
@@ -298,6 +144,151 @@ export default function ListVendorTable({
                     color: "white",
                   },
                 }}
+              >
+                City
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "white" },
+                  "&.MuiTableSortLabel-root.Mui-active": {
+                    color: "white",
+                  },
+                }}
+              >
+                State
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "white" },
+                  "&.MuiTableSortLabel-root.Mui-active": {
+                    color: "white",
+                  },
+                }}
+              >
+                Pin Code
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "white" },
+                  "&.MuiTableSortLabel-root.Mui-active": {
+                    color: "white",
+                  },
+                }}
+              >
+                Contact Person
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "white" },
+                  "&.MuiTableSortLabel-root.Mui-active": {
+                    color: "white",
+                  },
+                }}
+              >
+                Phone Number
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "white" },
+                  "&.MuiTableSortLabel-root.Mui-active": {
+                    color: "white",
+                  },
+                }}
+              >
+                Email
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "white" },
+                  "&.MuiTableSortLabel-root.Mui-active": {
+                    color: "white",
+                  },
+                }}
+              >
+                Vendor Type
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "white" },
+                  "&.MuiTableSortLabel-root.Mui-active": {
+                    color: "white",
+                  },
+                }}
+              >
+                GST Number
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "white" },
+                  "&.MuiTableSortLabel-root.Mui-active": {
+                    color: "white",
+                  },
+                }}
+              >
+                PAN Number
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "white",
+                  "&:hover": { color: "white" },
+                  "&.MuiTableSortLabel-root.Mui-active": {
+                    color: "white",
+                  },
+                }}
+              >
+                Bank Details
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "140px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "created_employee_id.first_name"}
+                  direction={sort}
+                  onClick={() => handleSort("created_employee_id.first_name")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Created By
+                </TableSortLabel>
+              </TableCell>
+
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "140px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                Created Date
+              </TableCell>
+              {permissions?.vendor_master_edit && (
+                <TableCell
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white",
+                    },
+                  }}
                 >
                   Action
                 </TableCell>
@@ -313,27 +304,17 @@ export default function ListVendorTable({
                 <TableCell sx={{ textAlign: "left" }}>
                   {row.vendor_name}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>
-                  {row.address}
-                </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>
-                  {row.city}
-                </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>
-                  {row.state}
-                </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>
-                  {row.pin_code}
-                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row.address}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row.city}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row.state}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row.pin_code}</TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row.contact_person}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row.phone_number}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>
-                  {row.email}
-                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row.email}</TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row.vendor_type}
                 </TableCell>
@@ -346,6 +327,14 @@ export default function ListVendorTable({
                 <TableCell sx={{ textAlign: "left" }}>
                   {row.bank_details}
                 </TableCell>
+                <TableCell sx={{ textTransform: "capitalize" }}>
+                  {row?.created_employee_id?.first_name}{" "}
+                  {row?.created_employee_id?.last_name}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {displayDateFun(row.created_at)}
+                </TableCell>
+
                 {permissions?.vendor_master_edit && (
                   <TableCell sx={{ textAlign: "left" }}>
                     <JumboDdMenu
@@ -355,14 +344,6 @@ export default function ListVendorTable({
                           icon: <EditIcon />,
                           title: "Edit Vendor Details",
                           action: "edit",
-                          data: row,
-                        },
-                        {
-                          icon: <AutorenewIcon />,
-                          title: `${
-                            row?.status === "active" ? "Deactivate" : "Activate"
-                          }`,
-                          action: "editStatus",
                           data: row,
                         },
                       ]}

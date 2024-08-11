@@ -1,20 +1,15 @@
-import React from 'react';
-import {Grid} from "@mui/material";
-import SalesReport from "../../../shared/metrics/SalesReport";
-import OrdersReport from "../../../shared/metrics/OrdersReport";
-import PopularProducts from "../../../shared/widgets/PopularProducts";
-import MarketingCampaign from "../../../shared/widgets/MarketingCampaign";
-import SiteVisitors from "../../../shared/widgets/SiteVisitors";
-import LastMonthSales from "../../../shared/metrics/LastMonthSales";
-import OnlineSignupsFilled from "../../../shared/metrics/OnlineSignupsFilled";
-import NewVisitorsThisMonth from "../../../shared/metrics/NewVisitorsThisMonth";
-import TotalRevenueThisYear from "../../../shared/metrics/TotalRevenueThisYear";
-import SalesStatistics from "../../../shared/metrics/SalesStatistics";
-import YearlyProfileReport from "../../../shared/metrics/YearlyProfitReport";
+import { Grid } from "@mui/material";
 import AppUsers from "../../../shared/metrics/AppUsers";
+import LastMonthSales from "../../../shared/metrics/LastMonthSales";
+import NewVisitorsThisMonth from "../../../shared/metrics/NewVisitorsThisMonth";
+import OnlineSignupsFilled from "../../../shared/metrics/OnlineSignupsFilled";
 import OnlineVisitors from "../../../shared/metrics/OnlineVisitors";
+import OrdersReport from "../../../shared/metrics/OrdersReport";
+import SalesReport from "../../../shared/metrics/SalesReport";
+import SalesStatistics from "../../../shared/metrics/SalesStatistics";
+import TotalRevenueThisYear from "../../../shared/metrics/TotalRevenueThisYear";
 import WebsiteTraffic from "../../../shared/metrics/WebsiteTraffic";
-import LatestAlerts from "../../../shared/widgets/LatestAlerts";
+import YearlyProfileReport from "../../../shared/metrics/YearlyProfitReport";
 
 const EcommerceDashboard = () => {
     return (

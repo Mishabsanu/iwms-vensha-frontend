@@ -1,12 +1,12 @@
 import Div from "@jumbo/shared/Div";
-import SearchIcon from "@mui/icons-material/Search";
-import { Button, InputAdornment, TextField, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { getAllPallete } from "app/redux/actions/masterAction";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ProductionLineTable from "./ProductionLineTable";
+import SearchGlobal from "app/shared/SearchGlobal";
 
 export default function ListProductionLine() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +19,7 @@ export default function ListProductionLine() {
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
 
-  //debouncing for search
+  // Handle search and API call
   const handleSearch = (value) => {
     setPage(1);
     dispatch(getAllPallete(value, sort, sortBy, 1));
@@ -28,78 +28,76 @@ export default function ListProductionLine() {
   const debouncedHandleSearch = debounce(handleSearch, 500);
 
   useEffect(() => {
-    if (searchTerm !== "") {
-      debouncedHandleSearch(searchTerm);
-    }
+    debouncedHandleSearch(searchTerm);
     return () => {
       debouncedHandleSearch.cancel();
     };
   }, [searchTerm]);
+  
 
   useEffect(() => {
     dispatch(getAllPallete(searchTerm, sort, sortBy, page));
   }, [sort, page]);
+
   return (
     <Div sx={{ mt: -4 }}>
       <Typography variant="h1">Production Line Master</Typography>
-      <Div
+      <Box
         sx={{
           display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
           justifyContent: "space-between",
           alignItems: "center",
+          mb: 3,
+          width: "100%",
+          gap: { xs: 1, sm: 2, xl: 3 },
         }}
       >
-        <TextField
-          size="small"
-          id="search"
-          type="search"
-          label="Search"
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            if (e.target.value == "") {
-              setSort("desc");
-              setSortBy("updated_at");
-              dispatch(getAllPallete("", "desc", "updated_at", 1));
-            }
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: { xs: "100%", sm: "auto" },
+            mb: { xs: 2, sm: 0 },
+            mt: { xs: 2, sm: 0, xl: 4 },
+            flex: 1,
           }}
-          sx={{ width: 300, mb: 5, mt: 4 }}
-          InputProps={{
-            endAdornment: (
-              <Div sx={{ cursor: "pointer" }}>
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              </Div>
-            ),
-          }}
-        />
-        <Div>
-          {/* {permissions?.pallete_master_view == true && (
-            <LoadingButton
+        >
+          <SearchGlobal
+            sx={{
+              maxWidth: { xs: "100%", sm: 280, md: 320, xl: 400 },
+              width: "100%",
+            }}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </Box>
+        {permissions?.production_line_master_create && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: { xs: "center", sm: "flex-end" },
+              width: { xs: "100%", xl: "auto" },
+              mt: { xs: 2, sm: 0, xl: 4 },
+            }}
+          >
+            <Button
               variant="contained"
               sx={{
-                mr: 2,
                 p: 1,
                 pl: 4,
                 pr: 4,
+                width: { xs: "100%", sm: "auto" },
+                maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
+                boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
               }}
-              onClick={() => handleLogs("pallete-master/pallete-logs", "pallet")}
-            >
-              Log
-            </LoadingButton>
-          )} */}
-          {permissions?.production_line_master_create == true && (
-            <Button
-              variant="contained"
-              sx={{ p: 1, pl: 4, pr: 4 }}
               onClick={() => navigate("/master/production-line/add")}
             >
               Add Production Line
             </Button>
-          )}
-        </Div>
-      </Div>
+          </Box>
+        )}
+      </Box>
       <ProductionLineTable
         searchTerm={searchTerm}
         page={page}

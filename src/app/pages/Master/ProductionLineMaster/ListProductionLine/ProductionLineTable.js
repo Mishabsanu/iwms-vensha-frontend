@@ -17,7 +17,6 @@ import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 
 export default function ProductionLineTable({
   searchTerm,
@@ -216,7 +215,7 @@ export default function ProductionLineTable({
                       menuItems={[
                         {
                           icon: <EditIcon />,
-                          title: "Edit Pallet Details",
+                          title: "Edit Production Line Details",
                           action: "edit",
                           data: row,
                         },

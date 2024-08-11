@@ -1,10 +1,14 @@
 import Div from "@jumbo/shared/Div";
 import { LoadingButton } from "@mui/lab";
-import { Button, Grid, Typography } from "@mui/material";
-import FormTextField1 from "app/components/InputField/FormTextField1";
+import {
+  Button,
+  Grid,
+  Typography,
+  TextField,
+  FormControl,
+} from "@mui/material";
 import { addCustomer, UpdateCustomer } from "app/services/apis/addCustomer";
-
-import { Form, Formik } from "formik";
+import { Formik, Form } from "formik";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -16,7 +20,6 @@ export default function AddCustomer() {
   const { state } = useLocation();
   const [isSubmitting, setSubmitting] = useState(false);
 
-  // Initialize the customer object with default or state values
   const customer = {
     customer_code: state?.customer_code || "",
     customer_name: state?.customer_name || "",
@@ -27,14 +30,12 @@ export default function AddCustomer() {
     contact_person: state?.contact_person || "",
     phone_number: state?.phone_number || "",
     email: state?.email || "",
-    additional_fields: state?.additional_fields || "",
     vendor_type: state?.vendor_type || "",
     gst_number: state?.gst_number || "",
     pan_number: state?.pan_number || "",
     credit_limit: state?.credit_limit || "",
   };
 
-  // Validation schema using yup
   const validationSchema = yup.object({
     customer_code: yup
       .string("Enter Customer Code")
@@ -52,13 +53,13 @@ export default function AddCustomer() {
     phone_number: yup
       .string("Enter Phone Number")
       .required("Phone Number is required"),
+    contact_person: yup
+      .string("Enter contact person")
+      .required("contact person is required"),
     email: yup
       .string("Enter Email")
       .email("Enter a valid email")
       .required("Email is required"),
-    additional_fields: yup
-      .string("Enter Additional Fields")
-      .required("Additional Fields are required"),
     vendor_type: yup
       .string("Enter Vendor Type")
       .required("Vendor Type is required"),
@@ -73,17 +74,15 @@ export default function AddCustomer() {
       .required("Credit Limit is required"),
   });
 
-  // Function to handle form submission
   const onCustomerSave = async (values) => {
     const body = { ...values };
     setSubmitting(true);
     if (pathname === "/master/customer/edit") {
-      const data = await UpdateCustomer(body, state._id); // Replace with actual update API call
+      const data = await UpdateCustomer(body, state._id);
       if (data?.data?.status === true) {
         Swal.fire({
           icon: "success",
           title: "Customer Edited Successfully",
-          text: "",
           timer: 1000,
           showConfirmButton: false,
         });
@@ -92,16 +91,14 @@ export default function AddCustomer() {
         Swal.fire({
           icon: "error",
           title: data?.message,
-          text: "",
         });
       }
     } else {
-      const data = await addCustomer(body); // Replace with actual add API call
+      const data = await addCustomer(body);
       if (data?.data?.status === true) {
         Swal.fire({
           icon: "success",
           title: "Customer Added Successfully",
-          text: "",
           timer: 1000,
           showConfirmButton: false,
         });
@@ -110,7 +107,6 @@ export default function AddCustomer() {
         Swal.fire({
           icon: "error",
           title: data?.data?.message,
-          text: "",
         });
       }
     }
@@ -126,124 +122,230 @@ export default function AddCustomer() {
       </Typography>
       <Div>
         <Formik
-          validateOnChange={true}
           initialValues={customer}
-          enableReinitialize={true}
           validationSchema={validationSchema}
           onSubmit={onCustomerSave}
         >
-          {({ values }) => (
+          {({ values, errors, setFieldValue }) => (
             <Form noValidate autoComplete="off">
               <Div sx={{ mt: 4 }}>
-                <Div
-                  sx={{
-                    display: "flex",
-                    width: "100%",
-                    flexWrap: "wrap",
-                    columnGap: 5,
-                  }}
-                >
-                  <Grid container rowSpacing={3} columnSpacing={3}>
-                    <Grid item xs={4}>
-                      <FormTextField1
-                        name="customer_code"
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.customer_code)}
+                        helperText={errors.customer_code}
                         label="Customer Code*"
+                        name="customer_code"
+                        value={values.customer_code}
+                        onChange={(e) =>
+                          setFieldValue("customer_code", e.target.value)
+                        }
                       />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1
-                        name="customer_name"
-                        label="Customer Name*"
-                      />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1 name="address" label="Address*" />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1 name="city" label="City*" />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1 name="state" label="State*" />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1 name="pin_code" label="Pin Code*" />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1
-                        name="contact_person"
-                        label="Contact Person"
-                      />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1
-                        name="phone_number"
-                        label="Phone Number*"
-                      />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1 name="email" label="Email*" />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1
-                        name="additional_fields"
-                        label="Additional Fields*"
-                      />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1 name="vendor_type" label="Vendor Type*" />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1 name="gst_number" label="GST Number*" />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1 name="pan_number" label="PAN Number*" />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1
-                        name="credit_limit"
-                        label="Credit Limit*"
-                      />
-                    </Grid>
+                    </FormControl>
                   </Grid>
-                </Div>
-                <Div
-                  sx={{
-                    width: "93.5%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    gap: 3,
-                    mt: 3,
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.customer_name)}
+                        helperText={errors.customer_name}
+                        label="Customer Name*"
+                        name="customer_name"
+                        value={values.customer_name}
+                        onChange={(e) =>
+                          setFieldValue("customer_name", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.address)}
+                        helperText={errors.address}
+                        label="Address*"
+                        name="address"
+                        value={values.address}
+                        onChange={(e) =>
+                          setFieldValue("address", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.city)}
+                        helperText={errors.city}
+                        label="City*"
+                        name="city"
+                        value={values.city}
+                        onChange={(e) => setFieldValue("city", e.target.value)}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.state)}
+                        helperText={errors.state}
+                        label="State*"
+                        name="state"
+                        value={values.state}
+                        onChange={(e) => setFieldValue("state", e.target.value)}
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.pin_code)}
+                        helperText={errors.pin_code}
+                        label="Pin Code*"
+                        name="pin_code"
+                        value={values.pin_code}
+                        onChange={(e) =>
+                          setFieldValue("pin_code", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="Contact Person"
+                        name="contact_person"
+                        error={Boolean(errors.contact_person)}
+                        helperText={errors.contact_person}
+                        value={values.contact_person}
+                        onChange={(e) =>
+                          setFieldValue("contact_person", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.phone_number)}
+                        helperText={errors.phone_number}
+                        label="Phone Number*"
+                        name="phone_number"
+                        value={values.phone_number}
+                        onChange={(e) =>
+                          setFieldValue("phone_number", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.email)}
+                        helperText={errors.email}
+                        label="Email*"
+                        name="email"
+                        value={values.email}
+                        onChange={(e) => setFieldValue("email", e.target.value)}
+                      />
+                    </FormControl>
+                  </Grid>
+
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.vendor_type)}
+                        helperText={errors.vendor_type}
+                        label="Vendor Type*"
+                        name="vendor_type"
+                        value={values.vendor_type}
+                        onChange={(e) =>
+                          setFieldValue("vendor_type", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.gst_number)}
+                        helperText={errors.gst_number}
+                        label="GST Number*"
+                        name="gst_number"
+                        value={values.gst_number}
+                        onChange={(e) =>
+                          setFieldValue("gst_number", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.pan_number)}
+                        helperText={errors.pan_number}
+                        label="PAN Number*"
+                        name="pan_number"
+                        value={values.pan_number}
+                        onChange={(e) =>
+                          setFieldValue("pan_number", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.credit_limit)}
+                        helperText={errors.credit_limit}
+                        label="Credit Limit*"
+                        name="credit_limit"
+                        value={values.credit_limit}
+                        onChange={(e) =>
+                          setFieldValue("credit_limit", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              </Div>
+              <Div
+                sx={{
+                  width: "93.5%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 3,
+                  mt: 3,
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    Swal.fire({
+                      title: "Are you sure you want to cancel?",
+                      icon: "warning",
+                      showCancelButton: true,
+                      confirmButtonText: "Yes",
+                      cancelButtonText: "No",
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                        navigate("/dashboard/master/customer");
+                      }
+                    });
                   }}
                 >
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      Swal.fire({
-                        title: "Are you sure you want to cancel?",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonText: "Yes",
-                        cancelButtonText: "No",
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          navigate("/dashboard/master/customer");
-                        }
-                      });
-                    }}
-                  >
-                    Cancel
-                  </Button>
+                  Cancel
+                </Button>
 
-                  <LoadingButton
-                    variant="contained"
-                    type="submit"
-                    sx={{ width: "100px" }}
-                    loading={isSubmitting}
-                  >
-                    Save
-                  </LoadingButton>
-                </Div>
+                <LoadingButton
+                  variant="contained"
+                  type="submit"
+                  sx={{ width: "100px" }}
+                  loading={isSubmitting}
+                >
+                  Save
+                </LoadingButton>
               </Div>
             </Form>
           )}

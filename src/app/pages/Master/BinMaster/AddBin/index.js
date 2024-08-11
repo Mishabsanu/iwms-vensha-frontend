@@ -1,11 +1,17 @@
 import Div from "@jumbo/shared/Div";
 import { LoadingButton } from "@mui/lab";
-import { Button, Grid, MenuItem, Select, Typography } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  Grid,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
 import AllApis from "app/Apis";
-import FormTextField1 from "app/components/InputField/FormTextField1";
 import { addBin } from "app/services/apis/addBin";
 import { updateBin } from "app/services/apis/updateBin";
-import { ErrorMessage, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import { Axios } from "index";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -28,7 +34,7 @@ export default function AddBin() {
   }, []);
 
   const bin = {
-    storage_type: state?.storage_type || "Select",
+    storage_type: state?.storage_type || "",
     storage_section: state?.storage_section || "",
     bin_no: state?.bin_no || "",
     type: state?.type || "",
@@ -64,9 +70,6 @@ export default function AddBin() {
 
   const onUserSave = async (values) => {
     const body = { ...values };
-    for (let key in body) {
-      body[key] = body[key].toUpperCase();
-    }
 
     setSubmitting(true);
     try {
@@ -116,7 +119,7 @@ export default function AddBin() {
           validationSchema={validationSchema}
           onSubmit={onUserSave}
         >
-          {({ values, setFieldValue }) => (
+          {({ values, setFieldValue, errors, touched }) => (
             <Form noValidate autoComplete="off">
               <Div sx={{ mt: 4 }}>
                 <Div
@@ -128,25 +131,24 @@ export default function AddBin() {
                   }}
                 >
                   <Grid container rowSpacing={3} columnSpacing={3}>
-                    <Grid item xs={12} sm={6} md={4}>
-                      <Div
-                        sx={{
-                          marginBottom: 2,
-                          display: "flex",
-                          width: "100%",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <Typography variant="h5">Storage Type *</Typography>
-                        <Select
+                    <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                      <FormControl fullWidth>
+                        <TextField
+                          label="Storage Type"
                           name="storage_type"
                           value={values.storage_type}
-                          onChange={(event) =>
-                            setFieldValue("storage_type", event.target.value)
+                          onChange={(e) =>
+                            setFieldValue("storage_type", e.target.value)
                           }
-                          sx={{
-                            ".css-153xi1v-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select":
-                              { padding: 1.2 },
+                          select
+                          fullWidth
+                          error={errors.storage_type}
+                          helperText={errors.storage_type}
+                          InputLabelProps={{
+                            shrink: values.storage_type,
+                          }}
+                          SelectProps={{
+                            native: false,
                           }}
                         >
                           <MenuItem value="Select">Select</MenuItem>
@@ -155,40 +157,107 @@ export default function AddBin() {
                               {item.storage_type}
                             </MenuItem>
                           ))}
-                        </Select>
-                        <ErrorMessage
-                          name="storage_type"
-                          component="div"
-                          style={{ color: "red" }}
+                        </TextField>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                      <FormControl fullWidth>
+                        <TextField
+                          error={
+                            touched.storage_section &&
+                            Boolean(errors.storage_section)
+                          }
+                          helperText={
+                            touched.storage_section && errors.storage_section
+                          }
+                          label="Storage Section*"
+                          name="storage_section"
+                          value={values.storage_section}
+                          onChange={(e) =>
+                            setFieldValue("storage_section", e.target.value)
+                          }
                         />
-                      </Div>
+                      </FormControl>
                     </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1
-                        name="storage_section"
-                        label="Storage Section*"
-                      />
+                    <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                      <FormControl fullWidth>
+                        <TextField
+                          error={touched.bin_no && Boolean(errors.bin_no)}
+                          helperText={touched.bin_no && errors.bin_no}
+                          label="Bin Number*"
+                          name="bin_no"
+                          value={values.bin_no}
+                          onChange={(e) =>
+                            setFieldValue("bin_no", e.target.value)
+                          }
+                        />
+                      </FormControl>
                     </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1 name="bin_no" label="Bin Number*" />
+                    <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                      <FormControl fullWidth>
+                        <TextField
+                          error={
+                            touched.description && Boolean(errors.description)
+                          }
+                          helperText={touched.description && errors.description}
+                          label="Description*"
+                          name="description"
+                          value={values.description}
+                          onChange={(e) =>
+                            setFieldValue("description", e.target.value)
+                          }
+                        />
+                      </FormControl>
                     </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1 name="description" label="Description*" />
+                    <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                      <FormControl fullWidth>
+                        <TextField
+                          error={
+                            touched.bin_capacity && Boolean(errors.bin_capacity)
+                          }
+                          helperText={
+                            touched.bin_capacity && errors.bin_capacity
+                          }
+                          label="Bin Capacity*"
+                          name="bin_capacity"
+                          value={values.bin_capacity}
+                          onChange={(e) =>
+                            setFieldValue("bin_capacity", e.target.value)
+                          }
+                        />
+                      </FormControl>
                     </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1
-                        name="bin_capacity"
-                        label="Bin Capacity*"
-                      />
+                    <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                      <FormControl fullWidth>
+                        <TextField
+                          error={
+                            touched.digit_3_code && Boolean(errors.digit_3_code)
+                          }
+                          helperText={
+                            touched.digit_3_code && errors.digit_3_code
+                          }
+                          label="3 Digit Code*"
+                          name="digit_3_code"
+                          value={values.digit_3_code}
+                          onChange={(e) =>
+                            setFieldValue("digit_3_code", e.target.value)
+                          }
+                        />
+                      </FormControl>
                     </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1
-                        name="digit_3_code"
-                        label="3 Digit Code*"
-                      />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <FormTextField1 name="type" label="Type*" />
+                    <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                      <FormControl fullWidth>
+                        <TextField
+                          error={touched.type && Boolean(errors.type)}
+                          helperText={touched.type && errors.type}
+                          label="Type*"
+                          name="type"
+                          value={values.type}
+                          onChange={(e) =>
+                            setFieldValue("type", e.target.value)
+                          }
+                        />
+                      </FormControl>
                     </Grid>
                   </Grid>
                 </Div>

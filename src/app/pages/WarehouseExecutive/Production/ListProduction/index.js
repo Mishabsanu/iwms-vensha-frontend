@@ -3,90 +3,43 @@ import { Suspense, useEffect, useState } from "react";
 
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import SearchIcon from "@mui/icons-material/Search";
-import {
-  Button,
-  Grid,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
-import AllApis from "app/Apis";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { getAllProduction } from "app/redux/actions/masterAction";
 import Documents1 from "app/shared/widgets/Documents1";
 import { Axios } from "index";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
 import ListProductionTable from "./productiontable";
+import SearchGlobal from "app/shared/SearchGlobal";
+import axios from "axios";
 
 export default function ListProduction() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
   const [sortBy, setSortBy] = useState("updated_at");
-  const [logLoader, setLogLoader] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [guestCount, setGuestCount] = useState({});
+  const [statusCount, setStatusCount] = useState({});
+  console.log(statusCount, "statusCount");
+
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
-  const [isLoading, setIsLoading] = useState(false);
 
   //debouncing for search
   const handleSearch = (value) => {
     setPage(1);
     dispatch(getAllProduction(value, sort, sortBy, 1));
   };
-  const importRawMaterial = async (file) => {
-    const config = {
-      withCredentials: true,
-      headers: {
-        withCredentials: true,
-        "Content-Type": "multipart/form-data", // Set content type to multipart/form-data
-      },
-    };
-    setIsLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append("excelFile", file); // Append your Excel file to the FormData
-      const response = await Axios.post(AllApis.bulk.raw, formData, config);
-      if (response?.data?.status === true) {
-        dispatch(getAllProduction(searchTerm, sort, sortBy, page, ""));
-        Swal.fire({
-          title: "Uploaded",
-          icon: "success",
-          timer: 5000,
-          showConfirmButton: false,
-        });
-      }
-    } catch (error) {
-      Swal.fire({
-        title: error?.response?.data?.message,
-        icon: "error",
-        timer: 5000,
-        showConfirmButton: false,
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    importRawMaterial(file);
-
-    // Reset the file input value to allow multiple uploads
-    e.target.value = null;
-  };
   const debouncedHandleSearch = debounce(handleSearch, 500);
 
   useEffect(() => {
-    if (searchTerm !== "") {
-      debouncedHandleSearch(searchTerm);
-    }
+    debouncedHandleSearch(searchTerm);
+
     return () => {
       debouncedHandleSearch.cancel();
     };
@@ -94,18 +47,27 @@ export default function ListProduction() {
 
   useEffect(() => {
     dispatch(getAllProduction(searchTerm, sort, sortBy, page));
-  }, [sort, page]);
+    getAllStatusCount();
+  }, [sort, page, searchTerm]);
 
-  const getAllGuestCount = async (id, sessionId) => {
+  const getAllStatusCount = async () => {
     try {
-      const response = await Axios.get(
-        `/room/get-guest-count?roomId=${id}&sessionId=${sessionId}`
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+      const body = {};
+      const response = await axios.post(
+        `${process.env.REACT_APP_URL}/production/get-all-status-count`,
+        body,
+        config
       );
-      setGuestCount(response.data.data);
+      // const response = await Axios.get(`/production/get-all-status-count`);
+      setStatusCount(response.data.data);
     } catch (error) {
       console.error("Error:", error);
-
-      return null;
     }
   };
 
@@ -116,70 +78,100 @@ export default function ListProduction() {
         <Div
           sx={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "center",
             alignItems: "center",
+            mb: 3,
+            mt: 2,
           }}
         >
-          <TextField
-            size="small"
-            id="search"
-            type="search"
-            label="Search"
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              if (e.target.value == "") {
-                setSort("desc");
-                setSortBy("updated_at");
-                dispatch(getAllProduction("", "desc", "updated_at", 1));
-              }
-            }}
-            sx={{ width: 300, mb: 5, mt: 4 }}
-            InputProps={{
-              endAdornment: (
-                <Div sx={{ cursor: "pointer" }}>
-                  <InputAdornment position="end">
-                    <SearchIcon />
-                  </InputAdornment>
-                </Div>
-              ),
-            }}
-          />
-          <Grid container spacing={3.75}>
-            <Grid item maxWidth={600}>
+          <Grid container spacing={3.75} justifyContent="center">
+            <Grid item maxWidth={600} xs={12} md={3}>
               <Documents1
                 icone={<MeetingRoomIcon sx={{ fontSize: 36 }} />}
-                field="Session Name"
-                data={20}
+                field="Total Pending"
+                data={statusCount?.pending}
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={12} md={3}>
               <Documents1
                 icone={<PeopleAltIcon sx={{ fontSize: 36 }} />}
-                field="Total Guest"
-                data={10}
+                field="Total Allocated"
+                data={statusCount?.allocated}
               />
             </Grid>
-            <Grid item>
+            <Grid item xs={12} md={3}>
               <Documents1
                 icone={<PeopleAltIcon sx={{ fontSize: 36 }} />}
-                field="Total Guest"
-                data={10}
+                field="Total Confirm"
+                data={statusCount?.verified}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <Documents1
+                icone={<PeopleAltIcon sx={{ fontSize: 36 }} />}
+                field="Total Deleted"
+                data={statusCount?.deleted}
               />
             </Grid>
           </Grid>
-          <Div>
-            {permissions?.production_master_create == true && (
+        </Div>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            alignItems: "center",
+            mb: 3,
+            width: "100%",
+            gap: { xs: 1, sm: 2, xl: 3 },
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: { xs: "100%", sm: "auto" },
+              mb: { xs: 2, sm: 0 },
+              mt: { xs: 2, sm: 0, xl: 4 },
+              flex: 1,
+            }}
+          >
+            <SearchGlobal
+              sx={{
+                maxWidth: { xs: "100%", sm: 280, md: 320, xl: 400 },
+                width: "100%",
+              }}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Box>
+          {permissions?.production_master_create && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "center", sm: "flex-end" },
+                width: { xs: "100%", xl: "auto" },
+                mt: { xs: 2, sm: 0, xl: 4 },
+              }}
+            >
               <Button
                 variant="contained"
-                sx={{ p: 1, pl: 4, pr: 4 }}
+                sx={{
+                  p: 1,
+                  pl: 4,
+                  pr: 4,
+                  width: { xs: "100%", sm: "auto" },
+                  maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
+                  boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
+                }}
                 onClick={() => navigate("/dashboard/addproduction")}
               >
                 Add Production
               </Button>
-            )}
-          </Div>
-        </Div>
+            </Box>
+          )}
+        </Box>
 
         <Suspense fallback={<div>Loading...</div>}>
           <ListProductionTable
@@ -190,6 +182,7 @@ export default function ListProduction() {
             sortBy={sortBy}
             setSort={setSort}
             setSortBy={setSortBy}
+            refreshStatusCounts={getAllStatusCount}
           />
         </Suspense>
       </Div>

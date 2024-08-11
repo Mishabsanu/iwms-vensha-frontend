@@ -159,7 +159,7 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Production Line
+                  Transfer Order No
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -181,7 +181,7 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Process Order
+                  Transaction Type
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -203,7 +203,7 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Process Order
+                  Document No
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -298,7 +298,7 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Transfer Order
+                  Manufacturing Date
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -319,7 +319,7 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Pallet Qty
+                  Self Life
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -340,7 +340,7 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Assigned To
+                  Batch
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -361,7 +361,7 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Batch
+                  Pallet ID
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -382,7 +382,7 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Bin
+                  Pallet Qty
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -403,7 +403,7 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  3 Digit Codes
+                  Transfer Order Qty
                 </TableSortLabel>
               </TableCell>
 
@@ -427,7 +427,188 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Status
+                  Short Excess
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Bin"}
+                  direction={sort}
+                  onClick={() => handleSort("Bin")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Damage
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Three_Digit_Codes"}
+                  direction={sort}
+                  onClick={() => handleSort("Three_Digit_Codes")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Assigned To
+                </TableSortLabel>
+              </TableCell>
+
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "80px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Source Storage Type
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "80px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Source Location
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "80px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Source Bin
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "80px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Destination Storage Type
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "80px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Destination Location
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "80px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Destination Bin
                 </TableSortLabel>
               </TableCell>
             </TableRow>
@@ -447,46 +628,92 @@ export default function ListTransferOrderTable({
                     textAlign: "left",
                   }}
                 >
-                  {row.production_line_details.production_line_name}
+                  {row.transfer_order}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.process_order_qty}
+                  {row.transaction_type}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row.process_order}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row.sku_code}</TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.sku_description}
+                  {row.sku_code || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row.sku_description || "-"}
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.sut || "-"}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row?.uom}</TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.transfer_order}
+                  {row?.uom || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.pallet_qty || "-"}
+                  {row?.uom || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {`${row?.assigned_user.first_name} ${row?.assigned_user.last_name}` ||
-                    "-"}
+                  {row?.material_details?.item_life || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.batch || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.bin || "-"}
+                  {row?.uom || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.digit_3_codes || "-"}
+                  {row?.pallet_qty || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.process_order_qty}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.uom || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.uom || "-"}
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.status || "-"}
+                  {`${row?.assigned_user.first_name} ${row?.assigned_user.last_name}`}
                 </TableCell>
+
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.digit_3_codes === "123"
+                    ? "Overflow"
+                    : row?.bin === "Cross Dock"
+                    ? "Cross Dock"
+                    : row?.material_details?.storage_type || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.digit_3_codes === "123"
+                    ? "Overflow"
+                    : row?.bin === "Cross Dock"
+                    ? "Cross Dock"
+                    : row?.material_details?.storage_section || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.bin === "Cross Dock" ? "Cross Dock" : row?.bin || "-"}
+                </TableCell>
+
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.digit_3_codes === "123"
+                    ? "Overflow"
+                    : row?.bin === "Cross Dock"
+                    ? "Cross Dock"
+                    : row?.material_details?.storage_type || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.digit_3_codes === "123"
+                    ? "Overflow"
+                    : row?.bin === "Cross Dock"
+                    ? "Cross Dock"
+                    : row?.material_details?.storage_section || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.bin === "Cross Dock" ? "Cross Dock" : row?.bin || "-"}
+                </TableCell>
+
               </TableRow>
             ))}
           </TableBody>

@@ -75,13 +75,12 @@ export default function ListOutbound() {
   const debouncedHandleSearch = debounce(handleSearch, 500);
 
   useEffect(() => {
-    if (searchTerm !== "") {
-      debouncedHandleSearch(searchTerm);
-    }
+    debouncedHandleSearch(searchTerm);
     return () => {
       debouncedHandleSearch.cancel();
     };
   }, [searchTerm]);
+  
 
   useEffect(() => {
     dispatch(getAllOutbound(searchTerm, sort, sortBy, page));
