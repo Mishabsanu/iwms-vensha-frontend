@@ -88,10 +88,21 @@ export default function AddProduction() {
     batch: yup.string().required("Batch is required"),
     pallet_qty: yup
       .number("Enter a valid Pallet Qty")
-      .required("Pallet Qty is required"),
+      .required("Pallet Qty is required")
+      .positive("Pallet Qty must be a positive number"),
+
     process_order_qty: yup
       .number("Enter a valid Process Order Qty")
-      .required("Process Order Qty is required"),
+      .required("Process Order Qty is required")
+      .positive("Process Order Qty must be a positive number")
+      .test(
+        "is-greater",
+        "Process Order Qty must be greater than Pallet Qty",
+        function (value) {
+          const { pallet_qty } = this.parent;
+          return value >= pallet_qty;
+        }
+      ),
     assigned_to: yup
       .array()
       .of(yup.string())
@@ -147,6 +158,7 @@ export default function AddProduction() {
         pathname === "/dashboard/editproduction"
           ? await updateProduction({ ...body, id: state._id })
           : await addProduction(body);
+      console.log(response, "response");
 
       const successMessage =
         pathname === "/dashboard/editproduction"
@@ -163,7 +175,7 @@ export default function AddProduction() {
       } else {
         Swal.fire({
           icon: "error",
-          title: response?.message,
+          title: response?.data?.data?.message,
         });
       }
     } catch (error) {
@@ -226,7 +238,7 @@ export default function AddProduction() {
           validationSchema={validationSchema}
           onSubmit={onUserSave}
         >
-          {({ values, setFieldValue, errors }) => (
+          {({ values, setFieldValue, errors, touched }) => (
             <Form>
               <Div sx={{ mt: 4 }}>
                 <Grid container spacing={2}>
@@ -351,6 +363,12 @@ export default function AddProduction() {
                   <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField
+                        error={Boolean(errors.pallet_qty && touched.pallet_qty)}
+                        helperText={
+                          errors.pallet_qty && touched.pallet_qty
+                            ? errors.pallet_qty
+                            : ""
+                        }
                         label="Pallete Qty"
                         name="pallet_qty"
                         value={values.pallet_qty}
@@ -375,13 +393,19 @@ export default function AddProduction() {
                   <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField
-                        error={errors.process_order_qty}
-                        helperText={errors.process_order_qty}
                         label="Process Order Qty"
                         name="process_order_qty"
                         value={values.process_order_qty}
                         onChange={(e) =>
                           setFieldValue("process_order_qty", e.target.value)
+                        }
+                        error={Boolean(
+                          errors.process_order_qty && touched.process_order_qty
+                        )}
+                        helperText={
+                          errors.process_order_qty && touched.process_order_qty
+                            ? errors.process_order_qty
+                            : ""
                         }
                       />
                     </FormControl>

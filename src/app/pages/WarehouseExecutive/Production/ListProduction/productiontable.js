@@ -768,6 +768,15 @@ export default function ListProductionTable({
               setModalOpen(false);
               setSelectedRow(null);
             }}
+            searchTerm={searchTerm}
+            page={page}
+            setPage={setPage}
+            sort={sort}
+            sortBy={sortBy}
+            setSort={setSort}
+            setSortBy={setSortBy}
+            setAddGroup={setAddGroup}
+            refreshStatusCounts={refreshStatusCounts}
           />
         )}
         <Pagination

@@ -476,16 +476,13 @@ export default function ListForkliftOperatortTable({
                           action: "confirm",
                           data: row,
                         },
-                        ...(row?.status === "Overflow"
-                          ? [
-                              {
-                                icon: <EditIcon />,
-                                title: "Edit",
-                                action: "edit",
-                                data: row,
-                              },
-                            ]
-                          : []),
+
+                        {
+                          icon: <EditIcon />,
+                          title: "Edit",
+                          action: "edit",
+                          data: row,
+                        },
                       ]}
                       onClickCallback={handleItemAction}
                     />

@@ -6,9 +6,10 @@ const FullViewContent = ({ children }) => {
         <Box
             sx={{
            
-                width: "100vw",
+                width: "100%",
                 height: "100%",
                 margin: "auto",
+                border: "10px solid #5720b1", 
                 position: "absolute",
                 top: "0",
                 left: "0",

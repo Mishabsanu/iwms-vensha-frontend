@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
 import {
+  calculateExpirationDate,
   displayDateAndTimeFun,
   displayDateFun,
 } from "app/utils/constants/functions";
@@ -367,7 +368,9 @@ export default function ListStockReportTable({
                     textAlign: "left",
                   }}
                 >
-                  {row?.bin === "Cross Dock"
+                  {row.over_flow_status === true
+                    ? "Overflow"
+                    : row?.bin === "Cross Dock"
                     ? "Cross Dock"
                     : row?.bin_details?.storage_type || "-"}
                 </TableCell>
@@ -376,7 +379,9 @@ export default function ListStockReportTable({
                   {row?.process_order}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.bin === "Cross Dock"
+                  {row.over_flow_status === true
+                    ? "Overflow"
+                    : row?.bin === "Cross Dock"
                     ? "Cross Dock"
                     : row?.bin_details?.storage_section || "-"}
                 </TableCell>
@@ -397,10 +402,13 @@ export default function ListStockReportTable({
                   {row?.batch || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.batch || "-"}
+                  {displayDateFun(row.date)}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.batch || "-"}
+                  {calculateExpirationDate(
+                    row?.date,
+                    row?.material_details?.item_life
+                  )}
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "left" }}>
