@@ -22,7 +22,17 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 
-const ProductionEdit = ({ open, rawData, onClose }) => {
+const ProductionEdit = ({
+  open,
+  rawData,
+  onClose,
+  searchTerm,
+  sort,
+  sortBy,
+  page,
+  setAddGroup,
+  refreshStatusCounts,
+}) => {
   const [binNumber, setBinNumber] = useState(rawData?.bin || "");
   const [palletQty, setPalletQty] = useState(rawData?.pallet_qty || "");
   const dispatch = useDispatch();
@@ -55,7 +65,11 @@ const ProductionEdit = ({ open, rawData, onClose }) => {
           timer: 1000,
           showConfirmButton: false,
         });
-        dispatch(getAllProduction("", "desc", "updated_at", 1));
+
+        dispatch(getAllProduction(searchTerm, sort, sortBy, page, ""));
+        await refreshStatusCounts();
+        setAddGroup([]);
+        handleClose();
       } else {
         handleClose();
         throw new Error(response.data?.message);
@@ -103,14 +117,16 @@ const ProductionEdit = ({ open, rawData, onClose }) => {
               <TableRow sx={{ bgcolor: "#7352C7", color: "white" }}>
                 <TableCell
                   sx={{
-                    fontWeight: "bold",color: "white" 
+                    fontWeight: "bold",
+                    color: "white",
                   }}
                 >
                   SKU Code
                 </TableCell>
                 <TableCell
                   sx={{
-                    fontWeight: "bold",color: "white" 
+                    fontWeight: "bold",
+                    color: "white",
                   }}
                 >
                   SKU Description
@@ -118,28 +134,32 @@ const ProductionEdit = ({ open, rawData, onClose }) => {
 
                 <TableCell
                   sx={{
-                    fontWeight: "bold",color: "white" 
+                    fontWeight: "bold",
+                    color: "white",
                   }}
                 >
                   SUT
                 </TableCell>
                 <TableCell
                   sx={{
-                    fontWeight: "bold",color: "white" 
+                    fontWeight: "bold",
+                    color: "white",
                   }}
                 >
                   Batch
                 </TableCell>
                 <TableCell
                   sx={{
-                    fontWeight: "bold",color: "white" 
+                    fontWeight: "bold",
+                    color: "white",
                   }}
                 >
                   Transfer Order No
                 </TableCell>
                 <TableCell
                   sx={{
-                    fontWeight: "bold",color: "white" 
+                    fontWeight: "bold",
+                    color: "white",
                   }}
                 >
                   Status

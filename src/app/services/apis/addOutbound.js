@@ -13,6 +13,7 @@ export const addOutbound = async (details) => {
       details,
       config
     );
+   
 
     return data;
   } catch (error) {
