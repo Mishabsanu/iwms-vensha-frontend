@@ -31,22 +31,21 @@ export default function ListOutboundTable({
 
   const groupedData = outbound.reduce((acc, current) => {
     const customer = acc.find(
-      (item) => item.customer_name === current.customerDetails?.customer_name
+      (item) => item.order_number=== current.order_number
     );
     console.log("customerssss", customer);
     if (customer) {
       customer.order_number = current.order_number;
-      customer.sku_count += current.sku_count;
-      customer.stock_qty += current.stock_qty;
+      customer.totalSkuCount += current.totalSkuCount;
+      customer.totalStockQty += current.totalStockQty;
     } else {
       acc.push({
         _id: current._id,
         customer_name: current.customerDetails?.customer_name,
         order_number: current.order_number,
-        sku_count: current.sku_count,
+        totalSkuCount: current.totalSkuCount,
         
-stock_qty: current.
-        stock_qty,
+        totalStockQty: current.totalStockQty,
         date: current.date,
         status: current.status,
       });
@@ -234,10 +233,10 @@ stock_qty: current.
                   {row.order_number}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.sku_count}
+                  {row.totalSkuCount}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.stock_qty}
+                  {row.totalStockQty}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.customer_name}
