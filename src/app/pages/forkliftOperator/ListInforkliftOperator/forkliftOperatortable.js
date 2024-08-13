@@ -110,7 +110,7 @@ export default function ListForkliftOperatortTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "150px",
+                  minWidth: "120px",
                   verticalAlign: "middle",
                 }}
               >
@@ -126,13 +126,13 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                  Production Line
+                   Line No
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "150px",
+                  minWidth: "190px",
                   verticalAlign: "middle",
                 }}
               >
@@ -148,7 +148,7 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                  Process Order
+                  Process Order Qty
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -170,7 +170,7 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                  Process Order
+                   Order No
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -199,6 +199,7 @@ export default function ListForkliftOperatortTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "200px",
                 }}
               >
                 <TableSortLabel
@@ -213,7 +214,7 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                  Sku Description
+                  SKU Description
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -251,6 +252,7 @@ export default function ListForkliftOperatortTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "180px",
                 }}
               >
                 <TableSortLabel
@@ -272,6 +274,7 @@ export default function ListForkliftOperatortTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "150px",
                 }}
               >
                 <TableSortLabel
@@ -294,6 +297,7 @@ export default function ListForkliftOperatortTable({
                   sx={{
                     textAlign: "left",
                     verticalAlign: "middle",
+                    minWidth: "200px",
                   }}
                 >
                   <TableSortLabel
@@ -318,6 +322,7 @@ export default function ListForkliftOperatortTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "120px",
                 }}
               >
                 <TableSortLabel
@@ -339,6 +344,7 @@ export default function ListForkliftOperatortTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "120px",
                 }}
               >
                 <TableSortLabel
