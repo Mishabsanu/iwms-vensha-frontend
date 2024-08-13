@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
 import Div from '@jumbo/shared/Div';
 
-function FilterAccordian({ children, actions }) {
+function FilterAccordian({ children, actions,heading }) {
     return (
         <Div sx={{my:1}}>
             <Accordion>
@@ -17,7 +17,7 @@ function FilterAccordian({ children, actions }) {
                     aria-controls="panel3-content"
                     id="panel3-header"
                 >
-                    <Typography variant='h2' m={0} p={0}>Filters</Typography>
+                    <Typography variant='h2' m={0} p={0}>{heading}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     {children}
