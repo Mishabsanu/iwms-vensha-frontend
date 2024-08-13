@@ -26,14 +26,18 @@ import SearchGlobal from "app/shared/SearchGlobal";
 import axios from "axios";
 import FilterAccordian from "app/components/FilterAccordian";
 import AllApis from "app/Apis";
+import { productionReport } from "app/services/apis/ListApi/productionReport";
+import { ProductionReport } from "../Modal/productionReport";
 
 export default function ListProduction() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState([]);
   const [sort, setSort] = useState("desc");
   const [sortBy, setSortBy] = useState("updated_at");
   const [productionList, setProductionList] = useState([]);
-  const [filters, setFilters] = useState("");
+  const [filters, setFilters] = useState({ processOrder: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [statusCount, setStatusCount] = useState({});
@@ -84,12 +88,37 @@ export default function ListProduction() {
       console.error("Error:", error);
     }
   };
+  const handleClose = () => {
+    setOpen(false);
+    setValue(null); // Optional: clear data when modal closes
+  };
 
-  const handleFilter = () => {
+  const handleFilter = async () => {
+    try {
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_URL}/production/production-report`,
+        filters, // Send filters as an object
+        config
+      );
+      setOpen(true);
+      console.log(response, "response");
+      setValue(response.data.result);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
+
   const handleClear = () => {
-    setFilters("");
+    setFilters({ processOrder: "" }); // Clear the specific field
   };
+
   useEffect(async () => {
     try {
       const list = await Axios.get(`${AllApis.dropdownList.production}`);
@@ -131,10 +160,13 @@ export default function ListProduction() {
                 sx={{ width: "100%", textTransform: "capitalize" }}
                 size="small"
                 id="company-autocomplete"
+                value={filters.processOrder}
                 options={productionList || []}
                 getOptionLabel={(option) => option || ""}
                 onChange={(e, newValue) => {
-                  setFilters(newValue != null ? newValue : "");
+                  setFilters({
+                    processOrder: newValue != null ? newValue : "",
+                  });
                 }}
                 renderOption={(props, option) => (
                   <Box
@@ -253,6 +285,7 @@ export default function ListProduction() {
             </Box>
           )}
         </Box>
+        <ProductionReport open={open} setOpen={setOpen} rowData={value} />
 
         <Suspense fallback={<div>Loading...</div>}>
           <ListProductionTable

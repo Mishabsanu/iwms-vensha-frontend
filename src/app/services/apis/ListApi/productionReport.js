@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getGstListNoPem = async () => {
+export const productionReport = async (detsils) => {
   try {
     const config = {
       withCredentials: true,
@@ -8,11 +8,12 @@ export const getGstListNoPem = async () => {
         withCredentials: true,
       },
     };
-    const data = await axios.get(
-      `${process.env.REACT_APP_URL}/api/list/gst-list`,
+    const data = await axios.post(
+      `${process.env.REACT_APP_URL}/production/production-report`,
+      detsils,
       config
     );
-    return data?.data?.result.map((item) => item.gst_value);
+    return data;
   } catch (error) {
     console.log(error);
     return error.response.data.result;
