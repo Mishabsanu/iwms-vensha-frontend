@@ -121,6 +121,7 @@ export const OutboundDetails = ({ open, setOpen, rowData, onSelect }) => {
 
   const handleTransferOrderOpen = () => {
     setTransferOrderDialogOpen(true);
+    setOpen(false)
   };
 
   const handleTransferOrderClose = () => {
@@ -307,38 +308,37 @@ export const OutboundDetails = ({ open, setOpen, rowData, onSelect }) => {
   onClose={handleForkliftClose}
   maxWidth="sm"
 >
-  <DialogContent>
-    <Typography variant="h4" color="initial" fontWeight={600}>
-      Forklift Assignment
-    </Typography>
-    <Grid item xs={12} sm={12} sx={{ mt: 2 }}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-multiple-name-label">Assigned To</InputLabel>
-        <Select
-          labelId="demo-multiple-name-label"
-          id="demo-multiple-name"
-          multiple
-          value={personName}
-          onChange={(event) => {
-            handleChange(event);
-          }}
-          input={<OutlinedInput label="Assigned To" />}
-          MenuProps={MenuProps}
-        >
-          <MenuItem value="Select">Select</MenuItem>
-          {assignedTo.map((item) => (
-            <MenuItem
-              key={item._id}
-              value={item._id}
-              
-            >
-              {`${item.first_name} ${item.last_name}`}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Grid>
-  </DialogContent>
+<DialogContent>
+  <Typography variant="h4" color="initial" fontWeight={600}>
+    Forklift Assignment
+  </Typography>
+  <Grid item xs={12} sm={12} sx={{ mt: 2 }}>
+    <FormControl fullWidth>
+      <InputLabel id="demo-single-name-label">Assigned To</InputLabel>
+      <Select
+        labelId="demo-single-name-label"
+        id="demo-single-name"
+        value={personName}
+        onChange={(event) => {
+          handleChange(event);
+        }}
+        input={<OutlinedInput label="Assigned To" />}
+        MenuProps={MenuProps}
+      >
+        <MenuItem value="Select">Select</MenuItem>
+        {assignedTo.slice(2, 3).map((item) => (
+          <MenuItem
+            key={item._id}
+            value={item._id}
+          >
+            {`${item.first_name} ${item.last_name}`}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  </Grid>
+</DialogContent>
+
   <DialogActions>
     <Button
       variant="contained"
@@ -452,6 +452,10 @@ export const OutboundDetails = ({ open, setOpen, rowData, onSelect }) => {
     </>
   );
 };
+
+
+
+
 
 
 
