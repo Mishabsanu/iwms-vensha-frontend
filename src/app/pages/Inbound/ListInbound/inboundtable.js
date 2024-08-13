@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
 import { getAllUnit } from "app/redux/actions/masterAction";
-import { updateBin, updateItemCode } from "app/services/apis/updateBin";
+import { updateBin } from "app/services/apis/updateBin";
 import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -142,7 +142,7 @@ export default function ListInboundTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "180px",
+                  minWidth: "150px",
                   verticalAlign: "middle",
                   color: "white",
                   px: 1,
@@ -153,7 +153,7 @@ export default function ListInboundTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "160px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -177,7 +177,7 @@ export default function ListInboundTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "150px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -201,7 +201,7 @@ export default function ListInboundTable({
                 sx={{
                   textAlign: "left",
                   px: 1,
-                  minWidth: "80px",
+                  minWidth: "150px",
                   verticalAlign: "middle",
                 }}
               >
@@ -210,7 +210,7 @@ export default function ListInboundTable({
                   direction={sort}
                   onClick={() => handleSort("from_vendor")}
                   sx={{
-                    maxWidth: "50px",
+                    
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
@@ -226,7 +226,7 @@ export default function ListInboundTable({
                 sx={{
                   textAlign: "left",
                   px: 1,
-                  minWidth: "80px",
+                  minWidth: "150px",
                   verticalAlign: "middle",
                 }}
               >
@@ -235,7 +235,7 @@ export default function ListInboundTable({
                   direction={sort}
                   onClick={() => handleSort("truck_type")}
                   sx={{
-                    maxWidth: "50px",
+                   
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
@@ -251,6 +251,7 @@ export default function ListInboundTable({
                 sx={{
                   textAlign: "left",
                   color: "white",
+                  minWidth: "150px",
                 }}
               >
                 P.O Number
@@ -259,6 +260,7 @@ export default function ListInboundTable({
                 sx={{
                   textAlign: "left",
                   color: "white",
+                  minWidth: "150px",
                 }}
               >
                 Invoice Number
@@ -267,6 +269,7 @@ export default function ListInboundTable({
                 sx={{
                   textAlign: "left",
                   color: "white",
+                  minWidth: "150px",
                 }}
               >
                 Invoice Qty
@@ -275,6 +278,7 @@ export default function ListInboundTable({
                 sx={{
                   textAlign: "left",
                   color: "white",
+                  minWidth: "150px",
                 }}
               >
                 Invoice Value
@@ -283,6 +287,7 @@ export default function ListInboundTable({
                 sx={{
                   textAlign: "left",
                   color: "white",
+                  minWidth: "150px",
                 }}
               >
                 EWay Bill Number

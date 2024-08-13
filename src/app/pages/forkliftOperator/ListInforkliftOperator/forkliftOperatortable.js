@@ -274,7 +274,7 @@ export default function ListForkliftOperatortTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
-                  minWidth: "120px",
+                  minWidth: "150px",
                 }}
               >
                 <TableSortLabel
