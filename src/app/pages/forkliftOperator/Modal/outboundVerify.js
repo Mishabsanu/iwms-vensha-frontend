@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 import { verifyBin } from "app/services/apis/verifyBin";
 import { useDispatch } from "react-redux";
 import { getAllForkliftOperator } from "app/redux/actions/masterAction";
+import { verifyBinoutbound } from "app/services/apis/verifyBinoutbound";
 
 const OutboundVerify = ({ open, onClose, rawData }) => {
   const [digit_3_codes, setDigit_3_codes] = useState("");
@@ -49,7 +50,7 @@ const OutboundVerify = ({ open, onClose, rawData }) => {
         digit_3_codes: digit_3_codes,
         _id: rawData._id,
       };
-      const response = await verifyBin(data);
+      const response = await verifyBinoutbound(data);
       if (response.status === 200) {
         handleClose();
         Swal.fire({

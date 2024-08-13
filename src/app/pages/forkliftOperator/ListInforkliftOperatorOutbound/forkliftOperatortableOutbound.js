@@ -434,7 +434,8 @@ console.log(forkliftOperatorOutbound,'forkliftOperatorOutbound');
                 </TableCell>
 
                <TableCell sx={{ textAlign: "left" }}>
-                  {row?.assigned_to }
+               {`${row?.assigned_user.first_name} ${row?.assigned_user.last_name}` ||
+                      "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.batch || "-"}
