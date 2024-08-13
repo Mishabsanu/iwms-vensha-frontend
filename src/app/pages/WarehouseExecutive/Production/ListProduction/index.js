@@ -3,7 +3,18 @@ import { Suspense, useEffect, useState } from "react";
 
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { getAllProduction } from "app/redux/actions/masterAction";
 import Documents1 from "app/shared/widgets/Documents1";
 import { Axios } from "index";
@@ -13,13 +24,16 @@ import { useNavigate } from "react-router-dom";
 import ListProductionTable from "./productiontable";
 import SearchGlobal from "app/shared/SearchGlobal";
 import axios from "axios";
+import FilterAccordian from "app/components/FilterAccordian";
+import AllApis from "app/Apis";
 
 export default function ListProduction() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
   const [sortBy, setSortBy] = useState("updated_at");
-
+  const [productionList, setProductionList] = useState([]);
+  const [filters, setFilters] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [statusCount, setStatusCount] = useState({});
@@ -71,10 +85,77 @@ export default function ListProduction() {
     }
   };
 
+  const handleFilter = () => {
+  };
+  const handleClear = () => {
+    setFilters("");
+  };
+  useEffect(async () => {
+    try {
+      const list = await Axios.get(`${AllApis.dropdownList.production}`);
+      setProductionList(list?.data?.result);
+    } catch (error) {}
+  }, []);
   return (
     <>
       <Div sx={{ mt: -4 }}>
         <Typography variant="h1">Production</Typography>
+        <FilterAccordian
+          heading={"Report"}
+          actions={
+            <Div>
+              <Button
+                variant="contained"
+                sx={{ marginRight: 1 }}
+                onClick={handleFilter}
+              >
+                Apply
+              </Button>
+              <Button variant="outlined" onClick={handleClear}>
+                Clear
+              </Button>
+            </Div>
+          }
+        >
+          <Box
+            sx={{ display: "flex", rowGap: 2, flexWrap: "wrap", gap: "10px" }}
+          >
+            <Div
+              sx={{
+                width: { xs: "100%", sm: "50%", md: "33%", lg: "24%" }, // Adjust width at different breakpoints
+                mb: { xs: 2, sm: 0 }, // Add margin at the bottom on smaller screens
+              }}
+            >
+              <Autocomplete
+                freeSolo
+                sx={{ width: "100%", textTransform: "capitalize" }}
+                size="small"
+                id="company-autocomplete"
+                options={productionList || []}
+                getOptionLabel={(option) => option || ""}
+                onChange={(e, newValue) => {
+                  setFilters(newValue != null ? newValue : "");
+                }}
+                renderOption={(props, option) => (
+                  <Box
+                    component="li"
+                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+                    {...props}
+                  >
+                    {option}
+                  </Box>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    label="Prosess Order"
+                  />
+                )}
+              />
+            </Div>
+          </Box>
+        </FilterAccordian>
         <Div
           sx={{
             display: "flex",

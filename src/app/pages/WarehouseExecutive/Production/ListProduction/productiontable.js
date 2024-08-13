@@ -561,7 +561,7 @@ export default function ListProductionTable({
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white", // Set the color for the active state
+                      color: "white",
                     },
                   }}
                 >
