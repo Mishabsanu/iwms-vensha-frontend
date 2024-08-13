@@ -18,6 +18,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BinNumberModal from "../Modal/verifyModal";
+import OutboundVerify from "../Modal/outboundVerify";
 export default function ListForkliftOperatorOutboundTable({
   searchTerm,
   page,
@@ -228,6 +229,28 @@ console.log(forkliftOperatorOutbound,'forkliftOperatorOutbound');
                     },
                   }}
                 >
+                  Stock Qty
+                </TableSortLabel>
+              </TableCell>
+
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Pallet_Qty"}
+                  direction={sort}
+                  onClick={() => handleSort("Pallet_Qty")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
                   Pallet Qty
                 </TableSortLabel>
               </TableCell>
@@ -278,7 +301,27 @@ console.log(forkliftOperatorOutbound,'forkliftOperatorOutbound');
               ) : (
                 ""
               )}
-              
+               <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Batch"}
+                  direction={sort}
+                  onClick={() => handleSort("Batch")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Batch
+                </TableSortLabel>
+              </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
@@ -374,6 +417,9 @@ console.log(forkliftOperatorOutbound,'forkliftOperatorOutbound');
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.order_qty}
                 </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.quantity}
+                </TableCell>
                 
                 {/* {isAdmin ? (
                   <TableCell sx={{ textAlign: "left" }}>
@@ -389,6 +435,9 @@ console.log(forkliftOperatorOutbound,'forkliftOperatorOutbound');
 
                <TableCell sx={{ textAlign: "left" }}>
                   {row?.assigned_to }
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.batch || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.bin || "-"}
@@ -423,7 +472,7 @@ console.log(forkliftOperatorOutbound,'forkliftOperatorOutbound');
                   </TableCell>
                 )}
                 {selectedRow && (
-                  <BinNumberModal
+                  <OutboundVerify
                     open={modalOpen}
                     rawData={selectedRow}
                     onClose={() => setModalOpen(false)}
