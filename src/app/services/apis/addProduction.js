@@ -13,6 +13,8 @@ export const addProduction = async (details) => {
       details,
       config
     );
+    console.log(data,'data');
+    
 
     return data;
   } catch (error) {
