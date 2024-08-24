@@ -1,4 +1,3 @@
-import JumboIconButton from "@jumbo/components/JumboIconButton";
 import useJumboHeaderTheme from "@jumbo/hooks/useJumboHeaderTheme";
 import useJumboLayoutSidebar from "@jumbo/hooks/useJumboLayoutSidebar";
 import Div from "@jumbo/shared/Div";
@@ -6,7 +5,6 @@ import { SIDEBAR_STYLES, SIDEBAR_VARIANTS } from "@jumbo/utils/constants";
 import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, Slide } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { loadUser } from "app/redux/actions/userAction";
