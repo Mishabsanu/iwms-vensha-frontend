@@ -2,15 +2,15 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
-const ProductionLineMiddleware = ({ fallbackPath }) => {
+const GateEntryRouteMiddleware = ({ fallbackPath }) => {
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
 
   if (
-    permissions.production_line_master_view === true ||
-    permissions.production_line_master_edit === true ||
-    permissions.production_line_master_create === true
+    permissions.security_view === true ||
+    permissions.security_edit === true ||
+    permissions.security_create === true
   ) {
     return <Outlet />;
   } else {
@@ -18,4 +18,4 @@ const ProductionLineMiddleware = ({ fallbackPath }) => {
   }
 };
 
-export default ProductionLineMiddleware;
+export default GateEntryRouteMiddleware;

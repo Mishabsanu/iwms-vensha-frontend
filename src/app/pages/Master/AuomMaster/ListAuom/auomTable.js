@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export default function ListBinTable({
+export default function ListAuomTable({
   searchTerm,
   page,
   setPage,
@@ -27,19 +27,18 @@ export default function ListBinTable({
   setSort,
   setSortBy,
 }) {
-  const { binMaster, TotalPage, loading } = useSelector(
+  const { auomMaster, TotalPage, loading } = useSelector(
     (state) => state.masterReducer
   );
   const [loader, setLoader] = useState(false);
-
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
 
   const handleSort = (property) => {
-    setSort(sort === "asc" ? "desc" : "asc");
+    setSort(sort == "asc" ? "desc" : "asc");
     setSortBy(property);
     setPage(1);
   };
@@ -47,10 +46,7 @@ export default function ListBinTable({
   const handleItemAction = (menuItem) => {
     switch (menuItem.action) {
       case "edit":
-        navigate("/master/bin/edit", { state: menuItem?.data });
-        break;
-
-      default:
+        navigate("/master/bin-type/edit", { state: menuItem?.data });
         break;
     }
   };
@@ -81,141 +77,107 @@ export default function ListBinTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "150px",
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "storage_type"}
+                  active={sortBy === "type"}
                   direction={sort}
-                  onClick={() => handleSort("storage_type")}
+                  onClick={() => handleSort("type")}
                   sx={{
+                    //   maxWidth: "70px",
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
+                      color: "white", // Set the color for the active state
                     },
                   }}
                 >
-                  Storage Type
+                  Bin Type
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "150px",
+                  minWidth: "180px",
                   verticalAlign: "middle",
                   color: "white",
                   px: 1,
                 }}
               >
-                Storage Section
+                UOM
               </TableCell>
+
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "110px",
+                  minWidth: "180px",
+                  verticalAlign: "middle",
+                  color: "white",
+                  px: 1,
+                }}
+              >
+                Remarks
+              </TableCell>
+
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "80px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "bin_no"}
+                  active={sortBy === "created_employee_id.first_name"}
                   direction={sort}
-                  onClick={() => handleSort("bin_no")}
+                  onClick={() => handleSort("created_employee_id.first_name")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
+                      color: "white", // Set the color for the active state
                     },
                   }}
                 >
-                  Bin No
+                  Created By
                 </TableSortLabel>
               </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  minWidth: "170px",
-                  verticalAlign: "middle",
-                  color: "white",
-                }}
-              >
-                <TableSortLabel
-                  active={sortBy === "bin_combination"}
-                  direction={sort}
-                  onClick={() => handleSort("bin_combination")}
-                  sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
-                    },
-                  }}
-                >
-                 Bin Combination
-                </TableSortLabel>
-              </TableCell>
+
               <TableCell
                 sx={{
                   textAlign: "left",
                   px: 1,
-                  minWidth: "200px",
+                  minWidth: "80px",
                   verticalAlign: "middle",
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "description"}
+                  active={sortBy === "status"}
                   direction={sort}
-                  onClick={() => handleSort("description")}
+                  onClick={() => handleSort("status")}
                   sx={{
+                    maxWidth: "50px",
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
+                      color: "white", // Set the color for the active state
                     },
                   }}
                 >
-                  Description
+                  Status
                 </TableSortLabel>
               </TableCell>
+
               <TableCell
                 sx={{
                   textAlign: "left",
                   color: "white",
-                  minWidth: "130px",
-                }}
-              >
-                Bin Capacity
-              </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  color: "white",
-                    minWidth: "130px",
-                }}
-              >
-                3 Digit Code
-              </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  color: "white",
-                  minWidth: "150px",
-                }}
-              >
-               Type
-              </TableCell>
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  color: "white",
-                  minWidth: "150px",
                 }}
               >
                 Created Date
               </TableCell>
-              {permissions?.bin_master_edit === true && (
+
+              {permissions?.bin_type_master_edit == true && (
                 <TableCell
                   sx={{
                     textAlign: "left",
@@ -228,39 +190,44 @@ export default function ListBinTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {binMaster?.map((row, i) => (
+            {auomMaster?.map((row, i) => (
               <TableRow key={i}>
+                <TableCell sx={{ textAlign: "left" }}>{row?.type}</TableCell>
+
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.storage_type}
+                  {row?.allowed_uom?.map((item) => item?.uom).join(", ")}
                 </TableCell>
+
                 <TableCell sx={{ textAlign: "left", px: 1 }}>
-                  {row?.storage_section}
+                  {row?.remarks ? row?.remarks : "-"}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row?.bin_no}</TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row?.bin_combination}</TableCell>
-                <TableCell sx={{ textAlign: "left", px: 1 }}>
-                  {row?.description}
+
+                <TableCell
+                  sx={{ textAlign: "left", textTransform: "capitalize" }}
+                >
+                  {row?.created_employee_id?.first_name}{" "}
+                  {row?.created_employee_id?.last_name}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    textAlign: "left",
+                    px: 1,
+                    textTransform: "capitalize",
+                  }}
+                >
+                  {row?.status}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.bin_capacity}
+                  {displayDateFun(row.created_at)}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>
-                  {row?.digit_3_code}
-                </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>
-                  {row?.type?.type}
-                </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>
-                  {displayDateFun(row?.created_at)}
-                </TableCell>
-                {permissions?.bin_master_edit === true && (
+                {permissions?.bin_type_master_edit == true && (
                   <TableCell sx={{ textAlign: "left" }}>
                     <JumboDdMenu
                       icon={<MoreHorizIcon />}
                       menuItems={[
                         {
                           icon: <EditIcon />,
-                          title: "Edit Bin Details",
+                          title: "Edit Bin Type Details",
                           action: "edit",
                           data: row,
                         },

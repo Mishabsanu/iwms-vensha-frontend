@@ -6,7 +6,8 @@ const AllApis = {
     productionLine: "/production-line/dropdown-produntion-line-master",
     skuSearch: "/production/sku-details",
     production: "/production/get-production",
-    // skuDetails: "/production/sku-all-details",
+    uomList: "/uom/list-uom-without-permission",
+   
     skuDetails: function (sku_code) {
       return `/production/sku-all-details?sku_code=${sku_code}`;
     },
@@ -14,6 +15,7 @@ const AllApis = {
     roles: "/role/dropdown-roles-master",
     vendor: "/inbound/list-vendor-without-permission",
     storage_type: "/bin/list-storage-type-without-permission",
+    bin_type: "/bin-type/list-bin-type-without-permission",
     vehicle: "/inbound/list-vehicle-without-permission",
     customer: "/inbound/list-customer-without-permission",
     assignedTo: "/role/dropdown-forklift-roles",

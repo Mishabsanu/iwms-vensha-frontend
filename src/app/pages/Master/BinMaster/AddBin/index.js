@@ -23,11 +23,14 @@ export default function AddBin() {
   const { pathname, state } = useLocation();
   const [isSubmitting, setSubmitting] = useState(false);
   const [storageType, setStorageType] = useState([]);
+  const [binType, setBinType] = useState([]);
 
   useEffect(() => {
     const fetchStorageTypes = async () => {
-      const response = await Axios.get(AllApis.dropdownList.storage_type);
+      const response = await Axios.get(AllApis?.dropdownList?.storage_type);
       setStorageType(response?.data?.result);
+      const BinTypeResponse = await Axios.get(AllApis?.dropdownList?.bin_type);
+      setBinType(BinTypeResponse?.data?.result);
     };
 
     fetchStorageTypes();
@@ -136,16 +139,16 @@ export default function AddBin() {
                         <TextField
                           label="Storage Type"
                           name="storage_type"
-                          value={values.storage_type}
+                          value={values?.storage_type}
                           onChange={(e) =>
                             setFieldValue("storage_type", e.target.value)
                           }
                           select
                           fullWidth
-                          error={errors.storage_type}
-                          helperText={errors.storage_type}
+                          error={errors?.storage_type}
+                          helperText={errors?.storage_type}
                           InputLabelProps={{
-                            shrink: values.storage_type,
+                            shrink: values?.storage_type,
                           }}
                           SelectProps={{
                             native: false,
@@ -153,8 +156,8 @@ export default function AddBin() {
                         >
                           <MenuItem value="Select">Select</MenuItem>
                           {storageType.map((item) => (
-                            <MenuItem key={item._id} value={item.storage_type}>
-                              {item.storage_type}
+                            <MenuItem key={item?._id} value={item?.storage_type}>
+                              {item?.storage_type}
                             </MenuItem>
                           ))}
                         </TextField>
@@ -164,11 +167,11 @@ export default function AddBin() {
                       <FormControl fullWidth>
                         <TextField
                           error={
-                            touched.storage_section &&
-                            Boolean(errors.storage_section)
+                            touched?.storage_section &&
+                            Boolean(errors?.storage_section)
                           }
                           helperText={
-                            touched.storage_section && errors.storage_section
+                            touched?.storage_section && errors?.storage_section
                           }
                           label="Storage Section*"
                           name="storage_section"
@@ -182,8 +185,8 @@ export default function AddBin() {
                     <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                       <FormControl fullWidth>
                         <TextField
-                          error={touched.bin_no && Boolean(errors.bin_no)}
-                          helperText={touched.bin_no && errors.bin_no}
+                          error={touched?.bin_no && Boolean(errors?.bin_no)}
+                          helperText={touched?.bin_no && errors?.bin_no}
                           label="Bin Number*"
                           name="bin_no"
                           value={values.bin_no}
@@ -197,12 +200,12 @@ export default function AddBin() {
                       <FormControl fullWidth>
                         <TextField
                           error={
-                            touched.description && Boolean(errors.description)
+                            touched?.description && Boolean(errors?.description)
                           }
-                          helperText={touched.description && errors.description}
+                          helperText={touched?.description && errors?.description}
                           label="Description*"
                           name="description"
-                          value={values.description}
+                          value={values?.description}
                           onChange={(e) =>
                             setFieldValue("description", e.target.value)
                           }
@@ -213,14 +216,14 @@ export default function AddBin() {
                       <FormControl fullWidth>
                         <TextField
                           error={
-                            touched.bin_capacity && Boolean(errors.bin_capacity)
+                            touched?.bin_capacity && Boolean(errors?.bin_capacity)
                           }
                           helperText={
-                            touched.bin_capacity && errors.bin_capacity
+                            touched?.bin_capacity && errors?.bin_capacity
                           }
                           label="Bin Capacity*"
                           name="bin_capacity"
-                          value={values.bin_capacity}
+                          value={values?.bin_capacity}
                           onChange={(e) =>
                             setFieldValue("bin_capacity", e.target.value)
                           }
@@ -231,14 +234,14 @@ export default function AddBin() {
                       <FormControl fullWidth>
                         <TextField
                           error={
-                            touched.digit_3_code && Boolean(errors.digit_3_code)
+                            touched?.digit_3_code && Boolean(errors?.digit_3_code)
                           }
                           helperText={
-                            touched.digit_3_code && errors.digit_3_code
+                            touched?.digit_3_code && errors?.digit_3_code
                           }
                           label="3 Digit Code*"
                           name="digit_3_code"
-                          value={values.digit_3_code}
+                          value={values?.digit_3_code}
                           onChange={(e) =>
                             setFieldValue("digit_3_code", e.target.value)
                           }
@@ -248,15 +251,30 @@ export default function AddBin() {
                     <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                       <FormControl fullWidth>
                         <TextField
-                          error={touched.type && Boolean(errors.type)}
-                          helperText={touched.type && errors.type}
-                          label="Type*"
+                          label="Bin Type"
                           name="type"
-                          value={values.type}
+                          value={values?.type}
                           onChange={(e) =>
                             setFieldValue("type", e.target.value)
                           }
-                        />
+                          select
+                          fullWidth
+                          error={errors?.type}
+                          helperText={errors?.type}
+                          InputLabelProps={{
+                            shrink: values?.type,
+                          }}
+                          SelectProps={{
+                            native: false,
+                          }}
+                        >
+                          <MenuItem value="Select">Select</MenuItem>
+                          {binType?.map((item) => (
+                            <MenuItem key={item?._id} value={item?._id}>
+                              {item?.type}
+                            </MenuItem>
+                          ))}
+                        </TextField>
                       </FormControl>
                     </Grid>
                   </Grid>

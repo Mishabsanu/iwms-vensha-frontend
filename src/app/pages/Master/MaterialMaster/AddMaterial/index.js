@@ -66,6 +66,7 @@ export default function AddMaterial() {
   const validationSchema = yup.object({
     warehouse_code: yup.string().required("Warehouse code is required"),
     item_type: yup.string("Enter Item Type").required("Item Type is required"),
+    mrp: yup.string("Enter MRP").required("MRP is required"),
     storage_type: yup.string().required("Storage Type is required"),
     sku_description: yup.string().required("SKU Description is required"),
     customer_code: yup.string().required("Customer Code is required"),
@@ -342,6 +343,20 @@ export default function AddMaterial() {
                         value={values.item_life}
                         onChange={(e) =>
                           setFieldValue("item_life", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={touched.mrp && Boolean(errors.mrp)}
+                        helperText={touched.mrp && errors.mrp}
+                        label="MRP*"
+                        name="mtp"
+                        value={values.mrp}
+                        onChange={(e) =>
+                          setFieldValue("mrp", e.target.value)
                         }
                       />
                     </FormControl>
