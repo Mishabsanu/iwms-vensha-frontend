@@ -185,7 +185,7 @@ console.log(forkliftOperatorOutbound,'forkliftOperatorOutbound');
                     },
                   }}
                 >
-                  Sku Description
+                  SKU Description
                 </TableSortLabel>
               </TableCell>
               <TableCell

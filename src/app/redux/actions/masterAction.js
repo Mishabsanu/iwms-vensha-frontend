@@ -21,6 +21,15 @@ import {
   ALL_UNIT_MASTER_FAIL,
   ALL_UNIT_MASTER_REQUEST,
   ALL_UNIT_MASTER_SUCCESS,
+  ALL_BIN_TYPE_MASTER_FAIL,
+  ALL_BIN_TYPE_MASTER_REQUEST,
+  ALL_BIN_TYPE_MASTER_SUCCESS,
+  ALL_UOM_MASTER_FAIL,
+  ALL_UOM_MASTER_REQUEST,
+  ALL_UOM_MASTER_SUCCESS,
+  ALL_AUOM_MASTER_FAIL,
+  ALL_AUOM_MASTER_REQUEST,
+  ALL_AUOM_MASTER_SUCCESS,
   ALL_STORAGE_SEARCH_MASTER_FAIL,
   ALL_STORAGE_SEARCH_MASTER_REQUEST,
   ALL_STORAGE_SEARCH_MASTER_SUCCESS,
@@ -184,6 +193,196 @@ export const getAllProduction =
     } catch (error) {
       dispatch({
         type: ALL_PRODUCTION_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+//Bin Type
+
+export const getAllBinType =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+        searchFields: {
+          string: [
+            "supplier_name",
+            "email_id",
+            "pan_no",
+            "contact_Person_name",
+            "bill_address",
+            "city",
+            "state",
+            "country",
+            "gst_no",
+            "created_employee_id.first_name",
+            "created_employee_id.last_name",
+            "status",
+            "supplier_remarks",
+          ],
+          numbers: ["contact_Person_number", "pincode", "gst_no"],
+        },
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_BIN_TYPE_MASTER_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+        }/bin-type/list-bin-type?${urlParams.toString()}`,
+        body,
+        config
+      );
+      dispatch({
+        type: ALL_BIN_TYPE_MASTER_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_BIN_TYPE_MASTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
+
+//UOM
+
+export const getAllUom =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+        searchFields: {
+          string: [
+            "supplier_name",
+            "email_id",
+            "pan_no",
+            "contact_Person_name",
+            "bill_address",
+            "city",
+            "state",
+            "country",
+            "gst_no",
+            "created_employee_id.first_name",
+            "created_employee_id.last_name",
+            "status",
+            "supplier_remarks",
+          ],
+          numbers: ["contact_Person_number", "pincode", "gst_no"],
+        },
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_UOM_MASTER_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${process.env.REACT_APP_URL}/uom/list-uom?${urlParams.toString()}`,
+        body,
+        config
+      );
+      dispatch({
+        type: ALL_UOM_MASTER_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_UOM_MASTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+//AUOM
+
+export const getAllAuom =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+        searchFields: {
+          string: [
+            "supplier_name",
+            "email_id",
+            "pan_no",
+            "contact_Person_name",
+            "bill_address",
+            "city",
+            "state",
+            "country",
+            "gst_no",
+            "created_employee_id.first_name",
+            "created_employee_id.last_name",
+            "status",
+            "supplier_remarks",
+          ],
+          numbers: ["contact_Person_number", "pincode", "gst_no"],
+        },
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_AUOM_MASTER_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${process.env.REACT_APP_URL}/auom/list-auom?${urlParams.toString()}`,
+        body,
+        config
+      );
+      dispatch({
+        type: ALL_AUOM_MASTER_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_AUOM_MASTER_FAIL,
         payload: error?.response?.data?.message,
       });
     }
@@ -867,6 +1066,7 @@ export const getAllBin =
         { ...body },
         config
       );
+      console.log(data, "data");
 
       dispatch({
         type: ALL_BIN_MASTER_SUCCESS,

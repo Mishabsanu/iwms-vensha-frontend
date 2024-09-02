@@ -126,7 +126,7 @@ export default function ListStockReportTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "150px",
+                  minWidth: "180px",
                   verticalAlign: "middle",
                 }}
               >
@@ -215,6 +215,7 @@ export default function ListStockReportTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "200px",
                 }}
               >
                 <TableSortLabel
@@ -229,7 +230,7 @@ export default function ListStockReportTable({
                     },
                   }}
                 >
-                  Sku Description
+                  SKU Description
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -280,6 +281,7 @@ export default function ListStockReportTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "120px",
                 }}
               >
                 <TableSortLabel
@@ -302,6 +304,7 @@ export default function ListStockReportTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "120px",
                 }}
               >
                 <TableSortLabel
@@ -324,6 +327,7 @@ export default function ListStockReportTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "150px",
                 }}
               >
                 <TableSortLabel

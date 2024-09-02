@@ -1,20 +1,17 @@
 import Div from "@jumbo/shared/Div";
-import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Button,
-  InputAdornment,
-  TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 
 import { getAllBin } from "app/redux/actions/masterAction";
+import SearchGlobal from "app/shared/SearchGlobal";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ListBinTable from "./binTable";
-import SearchGlobal from "app/shared/SearchGlobal";
 
 export default function ListBin() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,6 +23,8 @@ export default function ListBin() {
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
+
+  
 
   //debouncing for search
   const handleSearch = (value) => {

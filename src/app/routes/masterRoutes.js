@@ -1,13 +1,12 @@
 import Page from "@jumbo/shared/Page";
 
-import AddInbound from "app/pages/Inbound/AddInbound";
-import ListInbound from "app/pages/Inbound/ListInbound";
+import AddInbound from "app/pages/GateEntry/Inbound/AddInbound";
+import ListInbound from "app/pages/GateEntry/Inbound/ListInbound";
 import AddCustomer from "app/pages/Master/CustomerMaster/AddCustomer";
 import ListCustomer from "app/pages/Master/CustomerMaster/ListCustomer";
 import AddMaterial from "app/pages/Master/MaterialMaster/AddMaterial";
 import ListMaterial from "app/pages/Master/MaterialMaster/ListMaterial";
-import AddPallet from "app/pages/Master/ProductionLineMaster/AddProductionLine";
-import ListPallet from "app/pages/Master/ProductionLineMaster/ListProductionLine";
+
 import AddStorageType from "app/pages/Master/StorageTypeMaster/AddStorageType";
 import ListStorageType from "app/pages/Master/StorageTypeMaster/ListStorageType";
 import AddVehicle from "app/pages/Master/VehicleMaster/AddVehicle";
@@ -16,29 +15,39 @@ import AddVendor from "app/pages/Master/VendorMaster/AddVendor";
 import ListVendor from "app/pages/Master/VendorMaster/ListVendor";
 import InboundMiddleware from "./middleware/auth/InboundMiddleware";
 
-import VendorMiddleware from "./middleware/auth/VendorMiddleware";
-import palletMiddleware from "./middleware/auth/PalletMiddleware";
 import ProductionLineMiddleware from "./middleware/auth/ProductionLineMiddlewarE";
 import StorageTypeMiddleware from "./middleware/auth/StorageTypeMiddleware";
+import VendorMiddleware from "./middleware/auth/VendorMiddleware";
 import MaterialRouteMiddleware from "./middleware/auth/materialMasterValidRoute";
 
-import VehicleMiddleware from "./middleware/auth/vehicleMiddleware";
-import BinRouteMiddleware from "./middleware/auth/binMiddleware";
-import ListBin from "app/pages/Master/BinMaster/ListBin";
 import AddBin from "app/pages/Master/BinMaster/AddBin";
-import CustomerMiddleware from "./middleware/auth/customerMiddleware";
-import StorageSearchRouteMiddleware from "./middleware/auth/storageSearchValidRoute";
-import ListStorageSearch from "app/pages/Master/StorageSearchMaster/ListStorageSearch";
-import AddStorageSearch from "app/pages/Master/StorageSearchMaster/AddStorageSearch";
-import ListLoading from "app/pages/Master/Loading/ListLoading";
-import AddLoading from "app/pages/Master/Loading/AddLoading";
-import LoadingRouteMiddleware from "./middleware/auth/loadingValidRoute";
-import UnLoadingRouteMiddleware from "./middleware/auth/unLoadingValidRoute";
-import ListUnLoading from "app/pages/Master/Unloading/ListUnLoading";
-import AddUnLoading from "app/pages/Master/Unloading/AddUnLoading";
-import CrossDockRouteMiddleware from "./middleware/auth/crossDockerValidRoute";
-import ListCrossDocke from "app/pages/Master/CrossDockMaster/ListCrossDock";
+import ListBin from "app/pages/Master/BinMaster/ListBin";
 import AddCrossDocke from "app/pages/Master/CrossDockMaster/AddCrossDock";
+import ListCrossDocke from "app/pages/Master/CrossDockMaster/ListCrossDock";
+import AddLoading from "app/pages/Master/Loading/AddLoading";
+import ListLoading from "app/pages/Master/Loading/ListLoading";
+import AddProductionLine from "app/pages/Master/ProductionLineMaster/AddProductionLine";
+import ListProductionLine from "app/pages/Master/ProductionLineMaster/ListProductionLine";
+import AddStorageSearch from "app/pages/Master/StorageSearchMaster/AddStorageSearch";
+import ListStorageSearch from "app/pages/Master/StorageSearchMaster/ListStorageSearch";
+import AddUnLoading from "app/pages/Master/Unloading/AddUnLoading";
+import ListUnLoading from "app/pages/Master/Unloading/ListUnLoading";
+import BinRouteMiddleware from "./middleware/auth/binMiddleware";
+import BinTpyeMiddleware from "./middleware/auth/binTypeMiddleware";
+import CrossDockRouteMiddleware from "./middleware/auth/crossDockerValidRoute";
+import CustomerMiddleware from "./middleware/auth/customerMiddleware";
+import LoadingRouteMiddleware from "./middleware/auth/loadingValidRoute";
+import StorageSearchRouteMiddleware from "./middleware/auth/storageSearchValidRoute";
+import UnLoadingRouteMiddleware from "./middleware/auth/unLoadingValidRoute";
+import VehicleMiddleware from "./middleware/auth/vehicleMiddleware";
+import ListBinType from "app/pages/Master/BinTypeMaster/ListBinType";
+import AddBinType from "app/pages/Master/BinTypeMaster/AddBinType";
+import ListUom from "app/pages/Master/UomMaster/ListUom";
+import AddUom from "app/pages/Master/UomMaster/AddUom";
+import UomMiddleware from "./middleware/auth/uomMiddleware";
+import AuomMiddleware from "./middleware/auth/auomMiddleware";
+import ListAuom from "app/pages/Master/AuomMaster/ListAuom";
+import AddAuom from "app/pages/Master/AuomMaster/AddAuom";
 
 export const masterRoutes = [
   {
@@ -67,25 +76,70 @@ export const masterRoutes = [
   {
     middleware: [
       {
-        element: palletMiddleware,
+        element: BinTpyeMiddleware,
         fallbackPath: "/dashboard",
       },
     ],
     routes: [
       {
-        path: "/dashboard/master/pallet",
-        element: <Page component={ListPallet} layout={"vertical-default"} />,
+        path: "/dashboard/master/bin-type",
+        element: <Page component={ListBinType} layout={"vertical-default"} />,
       },
       {
-        path: "/master/pallet/add",
-        element: <Page component={AddPallet} layout={"vertical-default"} />,
+        path: "/master/bin-type/add",
+        element: <Page component={AddBinType} layout={"vertical-default"} />,
       },
       {
-        path: "/master/pallet/edit",
-        element: <Page component={AddPallet} layout={"vertical-default"} />,
+        path: "/master/bin-type/edit",
+        element: <Page component={AddBinType} layout={"vertical-default"} />,
       },
     ],
   },
+  {
+    middleware: [
+      {
+        element: UomMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/master/uom",
+        element: <Page component={ListUom} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/uom/add",
+        element: <Page component={AddUom} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/uom/edit",
+        element: <Page component={AddUom} layout={"vertical-default"} />,
+      },
+    ],
+  },
+  {
+    middleware: [
+      {
+        element: AuomMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/master/auom",
+        element: <Page component={ListAuom} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/auom/add",
+        element: <Page component={AddAuom} layout={"vertical-default"} />,
+      },
+      {
+        path: "/master/auom/edit",
+        element: <Page component={AddAuom} layout={"vertical-default"} />,
+      },
+    ],
+  },
+
   {
     middleware: [
       {
@@ -96,15 +150,21 @@ export const masterRoutes = [
     routes: [
       {
         path: "/dashboard/master/production-line",
-        element: <Page component={ListPallet} layout={"vertical-default"} />,
+        element: (
+          <Page component={ListProductionLine} layout={"vertical-default"} />
+        ),
       },
       {
         path: "/master/production-line/add",
-        element: <Page component={AddPallet} layout={"vertical-default"} />,
+        element: (
+          <Page component={AddProductionLine} layout={"vertical-default"} />
+        ),
       },
       {
         path: "/master/production-line/edit",
-        element: <Page component={AddPallet} layout={"vertical-default"} />,
+        element: (
+          <Page component={AddProductionLine} layout={"vertical-default"} />
+        ),
       },
     ],
   },
@@ -308,15 +368,11 @@ export const masterRoutes = [
       },
       {
         path: "/master/cross-dock/add",
-        element: (
-          <Page component={AddCrossDocke} layout={"vertical-default"} />
-        ),
+        element: <Page component={AddCrossDocke} layout={"vertical-default"} />,
       },
       {
         path: "/master/cross-dock/edit",
-        element: (
-          <Page component={AddCrossDocke} layout={"vertical-default"} />
-        ),
+        element: <Page component={AddCrossDocke} layout={"vertical-default"} />,
       },
     ],
   },

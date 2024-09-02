@@ -34,6 +34,8 @@ export default function AddVendor() {
     gst_number: state?.gst_number || "",
     pan_number: state?.pan_number || "",
     bank_details: state?.bank_details || "",
+    longitude: state?.longitude || "",
+    latitude: state?.latitude || "",
   };
 
   const validationSchema = yup.object({
@@ -320,6 +322,34 @@ export default function AddVendor() {
                           value={values.bank_details}
                           onChange={(e) =>
                             setFieldValue("bank_details", e.target.value)
+                          }
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
+                      <FormControl fullWidth>
+                        <TextField
+                          error={Boolean(errors.longitude)}
+                          helperText={errors.longitude}
+                          label="Longitude*"
+                          name="longitude"
+                          value={values.longitude}
+                          onChange={(e) =>
+                            setFieldValue("longitude", e.target.value)
+                          }
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4}>
+                      <FormControl fullWidth>
+                        <TextField
+                          error={Boolean(errors.latitude)}
+                          helperText={errors.latitude}
+                          label="Latitude*"
+                          name="latitude"
+                          value={values.latitude}
+                          onChange={(e) =>
+                            setFieldValue("latitude", e.target.value)
                           }
                         />
                       </FormControl>

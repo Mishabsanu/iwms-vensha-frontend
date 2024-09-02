@@ -159,13 +159,13 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Transfer Order No
+                   Order No
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "150px",
+                  minWidth: "180px",
                   verticalAlign: "middle",
                 }}
               >
@@ -232,6 +232,7 @@ export default function ListTransferOrderTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "200px",
                 }}
               >
                 <TableSortLabel
@@ -246,13 +247,14 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Sku Description
+                  SKU Description
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "100px",
                 }}
               >
                 <TableSortLabel
@@ -275,7 +277,7 @@ export default function ListTransferOrderTable({
                   textAlign: "left",
                   verticalAlign: "middle",
                   color: "white",
-                  minWidth: "120px",
+                  minWidth: "100px",
                 }}
               >
                 UOM
@@ -284,6 +286,7 @@ export default function ListTransferOrderTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "120px",
                 }}
               >
                 <TableSortLabel
@@ -298,13 +301,14 @@ export default function ListTransferOrderTable({
                     },
                   }}
                 >
-                  Manufacturing Date
+                  Mfg Date
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "120px",
                 }}
               >
                 <TableSortLabel
@@ -347,6 +351,7 @@ export default function ListTransferOrderTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "120px",
                 }}
               >
                 <TableSortLabel
@@ -368,6 +373,7 @@ export default function ListTransferOrderTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "150px",
                 }}
               >
                 <TableSortLabel
@@ -389,6 +395,7 @@ export default function ListTransferOrderTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "200px",
                 }}
               >
                 <TableSortLabel
@@ -410,7 +417,7 @@ export default function ListTransferOrderTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "180px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -434,6 +441,7 @@ export default function ListTransferOrderTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "120px",
                 }}
               >
                 <TableSortLabel
@@ -455,6 +463,7 @@ export default function ListTransferOrderTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "180px",
                 }}
               >
                 <TableSortLabel
@@ -476,7 +485,7 @@ export default function ListTransferOrderTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "200px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -499,7 +508,7 @@ export default function ListTransferOrderTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "200px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -522,7 +531,7 @@ export default function ListTransferOrderTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "200px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -545,7 +554,7 @@ export default function ListTransferOrderTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "250px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -568,7 +577,7 @@ export default function ListTransferOrderTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "200px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -591,7 +600,7 @@ export default function ListTransferOrderTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "180px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -713,7 +722,6 @@ export default function ListTransferOrderTable({
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.bin === "Cross Dock" ? "Cross Dock" : row?.bin || "-"}
                 </TableCell>
-
               </TableRow>
             ))}
           </TableBody>

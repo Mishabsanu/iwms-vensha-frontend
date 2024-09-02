@@ -81,6 +81,7 @@ export default function ListBinTable({
               <TableCell
                 sx={{
                   textAlign: "left",
+                  minWidth: "150px",
                 }}
               >
                 <TableSortLabel
@@ -101,7 +102,7 @@ export default function ListBinTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "180px",
+                  minWidth: "150px",
                   verticalAlign: "middle",
                   color: "white",
                   px: 1,
@@ -112,7 +113,7 @@ export default function ListBinTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "110px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -135,7 +136,7 @@ export default function ListBinTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "170px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -159,7 +160,7 @@ export default function ListBinTable({
                 sx={{
                   textAlign: "left",
                   px: 1,
-                  minWidth: "80px",
+                  minWidth: "200px",
                   verticalAlign: "middle",
                 }}
               >
@@ -182,6 +183,7 @@ export default function ListBinTable({
                 sx={{
                   textAlign: "left",
                   color: "white",
+                  minWidth: "130px",
                 }}
               >
                 Bin Capacity
@@ -190,6 +192,7 @@ export default function ListBinTable({
                 sx={{
                   textAlign: "left",
                   color: "white",
+                    minWidth: "130px",
                 }}
               >
                 3 Digit Code
@@ -198,6 +201,7 @@ export default function ListBinTable({
                 sx={{
                   textAlign: "left",
                   color: "white",
+                  minWidth: "150px",
                 }}
               >
                Type
@@ -206,6 +210,7 @@ export default function ListBinTable({
                 sx={{
                   textAlign: "left",
                   color: "white",
+                  minWidth: "150px",
                 }}
               >
                 Created Date
@@ -226,27 +231,27 @@ export default function ListBinTable({
             {binMaster?.map((row, i) => (
               <TableRow key={i}>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.storage_type}
+                  {row?.storage_type}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left", px: 1 }}>
-                  {row.storage_section}
+                  {row?.storage_section}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row.bin_no}</TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row.bin_combination}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row?.bin_no}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>{row?.bin_combination}</TableCell>
                 <TableCell sx={{ textAlign: "left", px: 1 }}>
-                  {row.description}
+                  {row?.description}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.bin_capacity}
+                  {row?.bin_capacity}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.digit_3_code}
+                  {row?.digit_3_code}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.type}
+                  {row?.type?.type}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {displayDateFun(row.created_at)}
+                  {displayDateFun(row?.created_at)}
                 </TableCell>
                 {permissions?.bin_master_edit === true && (
                   <TableCell sx={{ textAlign: "left" }}>

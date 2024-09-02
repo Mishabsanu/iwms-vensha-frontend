@@ -1,11 +1,9 @@
 import JumboDdMenu from "@jumbo/components/JumboDdMenu/JumboDdMenu";
-import Div from "@jumbo/shared/Div";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
-  Button,
   Checkbox,
   Pagination,
   Paper,
@@ -16,14 +14,13 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
-  Typography,
+  Typography
 } from "@mui/material";
 import AllApis from "app/Apis";
 import FullScreenLoader from "app/components/ListingPageLoader";
 import { getAllProduction } from "app/redux/actions/masterAction";
 import {
-  displayDateAndTimeFun,
-  displayDateFun,
+  displayDateFun
 } from "app/utils/constants/functions";
 import { Axios } from "index";
 import { useState } from "react";
@@ -275,7 +272,7 @@ export default function ListProductionTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "150px",
+                  minWidth: "130px",
                   verticalAlign: "middle",
                 }}
               >
@@ -297,7 +294,7 @@ export default function ListProductionTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "150px",
+                  minWidth: "120px",
                   verticalAlign: "middle",
                 }}
               >
@@ -313,13 +310,13 @@ export default function ListProductionTable({
                     },
                   }}
                 >
-                  Production Line
+                   Line No
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "150px",
+                  minWidth: "130px",
                   verticalAlign: "middle",
                 }}
               >
@@ -335,13 +332,13 @@ export default function ListProductionTable({
                     },
                   }}
                 >
-                  Process Order
+                   Order Qty
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "150px",
+                  minWidth: "160px",
                   verticalAlign: "middle",
                 }}
               >
@@ -386,6 +383,7 @@ export default function ListProductionTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "200px",
                 }}
               >
                 <TableSortLabel
@@ -400,13 +398,14 @@ export default function ListProductionTable({
                     },
                   }}
                 >
-                  Sku Description
+                  SKU Description
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "80px",
                 }}
               >
                 <TableSortLabel
@@ -429,7 +428,7 @@ export default function ListProductionTable({
                   textAlign: "left",
                   verticalAlign: "middle",
                   color: "white",
-                  minWidth: "120px",
+                  minWidth: "80px",
                 }}
               >
                 UOM
@@ -438,6 +437,7 @@ export default function ListProductionTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "180px",
                 }}
               >
                 <TableSortLabel
@@ -459,6 +459,7 @@ export default function ListProductionTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "150px",
                 }}
               >
                 <TableSortLabel
@@ -480,6 +481,7 @@ export default function ListProductionTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "150px",
                 }}
               >
                 <TableSortLabel
@@ -501,6 +503,7 @@ export default function ListProductionTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "100px",
                 }}
               >
                 <TableSortLabel
@@ -522,6 +525,7 @@ export default function ListProductionTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "80px",
                 }}
               >
                 <TableSortLabel
@@ -543,6 +547,7 @@ export default function ListProductionTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "180px",
                 }}
               >
                 <TableSortLabel
@@ -553,7 +558,7 @@ export default function ListProductionTable({
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white", // Set the color for the active state
+                      color: "white",
                     },
                   }}
                 >
@@ -561,29 +566,6 @@ export default function ListProductionTable({
                 </TableSortLabel>
               </TableCell>
 
-              <TableCell
-                sx={{
-                  textAlign: "left",
-                  minWidth: "80px",
-                  verticalAlign: "middle",
-                  color: "white",
-                }}
-              >
-                <TableSortLabel
-                  active={sortBy === "confirm_date"}
-                  direction={sort}
-                  onClick={() => handleSort("confirm_date")}
-                  sx={{
-                    color: "white",
-                    "&:hover": { color: "white" },
-                    "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white", // Set the color for the active state
-                    },
-                  }}
-                >
-                  Confirm Date
-                </TableSortLabel>
-              </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
@@ -631,9 +613,9 @@ export default function ListProductionTable({
                   <TableCell sx={{ textAlign: "left", px: 1 }}>
                     <Checkbox
                       disabled={
-                        row.status === "Allocated" ||
-                        row.status === "Verified" ||
-                        row.status === "Overflow"
+                        row?.status === "Allocated" ||
+                        row?.status === "Verified" ||
+                        row?.status === "Overflow"
                       }
                       onClick={(event) => handleCheckbox(event, row)}
                       color="primary"
@@ -653,23 +635,27 @@ export default function ListProductionTable({
                     textAlign: "left",
                   }}
                 >
-                  {row.production_line_details.production_line_name}
+                  {row?.production_line_details.production_line_name}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.process_order_qty}
+                  {row?.process_order_qty}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.process_order}
+                  {row?.process_order}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row.sku_code}</TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row.sku_description}
+                  {row?.sku_code}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.sku_description}
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.sut || "-"}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row?.uom}</TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.uom || "-"}
+                </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.transfer_order}
                 </TableCell>
@@ -689,11 +675,11 @@ export default function ListProductionTable({
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.digit_3_codes || "-"}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>
+                {/* <TableCell sx={{ textAlign: "left" }}>
                   {row.confirm_date
                     ? displayDateAndTimeFun(row.confirm_date)
                     : "-"}
-                </TableCell>
+                </TableCell> */}
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.status || "-"}
                 </TableCell>
