@@ -35,6 +35,15 @@ import {
   ALL_LOADING_MASTER_FAIL,
   ALL_LOADING_MASTER_REQUEST,
   ALL_LOADING_MASTER_SUCCESS,
+  ALL_BIN_TYPE_MASTER_FAIL,
+  ALL_BIN_TYPE_MASTER_REQUEST,
+  ALL_BIN_TYPE_MASTER_SUCCESS,
+  ALL_UOM_MASTER_FAIL,
+  ALL_UOM_MASTER_REQUEST,
+  ALL_UOM_MASTER_SUCCESS,
+  ALL_AUOM_MASTER_FAIL,
+  ALL_AUOM_MASTER_REQUEST,
+  ALL_AUOM_MASTER_SUCCESS,
   ALL_UNLOADING_MASTER_FAIL,
   ALL_UNLOADING_MASTER_REQUEST,
   ALL_UNLOADING_MASTER_SUCCESS,
@@ -75,6 +84,9 @@ const INIT_STATE = {
   vendorMaster: [],
   unitMaster: [],
   palleteMaster: [],
+  binTypeMaster: [],
+  uomMaster: [],
+  auomMaster: [],
   customerMaster: [],
   vehicleMaster: [],
   loadingMaster: [],
@@ -153,6 +165,7 @@ export const masterReducer = (state = INIT_STATE, action) => {
         productMaster: [],
         error: action.payload,
       };
+
     //LAODING master
     case ALL_LOADING_MASTER_REQUEST:
       return {
@@ -172,6 +185,69 @@ export const masterReducer = (state = INIT_STATE, action) => {
         ...state,
         loading: false,
         loadingMaster: [],
+        error: action.payload,
+      };
+    //binType Master
+    case ALL_BIN_TYPE_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_BIN_TYPE_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        binTypeMaster: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_BIN_TYPE_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        binTypeMaster: [],
+        error: action.payload,
+      };
+    //uom Master
+    case ALL_UOM_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_UOM_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        uomMaster: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_UOM_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        uomMaster: [],
+        error: action.payload,
+      };
+    //auom Master
+    case ALL_AUOM_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_AUOM_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        auomMaster: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_AUOM_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        auomMaster: [],
         error: action.payload,
       };
     //OUTBOUND master

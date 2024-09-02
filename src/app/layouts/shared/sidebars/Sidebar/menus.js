@@ -18,6 +18,7 @@ const menus = [
     type: "nav-item",
     icon: <DashboardIcon sx={{ fontSize: 20 }} />,
   },
+
   {
     uri: "/dashboard/user",
     isActiveUri: ["/dashboard/adduser", "/dashboard/edituser"],
@@ -26,6 +27,7 @@ const menus = [
     permission: "user_view",
     icon: <PeopleIcon sx={{ fontSize: 20 }} />,
   },
+
   {
     uri: "/dashboard/roles",
     isActiveUri: ["/dashboard/editrole", "/dashboard/addrole"],
@@ -34,6 +36,7 @@ const menus = [
     permission: "role_view",
     icon: <LockPersonOutlinedIcon sx={{ fontSize: 20 }} />,
   },
+
   {
     label: "sidebar.menu.master",
     type: "collapsible",
@@ -41,7 +44,7 @@ const menus = [
     children: [
       {
         uri: "/dashboard/master/production-line",
-        label: "sidebar.menuItem.master.productionLine",
+        label: "sidebar.menuItem.master.production_line",
         isActiveUri: [
           "/master/production-line/add",
           "/master/production-line/edit",
@@ -123,6 +126,30 @@ const menus = [
         icon: <LocalOfferOutlinedIcon sx={{ fontSize: 20 }} />,
       },
       {
+        uri: "/dashboard/master/bin-type",
+        label: "sidebar.menuItem.master.bin_type",
+        isActiveUri: ["/master/bin-type/add", "/master/bin-type/edit"],
+        permission: "bin_type_master_view",
+        type: "nav-item",
+        icon: <LocalOfferOutlinedIcon sx={{ fontSize: 20 }} />,
+      },
+      {
+        uri: "/dashboard/master/uom",
+        label: "sidebar.menuItem.master.uom",
+        isActiveUri: ["/master/uom/add", "/master/uom/edit"],
+        permission: "uom_master_view",
+        type: "nav-item",
+        icon: <LocalOfferOutlinedIcon sx={{ fontSize: 20 }} />,
+      },
+      {
+        uri: "/dashboard/master/auom",
+        label: "sidebar.menuItem.master.auom",
+        isActiveUri: ["/master/auom/add", "/master/auom/edit"],
+        permission: "auom_master_view",
+        type: "nav-item",
+        icon: <LocalOfferOutlinedIcon sx={{ fontSize: 20 }} />,
+      },
+      {
         uri: "/dashboard/master/bin",
         label: "sidebar.menuItem.master.bin",
         isActiveUri: ["/master/bin/add", "/master/bin/edit"],
@@ -148,6 +175,7 @@ const menus = [
       },
     ],
   },
+
   {
     label: "sidebar.menu.ProductionExecutive",
     type: "collapsible",
@@ -163,6 +191,7 @@ const menus = [
       },
     ],
   },
+
   {
     label: "sidebar.menu.WarehouseExecutive",
     type: "collapsible",
@@ -179,14 +208,7 @@ const menus = [
         type: "nav-item",
         icon: <CategoryIcon sx={{ fontSize: 20 }} />,
       },
-      // {
-      //   uri: "/dashboard/warehouseexecutive/bin",
-      //   label: "sidebar.menuItem.WarehouseExecutive.binAllocation",
-      //   isActiveUri: ["/master/bin/add", "/master/bin/edit"],
-      //   permission: "bin_master_view",
-      //   type: "nav-item",
-      //   icon: <ScaleIcon sx={{ fontSize: 20 }} />,
-      // },
+
       {
         uri: "/dashboard/warehouseexecutive/outbound",
         label: "sidebar.menuItem.WarehouseExecutive.outbound",
@@ -227,17 +249,37 @@ const menus = [
       },
     ],
   },
+
   {
-    uri: "/dashboard/transfer-order",
-    isActiveUri: [
-      "/dashboard/edittransfer-order",
-      "/dashboard/addtransfer-order",
+    label: "sidebar.menu.Transaction",
+    type: "collapsible",
+    icon: <StarBorderPurple500Icon sx={{ fontSize: 20 }} />,
+    children: [
+      {
+        uri: "/dashboard/transfer-order",
+        isActiveUri: [
+          "/dashboard/edittransfer-order",
+          "/dashboard/addtransfer-order",
+        ],
+        label: "sidebar.menuItem.Transaction.inbound",
+        type: "nav-item",
+        permission: "transfer_order_view",
+        icon: <MoveUpIcon sx={{ fontSize: 20 }} />,
+      },
+      {
+        uri: "/dashboard/transfer-order",
+        isActiveUri: [
+          "/dashboard/edittransfer-order",
+          "/dashboard/addtransfer-order",
+        ],
+        label: "sidebar.menuItem.Transaction.outbound",
+        type: "nav-item",
+        permission: "transfer_order_view",
+        icon: <MoveUpIcon sx={{ fontSize: 20 }} />,
+      },
     ],
-    label: "sidebar.menuItem.transaction",
-    type: "nav-item",
-    permission: "transfer_order_view",
-    icon: <MoveUpIcon sx={{ fontSize: 20 }} />,
   },
+
   {
     uri: "/dashboard/stock-report",
     isActiveUri: ["/dashboard/editstock-report", "/dashboard/addstock-report"],
@@ -245,6 +287,36 @@ const menus = [
     type: "nav-item",
     permission: "stock_report_view",
     icon: <AssessmentIcon sx={{ fontSize: 20 }} />,
+  },
+
+  {
+    label: "sidebar.menu.Security",
+    type: "collapsible",
+    icon: <StarBorderPurple500Icon sx={{ fontSize: 20 }} />,
+    children: [
+      {
+        uri: "/dashboard/gate-entry-inbound",
+        isActiveUri: [
+          "/gate-entry-inbound/editgate-entry",
+          "/gate-entry-inbound/addgate-entry",
+        ],
+        label: "sidebar.menuItem.Security.inbound",
+        type: "nav-item",
+        permission: "security_view",
+        icon: <BikeScooterIcon sx={{ fontSize: 20 }} />,
+      },
+      {
+        uri: "/dashboard/gate-entry-outbound",
+        isActiveUri: [
+          "/gate-entry-outbound/editgate-entry",
+          "/gate-entry-outbound/addgate-entry",
+        ],
+        label: "sidebar.menuItem.Security.outbound",
+        type: "nav-item",
+        permission: "security_view",
+        icon: <BikeScooterIcon sx={{ fontSize: 20 }} />,
+      },
+    ],
   },
 ];
 

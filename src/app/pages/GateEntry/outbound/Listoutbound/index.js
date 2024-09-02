@@ -1,22 +1,14 @@
 import Div from "@jumbo/shared/Div/Div";
 import { Suspense, useEffect, useState } from "react";
-
-import SearchIcon from "@mui/icons-material/Search";
-import {
-  Box,
-  Button,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { getAllUnit } from "app/redux/actions/masterAction";
+import SearchGlobal from "app/shared/SearchGlobal";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ListInboundTable from "./inboundtable";
-import SearchGlobal from "app/shared/SearchGlobal";
+import ListOutboundTable from "./outboundtable";
 
-export default function ListInbound() {
+export default function ListOutbound() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
@@ -42,7 +34,6 @@ export default function ListInbound() {
       debouncedHandleSearch.cancel();
     };
   }, [searchTerm]);
-  
 
   useEffect(() => {
     dispatch(getAllUnit(searchTerm, sort, sortBy, page));
@@ -51,7 +42,7 @@ export default function ListInbound() {
   return (
     <>
       <Div sx={{ mt: -4 }}>
-        <Typography variant="h1">Inbound Table</Typography>
+        <Typography variant="h1">Gate Entry Outbound</Typography>
         <Box
           sx={{
             display: "flex",
@@ -101,15 +92,15 @@ export default function ListInbound() {
                   maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
                   boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
                 }}
-                onClick={() => navigate("/master/inbound/add")}
+                onClick={() => navigate("/gate-entry-outbound/addgate-entry")}
               >
-                Add Inbound
+                Add Gate Entry
               </Button>
             </Box>
           )}
         </Box>
         <Suspense fallback={<div>Loading...</div>}>
-          <ListInboundTable
+          <ListOutboundTable
             searchTerm={searchTerm}
             page={page}
             setPage={setPage}

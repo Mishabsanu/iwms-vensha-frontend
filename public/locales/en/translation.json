@@ -8,7 +8,9 @@
       "WarehouseExecutive": "Warehouse Executive",
       "ProductionBooking": "Production Booking",
       "Pallet": "Pallet",
-      "ForkliftOperator": "Forklift Operator"
+      "ForkliftOperator": "Forklift Operator",
+      "Security": "Security",
+      "Transaction": "Transaction"
     },
     "menuItem": {
       "dashboard": "Dashboard",
@@ -17,10 +19,10 @@
       "ProductionBooking": "Pallet",
       "Pallet": "BIN ",
       "stockReport": "Stock Report",
-      "transaction": "Transaction Table",
+
       "master": {
         "material": "Materials",
-        "productionLine": "Production Line",
+        "production_line": "Production Line",
         "vehicle": "Vehicle",
         "customer": "Customer",
         "vendor": "Vendor",
@@ -30,17 +32,27 @@
         "employee": "Employee",
         "bin": "Bin",
         "loading": "Loading",
-        "unloading": "Unloading"
+        "unloading": "Unloading",
+        "bin_type": "Bin Type",
+        "uom": "Uom",
+        "auom": "Auom"
       },
       "WarehouseExecutive": {
         "outbound": "Outbound",
-        "inbound": "Inbound",
-        "binAllocation": "Bin Table"
+        "inbound": "Inbound"
       },
       "ProductionExecutive": {
         "production": "production"
       },
+      "Transaction": {
+        "inbound": "inbound",
+        "outbound": "Outbound"
+      },
       "ForkliftOperator": {
+        "inbound": "inbound",
+        "outbound": "Outbound"
+      },
+      "Security": {
         "inbound": "inbound",
         "outbound": "Outbound"
       }

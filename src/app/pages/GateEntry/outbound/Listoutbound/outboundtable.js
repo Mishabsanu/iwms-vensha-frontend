@@ -1,4 +1,5 @@
 import JumboDdMenu from "@jumbo/components/JumboDdMenu/JumboDdMenu";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
@@ -13,12 +14,15 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
+import { getAllUnit } from "app/redux/actions/masterAction";
+import { updateBin } from "app/services/apis/updateBin";
 import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
-export default function ListBinTable({
+export default function ListOutboundTable({
   searchTerm,
   page,
   setPage,
@@ -27,11 +31,10 @@ export default function ListBinTable({
   setSort,
   setSortBy,
 }) {
-  const { binMaster, TotalPage, loading } = useSelector(
+  const { unitMaster, TotalPage, loading } = useSelector(
     (state) => state.masterReducer
   );
   const [loader, setLoader] = useState(false);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const permissions = useSelector(
@@ -39,7 +42,7 @@ export default function ListBinTable({
   );
 
   const handleSort = (property) => {
-    setSort(sort === "asc" ? "desc" : "asc");
+    setSort(sort == "asc" ? "desc" : "asc");
     setSortBy(property);
     setPage(1);
   };
@@ -47,11 +50,48 @@ export default function ListBinTable({
   const handleItemAction = (menuItem) => {
     switch (menuItem.action) {
       case "edit":
-        navigate("/master/bin/edit", { state: menuItem?.data });
+        navigate("/master/item-code/edit", { state: menuItem?.data });
         break;
+      case "editStatus":
+        Swal.fire({
+          title: `Are you sure you want to ${
+            menuItem.data.status == "active" ? "Deactivate ?" : "Activate ?"
+          }`,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes",
+          cancelButtonText: "No",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            handleStatusChange(menuItem.data);
+          }
+        });
+        break;
+    }
+  };
 
-      default:
-        break;
+  const handleStatusChange = async (row) => {
+    try {
+      setLoader(true);
+      const data = await updateBin(
+        {
+          status: row.status == "active" ? "inactive" : "active",
+        },
+        row._id
+      );
+      if (data?.status == 200) {
+        dispatch(getAllUnit("", "desc", "updated_at", 1));
+        Swal.fire({
+          icon: "success",
+          title: "Status Updated",
+          text: "",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+      }
+    } catch (error) {
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -81,22 +121,22 @@ export default function ListBinTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "150px",
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "storage_type"}
+                  active={sortBy === "date"}
                   direction={sort}
-                  onClick={() => handleSort("storage_type")}
+                  onClick={() => handleSort("date")}
                   sx={{
+                    //   maxWidth: "70px",
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
+                      color: "white", // Set the color for the active state
                     },
                   }}
                 >
-                  Storage Type
+                  Date
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -108,94 +148,113 @@ export default function ListBinTable({
                   px: 1,
                 }}
               >
-                Storage Section
+                LR Number
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "110px",
+                  minWidth: "160px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "bin_no"}
+                  active={sortBy === "truck_number"}
                   direction={sort}
-                  onClick={() => handleSort("bin_no")}
+                  onClick={() => handleSort("truck_number")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
+                      color: "white", // Set the color for the active state
                     },
                   }}
                 >
-                  Bin No
+                  Truck Number
                 </TableSortLabel>
               </TableCell>
+
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "170px",
+                  minWidth: "150px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "bin_combination"}
+                  active={sortBy === "truck_number"}
                   direction={sort}
-                  onClick={() => handleSort("bin_combination")}
+                  onClick={() => handleSort("truck_number")}
                   sx={{
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
+                      color: "white", // Set the color for the active state
                     },
                   }}
                 >
-                 Bin Combination
+                  Truck Type
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
                   px: 1,
-                  minWidth: "200px",
+                  minWidth: "150px",
                   verticalAlign: "middle",
                 }}
               >
                 <TableSortLabel
-                  active={sortBy === "description"}
+                  active={sortBy === "from_vendor"}
                   direction={sort}
-                  onClick={() => handleSort("description")}
+                  onClick={() => handleSort("from_vendor")}
                   sx={{
+                    
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
-                      color: "white",
+                      color: "white", // Set the color for the active state
                     },
                   }}
                 >
-                  Description
+                  {" "}
+                  From Vendor
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
-                  color: "white",
-                  minWidth: "130px",
+                  px: 1,
+                  minWidth: "150px",
+                  verticalAlign: "middle",
                 }}
               >
-                Bin Capacity
+                <TableSortLabel
+                  active={sortBy === "truck_type"}
+                  direction={sort}
+                  onClick={() => handleSort("truck_type")}
+                  sx={{
+                   
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Customer Name
+                </TableSortLabel>
               </TableCell>
+
               <TableCell
                 sx={{
                   textAlign: "left",
                   color: "white",
-                    minWidth: "130px",
+                  minWidth: "150px",
                 }}
               >
-                3 Digit Code
+                P.O Number
               </TableCell>
               <TableCell
                 sx={{
@@ -204,7 +263,7 @@ export default function ListBinTable({
                   minWidth: "150px",
                 }}
               >
-               Type
+                Invoice Number
               </TableCell>
               <TableCell
                 sx={{
@@ -213,9 +272,27 @@ export default function ListBinTable({
                   minWidth: "150px",
                 }}
               >
-                Created Date
+                Invoice Qty
               </TableCell>
-              {permissions?.bin_master_edit === true && (
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  color: "white",
+                  minWidth: "150px",
+                }}
+              >
+                Invoice Value
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  color: "white",
+                  minWidth: "150px",
+                }}
+              >
+                EWay Bill Number
+              </TableCell>
+              {permissions?.grade_master_edit == true && (
                 <TableCell
                   sx={{
                     textAlign: "left",
@@ -228,40 +305,66 @@ export default function ListBinTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {binMaster?.map((row, i) => (
+            {unitMaster?.map((row, i) => (
               <TableRow key={i}>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.storage_type}
+                  {displayDateFun(row.date)}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left", px: 1 }}>
-                  {row?.storage_section}
+                  {row?.lr_number ? row?.lr_number : "-"}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row?.bin_no}</TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row?.bin_combination}</TableCell>
-                <TableCell sx={{ textAlign: "left", px: 1 }}>
-                  {row?.description}
+                <TableCell
+                  sx={{ textAlign: "left", textTransform: "capitalize" }}
+                >
+                  {row?.truck_number}{" "}
+                </TableCell>
+                <TableCell
+                  sx={{
+                    textAlign: "left",
+                    px: 1,
+                    textTransform: "capitalize",
+                  }}
+                >
+                  {row?.truck_type}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.bin_capacity}
+                  {row?.from_vendor}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.digit_3_code}
+                  {row?.customer_name}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.type?.type}
+                  {row?.po_number}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {displayDateFun(row?.created_at)}
+                  {row?.invoice_number}
                 </TableCell>
-                {permissions?.bin_master_edit === true && (
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.invoice_qty}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.invoice_value}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.eway_bill_number}
+                </TableCell>
+                {permissions?.item_code_master_edit == true && (
                   <TableCell sx={{ textAlign: "left" }}>
                     <JumboDdMenu
                       icon={<MoreHorizIcon />}
                       menuItems={[
                         {
                           icon: <EditIcon />,
-                          title: "Edit Bin Details",
+                          title: "Edit Item Type Details",
                           action: "edit",
+                          data: row,
+                        },
+                        {
+                          icon: <AutorenewIcon />,
+                          title: `${
+                            row?.status == "active" ? "Deactivate" : "Activate"
+                          }`,
+                          action: "editStatus",
                           data: row,
                         },
                       ]}

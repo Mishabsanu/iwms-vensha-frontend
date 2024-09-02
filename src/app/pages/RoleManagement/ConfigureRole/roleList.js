@@ -70,6 +70,10 @@ export default function PermissionList() {
           vendor_master_edit: false,
           vendor_master_create: false,
 
+          bin_type_master_view: false,
+          bin_type_master_edit: false,
+          bin_type_master_create: false,
+
           vehicle_master_view: false,
           vehicle_master_edit: false,
           vehicle_master_create: false,
@@ -114,6 +118,14 @@ export default function PermissionList() {
           cross_dock_master_edit: false,
           cross_dock_master_create: false,
 
+          uom_master_view: false,
+          uom_master_edit: false,
+          uom_master_create: false,
+
+          auom_master_view: false,
+          auom_master_edit: false,
+          auom_master_create: false,
+
           stok_report_view: false,
           stok_report_edit: false,
           stok_report_create: false,
@@ -121,6 +133,10 @@ export default function PermissionList() {
           transfer_order_view: false,
           transfer_order_edit: false,
           transfer_order_create: false,
+          
+          security_view: false,
+          security_edit: false,
+          security_create: false,
 
           outbound_master_view: false,
           outbound_master_edit: false,
@@ -399,6 +415,8 @@ export default function PermissionList() {
           <Typography>Create</Typography>
         </Div>
       </Div>
+
+
       <Div sx={{ display: "flex", alignItems: "center" }}>
         <Typography sx={headingStyle}>Customer Master</Typography>
         <Div sx={checkboxStyle}>
@@ -422,6 +440,60 @@ export default function PermissionList() {
             checked={check.customer_master_create}
             onChange={handleChange}
             name="customer_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>UOM Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.uom_master_view}
+            onChange={handleChange}
+            name="uom_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.uom_master_edit}
+            onChange={handleChange}
+            name="uom_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.uom_master_create}
+            onChange={handleChange}
+            name="uom_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>AUOM Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.auom_master_view}
+            onChange={handleChange}
+            name="auom_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.auom_master_edit}
+            onChange={handleChange}
+            name="auom_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.auom_master_create}
+            onChange={handleChange}
+            name="auom_master_create"
           />
           <Typography>Create</Typography>
         </Div>
@@ -783,6 +855,33 @@ export default function PermissionList() {
         </Div>
       </Div>
       <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Security</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.security_view}
+            onChange={handleChange}
+            name="security_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.security_edit}
+            onChange={handleChange}
+            name="security_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.security_create}
+            onChange={handleChange}
+            name="security_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
         <Typography sx={headingStyle}>Stock Report</Typography>
         <Div sx={checkboxStyle}>
           <GreenCheckbox
@@ -805,6 +904,33 @@ export default function PermissionList() {
             checked={check.stock_report_create}
             onChange={handleChange}
             name="stock_report_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Bin Type</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.bin_type_master_view}
+            onChange={handleChange}
+            name="bin_type_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.bin_type_master_edit}
+            onChange={handleChange}
+            name="bin_type_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.bin_type_master_create}
+            onChange={handleChange}
+            name="bin_type_master_create"
           />
           <Typography>Create</Typography>
         </Div>

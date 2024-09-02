@@ -1,19 +1,14 @@
 import Div from "@jumbo/shared/Div";
-import {
-  Box,
-  Button,
-  Typography
-} from "@mui/material";
-
-import { getAllBin } from "app/redux/actions/masterAction";
+import { Box, Button, Typography } from "@mui/material";
+import { getAllBinType } from "app/redux/actions/masterAction";
 import SearchGlobal from "app/shared/SearchGlobal";
 import { debounce } from "lodash";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ListBinTable from "./binTable";
+import BinTypeTable from "./binTypeTable";
 
-export default function ListBin() {
+export default function ListBinType() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
@@ -24,12 +19,10 @@ export default function ListBin() {
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
 
-  
-
-  //debouncing for search
+  // Handle search and API call
   const handleSearch = (value) => {
     setPage(1);
-    dispatch(getAllBin(value, sort, sortBy, 1));
+    dispatch(getAllBinType(value, sort, sortBy, 1));
   };
 
   const debouncedHandleSearch = debounce(handleSearch, 500);
@@ -40,15 +33,14 @@ export default function ListBin() {
       debouncedHandleSearch.cancel();
     };
   }, [searchTerm]);
-  
 
   useEffect(() => {
-    dispatch(getAllBin(searchTerm, sort, sortBy, page));
+    dispatch(getAllBinType(searchTerm, sort, sortBy, page));
   }, [sort, page]);
+
   return (
     <Div sx={{ mt: -4 }}>
-      <Typography variant="h1">Bin Master</Typography>
-
+      <Typography variant="h1">Bin Type Master</Typography>
       <Box
         sx={{
           display: "flex",
@@ -79,7 +71,7 @@ export default function ListBin() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </Box>
-        {permissions?.bin_master_create && (
+        {permissions?.bin_type_master_create && (
           <Box
             sx={{
               display: "flex",
@@ -98,14 +90,14 @@ export default function ListBin() {
                 maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
                 boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
               }}
-              onClick={() => navigate("/master/bin/add")}
+              onClick={() => navigate("/master/bin-type/add")}
             >
-              Add New Bin
+              Add Bin Type
             </Button>
           </Box>
         )}
       </Box>
-      <ListBinTable
+      <BinTypeTable
         searchTerm={searchTerm}
         page={page}
         setPage={setPage}

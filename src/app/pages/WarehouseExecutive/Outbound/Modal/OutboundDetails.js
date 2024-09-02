@@ -121,7 +121,7 @@ export const OutboundDetails = ({ open, setOpen, rowData, onSelect }) => {
 
   const handleTransferOrderOpen = () => {
     setTransferOrderDialogOpen(true);
-    setOpen(false)
+    // setOpen(false)
   };
 
   const handleTransferOrderClose = () => {

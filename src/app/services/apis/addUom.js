@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const addInbound = async (details) => {
+export const addUom = async (details) => {
   try {
     const config = {
       withCredentials: true,
@@ -9,8 +9,8 @@ export const addInbound = async (details) => {
       },
     };
     const data = await axios.post(
-      `${process.env.REACT_APP_URL}/inbound/add-inbound`, details,
-      // { ...details, role_name: details.role_name.role_name },
+      `${process.env.REACT_APP_URL}/uom/add-uom`,
+      details,
       config
     );
     // console.log(data);
