@@ -17,6 +17,7 @@
       "ProductionBooking": "Pallet",
       "Pallet": "BIN ",
       "stockReport": "Stock Report",
+      "outboundTransaction":"Outbound Transaction",
       "transaction": "Transaction Table",
       "master": {
         "material": "Materials",

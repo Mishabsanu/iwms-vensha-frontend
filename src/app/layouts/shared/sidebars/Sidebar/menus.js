@@ -246,6 +246,14 @@ const menus = [
     permission: "stock_report_view",
     icon: <AssessmentIcon sx={{ fontSize: 20 }} />,
   },
+  {
+    uri: "/dashboard/outbound-transaction",
+    isActiveUri: ["/dashboard/editoutbound-transaction", "/dashboard/addoutbound-transaction"],
+    label: "sidebar.menuItem.outbound-transaction",
+    type: "nav-item",
+    permission: "outbound-transaction_view",
+    icon: <AssessmentIcon sx={{ fontSize: 20 }} />,
+  },
 ];
 
 export default menus;
