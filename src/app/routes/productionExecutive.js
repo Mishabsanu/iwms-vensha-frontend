@@ -8,7 +8,7 @@ import OutboundRouteMiddleware from "./middleware/auth/outboundRouteMiddleware";
 import AddOutbound from "app/pages/WarehouseExecutive/Outbound/AddOutbound";
 import ListOutbound from "app/pages/WarehouseExecutive/Outbound/ListOutbound";
 
-const warehouseExecutive = [
+const productionExecutive = [
   {
     middleware: [
       {
@@ -18,18 +18,18 @@ const warehouseExecutive = [
     ],
     routes: [
       {
-        path: "/dashboard/warehouseexecutive/production",
+        path: "/dashboard/productionexecutive/production",
         element: (
           <Page component={ListProduction} layout={"vertical-default"} />
         ),
       },
 
       {
-        path: "/dashboard/addproduction",
+        path: "/dashboard/productionexecutive/addproduction",
         element: <Page component={AddProduction} layout={"vertical-default"} />,
       },
       {
-        path: "/dashboard/editproduction",
+        path: "/dashboard/productionexecutive/editproduction",
         element: <Page component={AddProduction} layout={"vertical-default"} />,
       },
     ],
@@ -75,4 +75,4 @@ const warehouseExecutive = [
   },
 ];
 
-export default warehouseExecutive;
+export default productionExecutive;

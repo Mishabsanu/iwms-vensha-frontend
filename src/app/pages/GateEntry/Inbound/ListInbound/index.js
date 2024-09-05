@@ -2,7 +2,7 @@ import Div from "@jumbo/shared/Div/Div";
 import { Suspense, useEffect, useState } from "react";
 
 import { Box, Button, Typography } from "@mui/material";
-import { getAllUnit } from "app/redux/actions/masterAction";
+import { getAllGateEntryInbound } from "app/redux/actions/masterAction";
 import SearchGlobal from "app/shared/SearchGlobal";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,7 +24,7 @@ export default function ListInbound() {
   //debouncing for search
   const handleSearch = (value) => {
     setPage(1);
-    dispatch(getAllUnit(value, sort, sortBy, 1));
+    dispatch(getAllGateEntryInbound(value, sort, sortBy, 1));
   };
 
   const debouncedHandleSearch = debounce(handleSearch, 500);
@@ -37,7 +37,7 @@ export default function ListInbound() {
   }, [searchTerm]);
 
   useEffect(() => {
-    dispatch(getAllUnit(searchTerm, sort, sortBy, page));
+    dispatch(getAllGateEntryInbound(searchTerm, sort, sortBy, page));
   }, [sort, page]);
 
   return (
@@ -93,7 +93,7 @@ export default function ListInbound() {
                   maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
                   boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
                 }}
-                onClick={() => navigate("/gate-entry-inbound/addgate-entry")}
+                onClick={() => navigate("/gate-entry-inbound/add")}
               >
                 Add Gate Entry
               </Button>

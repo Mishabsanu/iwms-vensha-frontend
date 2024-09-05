@@ -19,7 +19,7 @@
       "ProductionBooking": "Pallet",
       "Pallet": "BIN ",
       "stockReport": "Stock Report",
-
+      "transaction": "Transaction Table",
       "master": {
         "material": "Materials",
         "production_line": "Production Line",

@@ -1,20 +1,16 @@
 import Div from "@jumbo/shared/Div/Div";
 import { Suspense, useEffect, useState } from "react";
 
-import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
-  Button,
-  InputAdornment,
-  TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import { getAllForkliftOperatorOutbound } from "app/redux/actions/masterAction";
+import SearchGlobal from "app/shared/SearchGlobal";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ListForkliftOperatorOutboundTable from "./forkliftOperatortableOutbound";
-import SearchGlobal from "app/shared/SearchGlobal";
+import ListForkliftOperatorOutboundTable from "./forkliftOperatortable";
 
 export default function ListForkliftOperatorOutbound() {
   const [searchTerm, setSearchTerm] = useState("");

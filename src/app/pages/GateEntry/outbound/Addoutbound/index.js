@@ -139,7 +139,7 @@ export default function AddOutbound() {
   return (
     <Div sx={{ mt: -4 }}>
       <Typography variant="h1">
-        {pathname === "/gate-entry-outbound/addgate-entry"
+        {pathname === "/gate-entry-outbound/add"
           ? "Add New Outbound Gate Entry"
           : "Edit Outbound Gate Entry"}
       </Typography>

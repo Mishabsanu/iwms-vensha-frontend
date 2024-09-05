@@ -97,7 +97,7 @@ export default function AddInbound() {
   const onUserSave = async (values) => {
     setSubmitting(true);
     try {
-      if (pathname === "/dashboard/edituser") {
+      if (pathname === "/gate-entry-inbound/edit") {
         const response = await updateGateEntryInbound({
           ...values,
           id: state._id,
@@ -109,7 +109,7 @@ export default function AddInbound() {
             timer: 1000,
             showConfirmButton: false,
           });
-          navigate("/dashboard/master/inbound");
+          navigate("/dashboard/gate-entry-inbound");
         } else {
           throw new Error(response.message);
         }
@@ -122,7 +122,7 @@ export default function AddInbound() {
             timer: 1000,
             showConfirmButton: false,
           });
-          navigate("/dashboard/master/inbound");
+          navigate("/dashboard/gate-entry-inbound");
         } else {
           throw new Error(response.data?.message);
         }
@@ -139,7 +139,7 @@ export default function AddInbound() {
   return (
     <Div sx={{ mt: -4 }}>
       <Typography variant="h1">
-        {pathname === "/gate-entry-inbound/addgate-entry"
+        {pathname === "/gate-entry-inbound/add"
           ? "Add New Inbound Gate Entry"
           : "Edit Inbound Gate Entry"}
       </Typography>

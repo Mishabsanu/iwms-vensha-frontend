@@ -1,5 +1,4 @@
 import JumboDdMenu from "@jumbo/components/JumboDdMenu/JumboDdMenu";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
@@ -14,14 +13,10 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
-import { getAllUnit } from "app/redux/actions/masterAction";
-import { updateBin } from "app/services/apis/updateBin";
 import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-
 export default function ListInboundTable({
   searchTerm,
   page,
@@ -31,11 +26,10 @@ export default function ListInboundTable({
   setSort,
   setSortBy,
 }) {
-  const { unitMaster, TotalPage, loading } = useSelector(
+  const { inboundGateEntry, TotalPage, loading } = useSelector(
     (state) => state.masterReducer
   );
   const [loader, setLoader] = useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
@@ -50,48 +44,9 @@ export default function ListInboundTable({
   const handleItemAction = (menuItem) => {
     switch (menuItem.action) {
       case "edit":
-        navigate("/master/item-code/edit", { state: menuItem?.data });
+        navigate("/gate-entry-inbound/edit", { state: menuItem?.data });
         break;
-      case "editStatus":
-        Swal.fire({
-          title: `Are you sure you want to ${
-            menuItem.data.status == "active" ? "Deactivate ?" : "Activate ?"
-          }`,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Yes",
-          cancelButtonText: "No",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            handleStatusChange(menuItem.data);
-          }
-        });
-        break;
-    }
-  };
-
-  const handleStatusChange = async (row) => {
-    try {
-      setLoader(true);
-      const data = await updateBin(
-        {
-          status: row.status == "active" ? "inactive" : "active",
-        },
-        row._id
-      );
-      if (data?.status == 200) {
-        dispatch(getAllUnit("", "desc", "updated_at", 1));
-        Swal.fire({
-          icon: "success",
-          title: "Status Updated",
-          text: "",
-          timer: 1000,
-          showConfirmButton: false,
-        });
-      }
-    } catch (error) {
-    } finally {
-      setLoader(false);
+      default:
     }
   };
 
@@ -210,7 +165,6 @@ export default function ListInboundTable({
                   direction={sort}
                   onClick={() => handleSort("from_vendor")}
                   sx={{
-                    
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
@@ -235,7 +189,6 @@ export default function ListInboundTable({
                   direction={sort}
                   onClick={() => handleSort("truck_type")}
                   sx={{
-                   
                     color: "white",
                     "&:hover": { color: "white" },
                     "&.MuiTableSortLabel-root.Mui-active": {
@@ -292,11 +245,18 @@ export default function ListInboundTable({
               >
                 EWay Bill Number
               </TableCell>
-              {permissions?.grade_master_edit == true && (
+              {permissions?.security_edit == true && (
                 <TableCell
                   sx={{
                     textAlign: "left",
+                    minWidth: "40px",
+                    verticalAlign: "middle",
                     color: "white",
+                    position: "sticky",
+                    right: 0,
+                    height: "58px",
+                    zIndex: 1,
+                    bgcolor: "#7352C7",
                   }}
                 >
                   Action
@@ -305,7 +265,7 @@ export default function ListInboundTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {unitMaster?.map((row, i) => (
+            {inboundGateEntry?.map((row, i) => (
               <TableRow key={i}>
                 <TableCell sx={{ textAlign: "left" }}>
                   {displayDateFun(row.date)}
@@ -348,23 +308,24 @@ export default function ListInboundTable({
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.eway_bill_number}
                 </TableCell>
-                {permissions?.item_code_master_edit == true && (
-                  <TableCell sx={{ textAlign: "left" }}>
+                {permissions?.security_edit == true && (
+                  <TableCell
+                    sx={{
+                      textAlign: "left",
+                      px: 1,
+                      position: "sticky",
+                      right: 0,
+                      zIndex: 1,
+                      bgcolor: "white",
+                    }}
+                  >
                     <JumboDdMenu
                       icon={<MoreHorizIcon />}
                       menuItems={[
                         {
                           icon: <EditIcon />,
-                          title: "Edit Item Type Details",
+                          title: "Edit Details",
                           action: "edit",
-                          data: row,
-                        },
-                        {
-                          icon: <AutorenewIcon />,
-                          title: `${
-                            row?.status == "active" ? "Deactivate" : "Activate"
-                          }`,
-                          action: "editStatus",
                           data: row,
                         },
                       ]}

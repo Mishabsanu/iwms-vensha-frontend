@@ -16,9 +16,12 @@ import {
   ALL_STORAGE_SEARCH_MASTER_SUCCESS,
   ALL_PRODUCT_MASTER_SUCCESS,
   ALL_SUPPLIER_MASTER_SUCCESS,
-  ALL_UNIT_MASTER_FAIL,
-  ALL_UNIT_MASTER_REQUEST,
-  ALL_UNIT_MASTER_SUCCESS,
+  ALL_INBOUND_GATE_ENTRY_FAIL,
+  ALL_INBOUND_GATE_ENTRY_REQUEST,
+  ALL_INBOUND_GATE_ENTRY_SUCCESS,
+  ALL_OUTBOUND_GATE_ENTRY_FAIL,
+  ALL_OUTBOUND_GATE_ENTRY_REQUEST,
+  ALL_OUTBOUND_GATE_ENTRY_SUCCESS,
   ALL_VENDOR_MASTER_FAIL,
   ALL_VENDOR_MASTER_REQUEST,
   ALL_VENDOR_MASTER_SUCCESS,
@@ -82,7 +85,8 @@ const INIT_STATE = {
   storageTypeMaster: [],
   storageSearchMaster: [],
   vendorMaster: [],
-  unitMaster: [],
+  inboundGateEntry: [],
+  outboundGateEntry: [],
   palleteMaster: [],
   binTypeMaster: [],
   uomMaster: [],
@@ -549,25 +553,46 @@ export const masterReducer = (state = INIT_STATE, action) => {
         error: action.payload,
       };
 
-    //unit master
-    case ALL_UNIT_MASTER_REQUEST:
+    // INBOUND_GATE_ENTRY
+    case ALL_INBOUND_GATE_ENTRY_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case ALL_UNIT_MASTER_SUCCESS:
+    case ALL_INBOUND_GATE_ENTRY_SUCCESS:
       return {
         ...state,
         loading: false,
-        unitMaster: action.payload.data,
+        inboundGateEntry: action.payload.data,
         TotalPage: action.payload.totalPage,
       };
 
-    case ALL_UNIT_MASTER_FAIL:
+    case ALL_INBOUND_GATE_ENTRY_FAIL:
       return {
         ...state,
         loading: false,
-        unitMaster: [],
+        inboundGateEntry: [],
+        error: action.payload,
+      };
+    // OUTBOUND_GATE_ENTRY
+    case ALL_OUTBOUND_GATE_ENTRY_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_OUTBOUND_GATE_ENTRY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        outboundGateEntry: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_OUTBOUND_GATE_ENTRY_FAIL:
+      return {
+        ...state,
+        loading: false,
+        outboundGateEntry: [],
         error: action.payload,
       };
 

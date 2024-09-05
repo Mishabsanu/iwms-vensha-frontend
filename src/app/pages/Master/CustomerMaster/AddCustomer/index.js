@@ -3,14 +3,19 @@ import { LoadingButton } from "@mui/lab";
 import {
   Button,
   Grid,
+  IconButton,
   Typography,
   TextField,
   FormControl,
 } from "@mui/material";
 import { addCustomer, UpdateCustomer } from "app/services/apis/addCustomer";
-import { Formik, Form } from "formik";
+import { Formik, Form, FieldArray, Field } from "formik";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+
 import Swal from "sweetalert2";
 import * as yup from "yup";
 
@@ -34,6 +39,28 @@ export default function AddCustomer() {
     gst_number: state?.gst_number || "",
     pan_number: state?.pan_number || "",
     credit_limit: state?.credit_limit || "",
+    longitude: state?.longitude || "",
+    latitude: state?.latitude || "",
+    bill_to_code: state?.bill_to_code || "",
+    bill_to_address: state?.bill_to_address || "",
+    bill_to_city: state?.bill_to_city || "",
+    bill_to_district: state?.bill_to_district || "",
+    bill_to_state: state?.bill_to_state || "",
+    bill_to_contact_person: state?.bill_to_contact_person || "",
+    bill_to_email: state?.bill_to_email || "",
+    bill_to_zone: state?.bill_to_zone || "",
+    ship_to: state?.ship_to || [
+      {
+        ship_to_code: "",
+        ship_to_address: "",
+        ship_to_city: "",
+        ship_to_district: "",
+        ship_to_state: "",
+        ship_to_contact_person: "",
+        ship_to_email: "",
+        ship_to_zone: "",
+      },
+    ],
   };
 
   const validationSchema = yup.object({
@@ -54,8 +81,8 @@ export default function AddCustomer() {
       .string("Enter Phone Number")
       .required("Phone Number is required"),
     contact_person: yup
-      .string("Enter contact person")
-      .required("contact person is required"),
+      .string("Enter Contact Person")
+      .required("Contact Person is required"),
     email: yup
       .string("Enter Email")
       .email("Enter a valid email")
@@ -72,6 +99,60 @@ export default function AddCustomer() {
     credit_limit: yup
       .number("Enter Credit Limit")
       .required("Credit Limit is required"),
+    bill_to_code: yup
+      .string("Enter Bill To Code")
+      .required("Bill To Code is required"),
+    bill_to_address: yup
+      .string("Enter Bill To Address")
+      .required("Bill To Address is required"),
+    bill_to_city: yup
+      .string("Enter Bill To City")
+      .required("Bill To City is required"),
+    bill_to_district: yup
+      .string("Enter Bill To District")
+      .required("Bill To District is required"),
+    bill_to_state: yup
+      .string("Enter Bill To State")
+      .required("Bill To State is required"),
+    bill_to_contact_person: yup
+      .string("Enter Bill To Contact Person")
+      .required("Bill To Contact Person is required"),
+    bill_to_email: yup
+      .string("Enter Bill To Email")
+      .email("Enter a valid email")
+      .required("Bill To Email is required"),
+    bill_to_zone: yup
+      .string("Enter Bill To Zone")
+      .required("Bill To Zone is required"),
+    ship_to: yup.array().of(
+      yup.object({
+        ship_to_code: yup
+          .string("Enter Ship To Code")
+          .required("Ship To Code is required"),
+        ship_to_address: yup
+          .string("Enter Ship To Address")
+          .required("Ship To Address is required"),
+        ship_to_city: yup
+          .string("Enter Ship To City")
+          .required("Ship To City is required"),
+        ship_to_district: yup
+          .string("Enter Ship To District")
+          .required("Ship To District is required"),
+        ship_to_state: yup
+          .string("Enter Ship To State")
+          .required("Ship To State is required"),
+        ship_to_contact_person: yup
+          .string("Enter Ship To Contact Person")
+          .required("Ship To Contact Person is required"),
+        ship_to_email: yup
+          .string("Enter Ship To Email")
+          .email("Enter a valid email")
+          .required("Ship To Email is required"),
+        ship_to_zone: yup
+          .string("Enter Ship To Zone")
+          .required("Ship To Zone is required"),
+      })
+    ),
   });
 
   const onCustomerSave = async (values) => {
@@ -128,7 +209,9 @@ export default function AddCustomer() {
         >
           {({ values, errors, setFieldValue }) => (
             <Form noValidate autoComplete="off">
+              {/* Customer Information Section */}
               <Div sx={{ mt: 4 }}>
+                <Typography variant="h2">Customer Information</Typography>
                 <Grid container spacing={3}>
                   <Grid item xs={12} sm={6} md={4}>
                     <FormControl fullWidth>
@@ -213,20 +296,6 @@ export default function AddCustomer() {
                   <Grid item xs={12} sm={6} md={4}>
                     <FormControl fullWidth>
                       <TextField
-                        label="Contact Person"
-                        name="contact_person"
-                        error={Boolean(errors.contact_person)}
-                        helperText={errors.contact_person}
-                        value={values.contact_person}
-                        onChange={(e) =>
-                          setFieldValue("contact_person", e.target.value)
-                        }
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid item xs={12} sm={6} md={4}>
-                    <FormControl fullWidth>
-                      <TextField
                         error={Boolean(errors.phone_number)}
                         helperText={errors.phone_number}
                         label="Phone Number*"
@@ -234,6 +303,20 @@ export default function AddCustomer() {
                         value={values.phone_number}
                         onChange={(e) =>
                           setFieldValue("phone_number", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.contact_person)}
+                        helperText={errors.contact_person}
+                        label="Contact Person*"
+                        name="contact_person"
+                        value={values.contact_person}
+                        onChange={(e) =>
+                          setFieldValue("contact_person", e.target.value)
                         }
                       />
                     </FormControl>
@@ -250,7 +333,6 @@ export default function AddCustomer() {
                       />
                     </FormControl>
                   </Grid>
-
                   <Grid item xs={12} sm={6} md={4}>
                     <FormControl fullWidth>
                       <TextField
@@ -300,6 +382,7 @@ export default function AddCustomer() {
                         helperText={errors.credit_limit}
                         label="Credit Limit*"
                         name="credit_limit"
+                        type="number"
                         value={values.credit_limit}
                         onChange={(e) =>
                           setFieldValue("credit_limit", e.target.value)
@@ -307,8 +390,387 @@ export default function AddCustomer() {
                       />
                     </FormControl>
                   </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.longitude)}
+                        helperText={errors.longitude}
+                        label="Longitude*"
+                        name="longitude"
+                        value={values.longitude}
+                        onChange={(e) =>
+                          setFieldValue("longitude", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.latitude)}
+                        helperText={errors.latitude}
+                        label="Latitude*"
+                        name="latitude"
+                        value={values.latitude}
+                        onChange={(e) =>
+                          setFieldValue("latitude", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
                 </Grid>
               </Div>
+
+              {/* Bill To Information Section */}
+              <Div sx={{ mt: 4 }}>
+                <Typography variant="h2">Bill To Information</Typography>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.bill_to_code)}
+                        helperText={errors.bill_to_code}
+                        label="Bill To Code*"
+                        name="bill_to_code"
+                        value={values.bill_to_code}
+                        onChange={(e) =>
+                          setFieldValue("bill_to_code", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.bill_to_address)}
+                        helperText={errors.bill_to_address}
+                        label="Bill To Address*"
+                        name="bill_to_address"
+                        value={values.bill_to_address}
+                        onChange={(e) =>
+                          setFieldValue("bill_to_address", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.bill_to_city)}
+                        helperText={errors.bill_to_city}
+                        label="Bill To City*"
+                        name="bill_to_city"
+                        value={values.bill_to_city}
+                        onChange={(e) =>
+                          setFieldValue("bill_to_city", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.bill_to_district)}
+                        helperText={errors.bill_to_district}
+                        label="Bill To District*"
+                        name="bill_to_district"
+                        value={values.bill_to_district}
+                        onChange={(e) =>
+                          setFieldValue("bill_to_district", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.bill_to_state)}
+                        helperText={errors.bill_to_state}
+                        label="Bill To State*"
+                        name="bill_to_state"
+                        value={values.bill_to_state}
+                        onChange={(e) =>
+                          setFieldValue("bill_to_state", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.bill_to_contact_person)}
+                        helperText={errors.bill_to_contact_person}
+                        label="Bill To Contact Person*"
+                        name="bill_to_contact_person"
+                        value={values.bill_to_contact_person}
+                        onChange={(e) =>
+                          setFieldValue(
+                            "bill_to_contact_person",
+                            e.target.value
+                          )
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.bill_to_email)}
+                        helperText={errors.bill_to_email}
+                        label="Bill To Email*"
+                        name="bill_to_email"
+                        value={values.bill_to_email}
+                        onChange={(e) =>
+                          setFieldValue("bill_to_email", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        error={Boolean(errors.bill_to_zone)}
+                        helperText={errors.bill_to_zone}
+                        label="Bill To Zone*"
+                        name="bill_to_zone"
+                        value={values.bill_to_zone}
+                        onChange={(e) =>
+                          setFieldValue("bill_to_zone", e.target.value)
+                        }
+                      />
+                    </FormControl>
+                  </Grid>
+                </Grid>
+              </Div>
+
+              {/* Ship To Information Section */}
+              <Div sx={{ mt: 4 }}>
+                <Typography variant="h2">Ship To Information</Typography>
+                <FieldArray
+                  name="ship_to"
+                  render={(arrayHelpers) => (
+                    <div>
+                      {values.ship_to && values.ship_to.length > 0 ? (
+                        values.ship_to.map((ship, index) => (
+                          <Div key={index} sx={{ mb: 2 }}>
+                            <Typography variant="h3">
+                              Ship To {index + 1}
+                            </Typography>
+                            <Grid container spacing={3}>
+                              <Grid item xs={12} sm={6} md={4}>
+                                <FormControl fullWidth>
+                                  <TextField
+                                    error={Boolean(
+                                      errors.ship_to?.[index]?.ship_to_code
+                                    )}
+                                    helperText={
+                                      errors.ship_to?.[index]?.ship_to_code
+                                    }
+                                    label="Ship To Code*"
+                                    name={`ship_to.${index}.ship_to_code`}
+                                    value={ship.ship_to_code}
+                                    onChange={(e) =>
+                                      setFieldValue(
+                                        `ship_to.${index}.ship_to_code`,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </FormControl>
+                              </Grid>
+                              <Grid item xs={12} sm={6} md={4}>
+                                <FormControl fullWidth>
+                                  <TextField
+                                    error={Boolean(
+                                      errors.ship_to?.[index]?.ship_to_address
+                                    )}
+                                    helperText={
+                                      errors.ship_to?.[index]?.ship_to_address
+                                    }
+                                    label="Ship To Address*"
+                                    name={`ship_to.${index}.ship_to_address`}
+                                    value={ship.ship_to_address}
+                                    onChange={(e) =>
+                                      setFieldValue(
+                                        `ship_to.${index}.ship_to_address`,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </FormControl>
+                              </Grid>
+                              <Grid item xs={12} sm={6} md={4}>
+                                <FormControl fullWidth>
+                                  <TextField
+                                    error={Boolean(
+                                      errors.ship_to?.[index]?.ship_to_city
+                                    )}
+                                    helperText={
+                                      errors.ship_to?.[index]?.ship_to_city
+                                    }
+                                    label="Ship To City*"
+                                    name={`ship_to.${index}.ship_to_city`}
+                                    value={ship.ship_to_city}
+                                    onChange={(e) =>
+                                      setFieldValue(
+                                        `ship_to.${index}.ship_to_city`,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </FormControl>
+                              </Grid>
+                              <Grid item xs={12} sm={6} md={4}>
+                                <FormControl fullWidth>
+                                  <TextField
+                                    error={Boolean(
+                                      errors.ship_to?.[index]?.ship_to_district
+                                    )}
+                                    helperText={
+                                      errors.ship_to?.[index]?.ship_to_district
+                                    }
+                                    label="Ship To District*"
+                                    name={`ship_to.${index}.ship_to_district`}
+                                    value={ship.ship_to_district}
+                                    onChange={(e) =>
+                                      setFieldValue(
+                                        `ship_to.${index}.ship_to_district`,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </FormControl>
+                              </Grid>
+                              <Grid item xs={12} sm={6} md={4}>
+                                <FormControl fullWidth>
+                                  <TextField
+                                    error={Boolean(
+                                      errors.ship_to?.[index]?.ship_to_state
+                                    )}
+                                    helperText={
+                                      errors.ship_to?.[index]?.ship_to_state
+                                    }
+                                    label="Ship To State*"
+                                    name={`ship_to.${index}.ship_to_state`}
+                                    value={ship.ship_to_state}
+                                    onChange={(e) =>
+                                      setFieldValue(
+                                        `ship_to.${index}.ship_to_state`,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </FormControl>
+                              </Grid>
+                              <Grid item xs={12} sm={6} md={4}>
+                                <FormControl fullWidth>
+                                  <TextField
+                                    error={Boolean(
+                                      errors.ship_to?.[index]
+                                        ?.ship_to_contact_person
+                                    )}
+                                    helperText={
+                                      errors.ship_to?.[index]
+                                        ?.ship_to_contact_person
+                                    }
+                                    label="Ship To Contact Person*"
+                                    name={`ship_to.${index}.ship_to_contact_person`}
+                                    value={ship.ship_to_contact_person}
+                                    onChange={(e) =>
+                                      setFieldValue(
+                                        `ship_to.${index}.ship_to_contact_person`,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </FormControl>
+                              </Grid>
+                              <Grid item xs={12} sm={6} md={4}>
+                                <FormControl fullWidth>
+                                  <TextField
+                                    error={Boolean(
+                                      errors.ship_to?.[index]?.ship_to_email
+                                    )}
+                                    helperText={
+                                      errors.ship_to?.[index]?.ship_to_email
+                                    }
+                                    label="Ship To Email*"
+                                    name={`ship_to.${index}.ship_to_email`}
+                                    value={ship.ship_to_email}
+                                    onChange={(e) =>
+                                      setFieldValue(
+                                        `ship_to.${index}.ship_to_email`,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </FormControl>
+                              </Grid>
+                              <Grid item xs={12} sm={6} md={4}>
+                                <FormControl fullWidth>
+                                  <TextField
+                                    error={Boolean(
+                                      errors.ship_to?.[index]?.ship_to_zone
+                                    )}
+                                    helperText={
+                                      errors.ship_to?.[index]?.ship_to_zone
+                                    }
+                                    label="Ship To Zone*"
+                                    name={`ship_to.${index}.ship_to_zone`}
+                                    value={ship.ship_to_zone}
+                                    onChange={(e) =>
+                                      setFieldValue(
+                                        `ship_to.${index}.ship_to_zone`,
+                                        e.target.value
+                                      )
+                                    }
+                                  />
+                                </FormControl>
+                              </Grid>
+                              <IconButton
+                                sx={{
+                                  mt: 2,
+                                  color: "red",
+                                  borderColor: "red",
+                                  "&:hover": {
+                                    borderColor: "darkred",
+                                    color: "darkred",
+                                  },
+                                }}
+                                onClick={() => arrayHelpers.remove(index)}
+                              >
+                                <RemoveCircleIcon />
+                              </IconButton>
+                            </Grid>
+                          </Div>
+                        ))
+                      ) : (
+                        <Typography>No Ship To sections</Typography>
+                      )}
+                      <Button
+                        variant="outlined"
+                        startIcon={<AddIcon />}
+                        onClick={() =>
+                          arrayHelpers.push({
+                            ship_to_code: "",
+                            ship_to_address: "",
+                            ship_to_city: "",
+                            ship_to_district: "",
+                            ship_to_state: "",
+                            ship_to_contact_person: "",
+                            ship_to_email: "",
+                            ship_to_zone: "",
+                          })
+                        }
+                        sx={{ mt: 2 }} // Margin top for button
+                      >
+                        Add Ship To
+                      </Button>
+                    </div>
+                  )}
+                />
+              </Div>
+
               <Div
                 sx={{
                   width: "93.5%",

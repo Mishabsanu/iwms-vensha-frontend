@@ -21,7 +21,7 @@ import {
   Typography,
 } from "@mui/material";
 import AllApis from "app/Apis";
-import { addBinType } from "app/services/apis/addBinType";
+import { addAuom } from "app/services/apis/addAuom";
 import { updateBinType } from "app/services/apis/updateBinType";
 import { Form, Formik } from "formik";
 import { Axios } from "index";
@@ -32,7 +32,7 @@ import * as yup from "yup";
 
 const validationSchema = yup.object({
   sku_code: yup.string("Enter SKU Code").required("SKU Code is required"),
-  uom: yup.array().of(
+  uom_details: yup.array().of(
     yup.object({
       base_uom: yup.string("Select Base UOM").required("Base UOM is required"),
       unit: yup.number("Enter Unit").required("Unit is required"),
@@ -45,10 +45,11 @@ export default function AddSkuUom() {
   const theme = useTheme();
   const navigate = useNavigate();
   const { pathname, state } = useLocation();
+  console.log(state, "state");
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [uomList, setUomList] = useState([]);
-  const [uomEntries, setUomEntries] = useState(state?.uom || []);
+  const [uomEntries, setUomEntries] = useState(state?.uom_details || []);
 
   const initialValues = {
     sku_code: state?.sku_code || "",
@@ -91,7 +92,7 @@ export default function AddSkuUom() {
   }, []);
 
   const onSkuSave = async (values) => {
-    const body = { ...values, uom: uomEntries };
+    const body = { ...values, uom_details: uomEntries };
 
     setSubmitting(true);
     try {
@@ -104,7 +105,7 @@ export default function AddSkuUom() {
             timer: 1000,
             showConfirmButton: false,
           });
-          navigate("/dashboard/master/sku");
+          navigate("/dashboard/master/auom");
         } else {
           Swal.fire({
             icon: "error",
@@ -112,7 +113,7 @@ export default function AddSkuUom() {
           });
         }
       } else {
-        const data = await addBinType(body);
+        const data = await addAuom(body);
         if (data?.data?.status === true) {
           Swal.fire({
             icon: "success",
@@ -120,7 +121,7 @@ export default function AddSkuUom() {
             timer: 1000,
             showConfirmButton: false,
           });
-          navigate("/dashboard/master/sku");
+          navigate("/dashboard/master/auom");
         } else {
           Swal.fire({
             icon: "error",
@@ -238,8 +239,7 @@ export default function AddSkuUom() {
                         fullWidth
                       />
                     </TableCell>
-                    <TableCell sx={{width:"19%", textAlign: "left" }}>
-
+                    <TableCell sx={{ width: "19%", textAlign: "left" }}>
                       <FormControl fullWidth variant="outlined">
                         <Select
                           name="base_uom"
@@ -260,7 +260,7 @@ export default function AddSkuUom() {
                         </Select>
                       </FormControl>
                     </TableCell>
-                    <TableCell sx={{width:"19%", textAlign: "left" }}>
+                    <TableCell sx={{ width: "19%", textAlign: "left" }}>
                       <FormControl fullWidth variant="outlined">
                         <Select
                           name="convention_uom"
