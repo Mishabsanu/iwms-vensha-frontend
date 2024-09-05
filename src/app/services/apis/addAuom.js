@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const addGateEntryInbound = async (details) => {
+export const addAuom = async (details) => {
   try {
     const config = {
       withCredentials: true,
@@ -9,7 +9,7 @@ export const addGateEntryInbound = async (details) => {
       },
     };
     const data = await axios.post(
-      `${process.env.REACT_APP_URL}/inbound-gate-entry/add-inbound-gate-entry`,
+      `${process.env.REACT_APP_URL}/auom/add-auom`,
       details,
       config
     );

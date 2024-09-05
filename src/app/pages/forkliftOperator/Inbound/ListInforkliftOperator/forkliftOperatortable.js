@@ -1,6 +1,6 @@
 import JumboDdMenu from "@jumbo/components/JumboDdMenu";
-import EditIcon from "@mui/icons-material/Edit";
 import CheckIcon from "@mui/icons-material/Check";
+import EditIcon from "@mui/icons-material/Edit";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
   Pagination,
@@ -18,8 +18,8 @@ import { displayDateFun } from "app/utils/constants/functions";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BinNumberModal from "../Modal/verifyModal";
-import EditBinDetails from "../Modal/editModal";
+import EditBinDetails from "../../Modal/editModal";
+import BinNumberModal from "../../Modal/verifyModal";
 export default function ListForkliftOperatortTable({
   searchTerm,
   page,

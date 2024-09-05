@@ -19,11 +19,11 @@ const gateEntryReport = [
         element: <Page component={ListInbound} layout={"vertical-default"} />,
       },
       {
-        path: "/gate-entry-inbound/addgate-entry",
+        path: "/gate-entry-inbound/add",
         element: <Page component={AddInbound} layout={"vertical-default"} />,
       },
       {
-        path: "/gate-entry-inbound/editgate-entry",
+        path: "/gate-entry-inbound/edit",
         element: <Page component={AddInbound} layout={"vertical-default"} />,
       },
 
@@ -32,11 +32,11 @@ const gateEntryReport = [
         element: <Page component={ListOutbound} layout={"vertical-default"} />,
       },
       {
-        path: "/gate-entry-outbound/addgate-entry",
+        path: "/gate-entry-outbound/add",
         element: <Page component={AddOutbound} layout={"vertical-default"} />,
       },
       {
-        path: "/gate-entry-outbound/editgate-entry",
+        path: "/gate-entry-outbound/edit",
         element: <Page component={AddOutbound} layout={"vertical-default"} />,
       },
     ],

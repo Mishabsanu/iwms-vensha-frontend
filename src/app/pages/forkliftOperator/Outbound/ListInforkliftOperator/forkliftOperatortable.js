@@ -17,8 +17,7 @@ import { displayDateFun } from "app/utils/constants/functions";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BinNumberModal from "../Modal/verifyModal";
-import OutboundVerify from "../Modal/outboundVerify";
+import OutboundVerify from "../../Modal/outboundVerify";
 export default function ListForkliftOperatorOutboundTable({
   searchTerm,
   page,

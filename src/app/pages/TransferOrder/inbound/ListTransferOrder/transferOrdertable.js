@@ -1,7 +1,3 @@
-import JumboDdMenu from "@jumbo/components/JumboDdMenu/JumboDdMenu";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
-import EditIcon from "@mui/icons-material/Edit";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
   Pagination,
   Paper,
@@ -14,7 +10,7 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
-import { getAllUnit } from "app/redux/actions/masterAction";
+import { getAllGateEntryInbound } from "app/redux/actions/masterAction";
 import { updateBin } from "app/services/apis/updateBin";
 import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
@@ -80,7 +76,7 @@ export default function ListTransferOrderTable({
         row._id
       );
       if (data?.status == 200) {
-        dispatch(getAllUnit("", "desc", "updated_at", 1));
+        dispatch(getAllGateEntryInbound("", "desc", "updated_at", 1));
         Swal.fire({
           icon: "success",
           title: "Status Updated",

@@ -14,7 +14,7 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
-import { getAllUnit } from "app/redux/actions/masterAction";
+import { getAllGateEntryInbound } from "app/redux/actions/masterAction";
 import { updateBin } from "app/services/apis/updateBin";
 import { displayDateFun } from "app/utils/constants/functions";
 import { useEffect, useState } from "react";
@@ -80,7 +80,7 @@ export default function ListOutboundTable({
         row._id
       );
       if (data?.status == 200) {
-        dispatch(getAllUnit("", "desc", "updated_at", 1));
+        dispatch(getAllGateEntryInbound("", "desc", "updated_at", 1));
         Swal.fire({
           icon: "success",
           title: "Status Updated",

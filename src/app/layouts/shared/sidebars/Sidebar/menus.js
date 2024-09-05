@@ -182,9 +182,12 @@ const menus = [
     icon: <StarBorderPurple500Icon sx={{ fontSize: 20 }} />,
     children: [
       {
-        uri: "/dashboard/warehouseexecutive/production",
+        uri: "/dashboard/productionexecutive/production",
         label: "sidebar.menuItem.ProductionExecutive.production",
-        isActiveUri: ["/master/production/add", "/master/production/edit"],
+        isActiveUri: [
+          "/dashboard/productionexecutive/production/add",
+          "/dashboard/productionexecutive/production/edit",
+        ],
         permission: "production_master_view",
         type: "nav-item",
         icon: <ScaleIcon sx={{ fontSize: 20 }} />,
@@ -256,10 +259,10 @@ const menus = [
     icon: <StarBorderPurple500Icon sx={{ fontSize: 20 }} />,
     children: [
       {
-        uri: "/dashboard/transfer-order",
+        uri: "/dashboard/transfer-order-inbound",
         isActiveUri: [
-          "/dashboard/edittransfer-order",
-          "/dashboard/addtransfer-order",
+          "/dashboard/edittransfer-order-inbound",
+          "/dashboard/addtransfer-order-inbound",
         ],
         label: "sidebar.menuItem.Transaction.inbound",
         type: "nav-item",
@@ -267,15 +270,38 @@ const menus = [
         icon: <MoveUpIcon sx={{ fontSize: 20 }} />,
       },
       {
-        uri: "/dashboard/transfer-order",
+        uri: "/dashboard/transfer-order-outbound",
         isActiveUri: [
-          "/dashboard/edittransfer-order",
-          "/dashboard/addtransfer-order",
+          "/dashboard/edittransfer-order-outbound",
+          "/dashboard/addtransfer-order-outbound",
         ],
         label: "sidebar.menuItem.Transaction.outbound",
         type: "nav-item",
         permission: "transfer_order_view",
         icon: <MoveUpIcon sx={{ fontSize: 20 }} />,
+      },
+    ],
+  },
+  {
+    label: "sidebar.menu.Security",
+    type: "collapsible",
+    icon: <StarBorderPurple500Icon sx={{ fontSize: 20 }} />,
+    children: [
+      {
+        uri: "/dashboard/gate-entry-inbound",
+        label: "sidebar.menuItem.Security.inbound",
+        isActiveUri: ["/gate-entry-inbound/add", "/gate-entry-inbound/edit"],
+        permission: "production_master_view",
+        type: "nav-item",
+        icon: <ScaleIcon sx={{ fontSize: 20 }} />,
+      },
+      {
+        uri: "/dashboard/gate-entry-outbound",
+        label: "sidebar.menuItem.Security.outbound",
+        isActiveUri: ["/gate-entry-outbound/add", "/gate-entry-outbound/edit"],
+        permission: "production_master_view",
+        type: "nav-item",
+        icon: <ScaleIcon sx={{ fontSize: 20 }} />,
       },
     ],
   },
@@ -287,36 +313,6 @@ const menus = [
     type: "nav-item",
     permission: "stock_report_view",
     icon: <AssessmentIcon sx={{ fontSize: 20 }} />,
-  },
-
-  {
-    label: "sidebar.menu.Security",
-    type: "collapsible",
-    icon: <StarBorderPurple500Icon sx={{ fontSize: 20 }} />,
-    children: [
-      {
-        uri: "/dashboard/gate-entry-inbound",
-        isActiveUri: [
-          "/gate-entry-inbound/editgate-entry",
-          "/gate-entry-inbound/addgate-entry",
-        ],
-        label: "sidebar.menuItem.Security.inbound",
-        type: "nav-item",
-        permission: "security_view",
-        icon: <BikeScooterIcon sx={{ fontSize: 20 }} />,
-      },
-      {
-        uri: "/dashboard/gate-entry-outbound",
-        isActiveUri: [
-          "/gate-entry-outbound/editgate-entry",
-          "/gate-entry-outbound/addgate-entry",
-        ],
-        label: "sidebar.menuItem.Security.outbound",
-        type: "nav-item",
-        permission: "security_view",
-        icon: <BikeScooterIcon sx={{ fontSize: 20 }} />,
-      },
-    ],
   },
 ];
 

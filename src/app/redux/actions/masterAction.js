@@ -18,9 +18,12 @@ import {
   ALL_STORAGE_TYPE_MASTER_REQUEST,
   ALL_STORAGE_TYPE_MASTER_SUCCESS,
   ALL_SUPPLIER_MASTER_SUCCESS,
-  ALL_UNIT_MASTER_FAIL,
-  ALL_UNIT_MASTER_REQUEST,
-  ALL_UNIT_MASTER_SUCCESS,
+  ALL_INBOUND_GATE_ENTRY_FAIL,
+  ALL_INBOUND_GATE_ENTRY_REQUEST,
+  ALL_INBOUND_GATE_ENTRY_SUCCESS,
+  ALL_OUTBOUND_GATE_ENTRY_FAIL,
+  ALL_OUTBOUND_GATE_ENTRY_REQUEST,
+  ALL_OUTBOUND_GATE_ENTRY_SUCCESS,
   ALL_BIN_TYPE_MASTER_FAIL,
   ALL_BIN_TYPE_MASTER_REQUEST,
   ALL_BIN_TYPE_MASTER_SUCCESS,
@@ -261,7 +264,6 @@ export const getAllBinType =
       });
     }
   };
-
 
 //UOM
 
@@ -670,8 +672,8 @@ export const getAllCrossDock =
     }
   };
 
-//unit master
-export const getAllUnit =
+//GateEntryInbound
+export const getAllGateEntryInbound =
   (search_value, sort, sortBy, page) => async (dispatch) => {
     try {
       const body = {
@@ -686,7 +688,7 @@ export const getAllUnit =
         sort: sort,
         sortBy: sortBy,
       });
-      dispatch({ type: ALL_UNIT_MASTER_REQUEST });
+      dispatch({ type: ALL_INBOUND_GATE_ENTRY_REQUEST });
       const config = {
         withCredentials: true,
         headers: {
@@ -697,13 +699,13 @@ export const getAllUnit =
       const data = await axios.post(
         `${
           process.env.REACT_APP_URL
-        }/inbound/list-inbound?${urlParams.toString()}`,
+        }/inbound-gate-entry/list-inbound-gate-entry?${urlParams.toString()}`,
         { ...body },
         config
       );
 
       dispatch({
-        type: ALL_UNIT_MASTER_SUCCESS,
+        type: ALL_INBOUND_GATE_ENTRY_SUCCESS,
         payload: {
           data: data?.data?.result,
           totalPage: data?.data?.totalPages,
@@ -711,7 +713,54 @@ export const getAllUnit =
       });
     } catch (error) {
       dispatch({
-        type: ALL_UNIT_MASTER_FAIL,
+        type: ALL_INBOUND_GATE_ENTRY_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
+//GateEntryoutbound
+export const getAllGateEntryOutbound =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_OUTBOUND_GATE_ENTRY_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+        }/outbound-gate-entry/list-outbound-gate-entry?${urlParams.toString()}`,
+        { ...body },
+        config
+      );
+
+      dispatch({
+        type: ALL_OUTBOUND_GATE_ENTRY_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_OUTBOUND_GATE_ENTRY_FAIL,
         payload: error?.response?.data?.message,
       });
     }

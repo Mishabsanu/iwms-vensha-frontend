@@ -13,6 +13,7 @@ import forkliftOperator from "./forkliftOperator";
 import transaction from "./transferOrder";
 import stockReport from "./stockReport";
 import gateEntryReport from "./security";
+import productionExecutive from "./productionExecutive";
 
 /**
  routes which you want to make accessible to both authenticated and anonymous users
@@ -56,6 +57,7 @@ const routesForPublic = [
       ...userManagementRoutes,
       ...masterRoutes,
       ...warehouseExecutive,
+      ...productionExecutive,
       ...forkliftOperator,
       ...transaction,
       ...stockReport,
