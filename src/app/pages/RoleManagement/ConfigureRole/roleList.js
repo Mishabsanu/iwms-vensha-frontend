@@ -133,7 +133,7 @@ export default function PermissionList() {
           transfer_order_view: false,
           transfer_order_edit: false,
           transfer_order_create: false,
-          
+
           security_view: false,
           security_edit: false,
           security_create: false,
@@ -141,6 +141,18 @@ export default function PermissionList() {
           outbound_master_view: false,
           outbound_master_edit: false,
           outbound_master_create: false,
+
+          customer_type_master_view: false,
+          customer_type_master_edit: false,
+          customer_type_master_create: false,
+
+          delivery_view: false,
+          delivery_edit: false,
+          delivery_create: false,
+
+          truck_loading_view: false,
+          truck_loading_edit: false,
+          truck_loading_create: false,
         }
   );
 
@@ -416,7 +428,6 @@ export default function PermissionList() {
         </Div>
       </Div>
 
-
       <Div sx={{ display: "flex", alignItems: "center" }}>
         <Typography sx={headingStyle}>Customer Master</Typography>
         <Div sx={checkboxStyle}>
@@ -549,6 +560,33 @@ export default function PermissionList() {
             checked={check.vendor_master_create}
             onChange={handleChange}
             name="vendor_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Customer Type Master</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.customer_type_master_view}
+            onChange={handleChange}
+            name="customer_type_master_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.customer_type_master_edit}
+            onChange={handleChange}
+            name="customer_type_master_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.customer_type_master_create}
+            onChange={handleChange}
+            name="customer_type_master_create"
           />
           <Typography>Create</Typography>
         </Div>
@@ -959,6 +997,60 @@ export default function PermissionList() {
             checked={check.outbound_master_create}
             onChange={handleChange}
             name="outbound_master_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Truck Loading</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.truck_loading_view}
+            onChange={handleChange}
+            name="truck_loading_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.truck_loading_edit}
+            onChange={handleChange}
+            name="truck_loading_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.truck_loading_create}
+            onChange={handleChange}
+            name="truck_loading_create"
+          />
+          <Typography>Create</Typography>
+        </Div>
+      </Div>
+      <Div sx={{ display: "flex", alignItems: "center" }}>
+        <Typography sx={headingStyle}>Delivery</Typography>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.delivery_view}
+            onChange={handleChange}
+            name="delivery_view"
+          />
+          <Typography>View</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.delivery_edit}
+            onChange={handleChange}
+            name="delivery_edit"
+          />
+          <Typography>Edit</Typography>
+        </Div>
+        <Div sx={checkboxStyle}>
+          <GreenCheckbox
+            checked={check.delivery_create}
+            onChange={handleChange}
+            name="delivery_create"
           />
           <Typography>Create</Typography>
         </Div>

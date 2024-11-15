@@ -134,7 +134,7 @@ export default function AddProduction() {
   }, []);
   const theme = useTheme();
   const [personName, setPersonName] = useState([]);
-  console.log(personName, "personName");
+
   const handleChange = (event, setFieldValue) => {
     const {
       target: { value },
@@ -158,13 +158,12 @@ export default function AddProduction() {
         pathname === "/dashboard/editproduction"
           ? await updateProduction({ ...body, id: state._id })
           : await addProduction(body);
-      console.log(response, "response");
 
       const successMessage =
         pathname === "/dashboard/editproduction"
           ? "Production Edited Successfully"
           : "Production Added Successfully";
-      if (response.status === 200 || response.status === 201) {
+      if (response.status === 201) {
         Swal.fire({
           icon: "success",
           title: successMessage,
@@ -175,7 +174,7 @@ export default function AddProduction() {
       } else {
         Swal.fire({
           icon: "error",
-          title: response?.data?.data?.message,
+          title: response?.data?.message,
         });
       }
     } catch (error) {
@@ -271,7 +270,7 @@ export default function AddProduction() {
                       </TextField>
                     </FormControl>
                   </Grid>
-                  {console.log(values, "values")}
+
                   <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
                     <FormControl fullWidth>
                       <TextField

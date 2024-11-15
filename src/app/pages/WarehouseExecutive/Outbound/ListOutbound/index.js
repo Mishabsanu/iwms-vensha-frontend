@@ -1,56 +1,104 @@
-import Div from "@jumbo/shared/Div/Div";
-import { Suspense, useEffect, useState } from "react";
-
-import SearchIcon from "@mui/icons-material/Search";
-import {
-  Box,
-  Button,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
+import Div from "@jumbo/shared/Div";
+import { Box, Button, Tab, Tabs, Typography } from "@mui/material";
+import FullScreenLoader from "app/components/ListingPageLoader/index";
 import { getAllOutbound } from "app/redux/actions/masterAction";
-import { debounce } from "lodash";
+import SearchGlobal from "app/shared/SearchGlobal";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ListOutboundTable from "./outboundtable";
-import SearchGlobal from "app/shared/SearchGlobal";
+import ListOutboundSOTable from "./outboundSOTable";
+import ListOutboundSTOTable from "./outboundSTOTable";
 
-export default function ListOutbound() {
+const InventoryList = () => {
+  const [loaded, setLoaded] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [value, setValue] = React.useState(0);
+
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
   const [sortBy, setSortBy] = useState("updated_at");
-  const dispatch = useDispatch();
+
+  const [emptyVal, setEmptyVal] = useState();
+
   const navigate = useNavigate();
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
+  const { loading } = useSelector((state) => state.masterReducer);
 
-  //debouncing for search
-  const handleSearch = (value) => {
+  const dispatch = useDispatch();
+
+  const TabChange = () => {
+    setEmptyVal(!emptyVal);
     setPage(1);
-    dispatch(getAllOutbound(value, sort, sortBy, 1));
+    setSort("desc");
+    setSortBy("updated_at");
+    setSearchTerm("");
   };
 
-  const debouncedHandleSearch = debounce(handleSearch, 500);
+  // navs and tab functionality
+  function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
 
-  useEffect(() => {
-    debouncedHandleSearch(searchTerm);
-    return () => {
-      debouncedHandleSearch.cancel();
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`,
     };
-  }, [searchTerm]);
+  }
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    TabChange();
+    if (newValue === 0) {
+      const OrderType = "SO";
+      dispatch(getAllOutbound("", sort, sortBy, page, OrderType));
+    } else if (newValue === 1) {
+      const OrderType = "STO";
+      dispatch(getAllOutbound("", sort, sortBy, page, OrderType));
+    }
+  };
 
   useEffect(() => {
-    dispatch(getAllOutbound(searchTerm, sort, sortBy, page));
+    if (value === 0) {
+      const OrderType = "SO";
+      dispatch(getAllOutbound(searchTerm, sort, sortBy, page, OrderType));
+    } else if (value === 1) {
+      const OrderType = "STO";
+      dispatch(getAllOutbound(searchTerm, sort, sortBy, page, OrderType));
+    }
   }, [sort, page]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoaded(true);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
+      {loading && <FullScreenLoader />}
       <Div sx={{ mt: -4 }}>
         <Typography variant="h1">Outbound</Typography>
-
         <Box
           sx={{
             display: "flex",
@@ -107,18 +155,56 @@ export default function ListOutbound() {
             </Box>
           )}
         </Box>
-        <Suspense fallback={<div>Loading...</div>}>
-          <ListOutboundTable
-            searchTerm={searchTerm}
-            page={page}
-            setPage={setPage}
-            sort={sort}
-            sortBy={sortBy}
-            setSort={setSort}
-            setSortBy={setSortBy}
-          />
-        </Suspense>
+        <Box sx={{ width: "100%" }}>
+          <Box
+            sx={{ borderBottom: 1, borderColor: "divider", display: "flex" }}
+          >
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+              variant="scrollable"
+              scrollButtons="auto"
+            >
+              <Tab label="STO" {...a11yProps(0)} />
+              <Tab label="SO" {...a11yProps(1)} />
+            </Tabs>
+          </Box>
+
+          <CustomTabPanel value={value} index={0}>
+            {loaded ? (
+              <ListOutboundSTOTable
+                searchTerm={searchTerm}
+                page={page}
+                setPage={setPage}
+                sort={sort}
+                sortBy={sortBy}
+                setSort={setSort}
+                setSortBy={setSortBy}
+              />
+            ) : (
+              <FullScreenLoader />
+            )}
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={1}>
+            {loaded ? (
+              <ListOutboundSOTable
+                searchTerm={searchTerm}
+                page={page}
+                setPage={setPage}
+                sort={sort}
+                sortBy={sortBy}
+                setSort={setSort}
+                setSortBy={setSortBy}
+              />
+            ) : (
+              <FullScreenLoader />
+            )}
+          </CustomTabPanel>
+        </Box>
       </Div>
     </>
   );
-}
+};
+
+export default InventoryList;

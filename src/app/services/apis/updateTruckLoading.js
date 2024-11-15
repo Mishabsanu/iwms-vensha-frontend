@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const addProduction = async (details) => {
+export const updateTruckLoading = async (details) => {
   try {
     const config = {
       withCredentials: true,
@@ -9,13 +9,12 @@ export const addProduction = async (details) => {
       },
     };
     const data = await axios.post(
-      `${process.env.REACT_APP_URL}/production/add-production`,
+      `${process.env.REACT_APP_URL}/truck-loading/update-truck-loading?id=${details.id}`,
       details,
       config
     );
-    console.log(data,'data');
     return data;
   } catch (error) {
-    return error.response;
+    return error.response.data;
   }
 };

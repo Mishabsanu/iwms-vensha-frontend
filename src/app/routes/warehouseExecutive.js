@@ -7,6 +7,12 @@ import ListAllocateBin from "app/pages/BinTable/ListBinTable";
 import OutboundRouteMiddleware from "./middleware/auth/outboundRouteMiddleware";
 import AddOutbound from "app/pages/WarehouseExecutive/Outbound/AddOutbound";
 import ListOutbound from "app/pages/WarehouseExecutive/Outbound/ListOutbound";
+import TruckLoadingRouteMiddleware from "./middleware/auth/truckLoadingRouteMiddleware";
+import ListTruckLoading from "app/pages/WarehouseExecutive/TruckLoading/ListTruckLoading";
+import AddTruckLoading from "app/pages/WarehouseExecutive/TruckLoading/AddTruckLoading";
+import ListDelivery from "app/pages/WarehouseExecutive/Delivery/ListDelivery";
+import AddDelivery from "app/pages/WarehouseExecutive/Delivery/AddDelivery";
+import DeliveryRouteMiddleware from "./middleware/auth/deliveryRouteMiddleware";
 
 const warehouseExecutive = [
   {
@@ -70,6 +76,58 @@ const warehouseExecutive = [
         path: "/dashboard/editoutbound",
 
         element: <Page component={AddOutbound} layout={"vertical-default"} />,
+      },
+    ],
+  },
+  {
+    middleware: [
+      {
+        element: TruckLoadingRouteMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/warehouseexecutive/truck-loading",
+        element: (
+          <Page component={ListTruckLoading} layout={"vertical-default"} />
+        ),
+      },
+      {
+        path: "/warehouseexecutive/truck-loading/add",
+        element: (
+          <Page component={AddTruckLoading} layout={"vertical-default"} />
+        ),
+      },
+      {
+        path: "/warehouseexecutive/truck-loading/edit",
+
+        element: (
+          <Page component={AddTruckLoading} layout={"vertical-default"} />
+        ),
+      },
+    ],
+  },
+  {
+    middleware: [
+      {
+        element: DeliveryRouteMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/warehouseexecutive/delivery",
+        element: <Page component={ListDelivery} layout={"vertical-default"} />,
+      },
+      {
+        path: "/warehouseexecutive/delivery/add",
+        element: <Page component={AddDelivery} layout={"vertical-default"} />,
+      },
+      {
+        path: "/warehouseexecutive/delivery/edit",
+
+        element: <Page component={AddDelivery} layout={"vertical-default"} />,
       },
     ],
   },

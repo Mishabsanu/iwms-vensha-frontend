@@ -1,7 +1,3 @@
-import JumboDdMenu from "@jumbo/components/JumboDdMenu";
-import CheckIcon from "@mui/icons-material/Check";
-import EditIcon from "@mui/icons-material/Edit";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import {
   Pagination,
   Paper,
@@ -15,12 +11,11 @@ import {
 } from "@mui/material";
 import FullScreenLoader from "app/components/ListingPageLoader";
 import { displayDateFun } from "app/utils/constants/functions";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import EditBinDetails from "../../Modal/editModal";
-import BinNumberModal from "../../Modal/verifyModal";
-export default function ListForkliftOperatortTable({
+
+export default function ListTransferOutboundOrderTable({
   searchTerm,
   page,
   setPage,
@@ -29,51 +24,37 @@ export default function ListForkliftOperatortTable({
   setSort,
   setSortBy,
 }) {
-  const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
-  const [selected, setSelected] = useState(null);
-  const { forkliftOperator, TotalPage, loading } = useSelector(
+  const { transaction, TotalPage, loading } = useSelector(
     (state) => state.masterReducer
   );
-
-  const user = useSelector((state) => state?.userReducer.user[0]);
-  const isAdmin = user?.role_id.role_name === "Admin";
-
-  // Otherwise, filter by assigned_user._id
+  const [loader, setLoader] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const permissions = useSelector(
     (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
   );
+
   const handleSort = (property) => {
     setSort(sort == "asc" ? "desc" : "asc");
     setSortBy(property);
     setPage(1);
   };
 
-  const handleItemAction = (menuItem) => {
-    switch (menuItem.action) {
-      case "confirm":
-        setSelectedRow(menuItem.data);
-        setModalOpen(true);
-        break;
-      case "edit":
-        setSelected(menuItem.data);
-        setOpen(true);
-        break;
-      default:
-    }
-  };
 
+
+  
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+  useEffect(() => {
+    setLoader(loading);
+  }, [loading]);
+
   return (
     <>
-      {loading && <FullScreenLoader />}
-
-      <TableContainer component={Paper}>
+      {loader && <FullScreenLoader />}
+      <TableContainer component={Paper} sx={{ width: "100%" }}>
         <Table size="small">
           <TableHead>
             <TableRow
@@ -110,7 +91,7 @@ export default function ListForkliftOperatortTable({
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "120px",
+                  minWidth: "150px",
                   verticalAlign: "middle",
                 }}
               >
@@ -126,13 +107,13 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                   Line No
+                   Order No
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "190px",
+                  minWidth: "180px",
                   verticalAlign: "middle",
                 }}
               >
@@ -148,7 +129,7 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                  Process Order Qty
+                  Transaction Type
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -170,7 +151,7 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                   Order No
+                  Document No
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -221,6 +202,7 @@ export default function ListForkliftOperatortTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
+                  minWidth: "100px",
                 }}
               >
                 <TableSortLabel
@@ -243,7 +225,7 @@ export default function ListForkliftOperatortTable({
                   textAlign: "left",
                   verticalAlign: "middle",
                   color: "white",
-                  minWidth: "120px",
+                  minWidth: "100px",
                 }}
               >
                 UOM
@@ -252,7 +234,7 @@ export default function ListForkliftOperatortTable({
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
-                  minWidth: "180px",
+                  minWidth: "120px",
                 }}
               >
                 <TableSortLabel
@@ -267,14 +249,14 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                  Transfer Order
+                  Mfg Date
                 </TableSortLabel>
               </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
                   verticalAlign: "middle",
-                  minWidth: "150px",
+                  minWidth: "120px",
                 }}
               >
                 <TableSortLabel
@@ -289,35 +271,30 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                  Pallet Qty
+                  Self Life
                 </TableSortLabel>
               </TableCell>
-              {isAdmin ? (
-                <TableCell
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Assigned_To"}
+                  direction={sort}
+                  onClick={() => handleSort("Assigned_To")}
                   sx={{
-                    textAlign: "left",
-                    verticalAlign: "middle",
-                    minWidth: "200px",
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
                   }}
                 >
-                  <TableSortLabel
-                    active={sortBy === "Assigned_To"}
-                    direction={sort}
-                    onClick={() => handleSort("Assigned_To")}
-                    sx={{
-                      color: "white",
-                      "&:hover": { color: "white" },
-                      "&.MuiTableSortLabel-root.Mui-active": {
-                        color: "white", // Set the color for the active state
-                      },
-                    }}
-                  >
-                    Assigned To
-                  </TableSortLabel>
-                </TableCell>
-              ) : (
-                ""
-              )}
+                  Batch
+                </TableSortLabel>
+              </TableCell>
               <TableCell
                 sx={{
                   textAlign: "left",
@@ -337,7 +314,75 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                  Batch
+                  Pallet ID
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                  minWidth: "150px",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Bin"}
+                  direction={sort}
+                  onClick={() => handleSort("Bin")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Pallet Qty
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                  minWidth: "200px",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Three_Digit_Codes"}
+                  direction={sort}
+                  onClick={() => handleSort("Three_Digit_Codes")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Transfer Order Qty
+                </TableSortLabel>
+              </TableCell>
+
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "180px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Short Excess
                 </TableSortLabel>
               </TableCell>
               <TableCell
@@ -359,14 +404,36 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                  Bin
+                  Damage
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  verticalAlign: "middle",
+                  minWidth: "180px",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "Three_Digit_Codes"}
+                  direction={sort}
+                  onClick={() => handleSort("Three_Digit_Codes")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Assigned To
                 </TableSortLabel>
               </TableCell>
 
               <TableCell
                 sx={{
                   textAlign: "left",
-                  minWidth: "80px",
+                  minWidth: "200px",
                   verticalAlign: "middle",
                   color: "white",
                 }}
@@ -383,137 +450,226 @@ export default function ListForkliftOperatortTable({
                     },
                   }}
                 >
-                  Status
+                  Source Storage Type
                 </TableSortLabel>
               </TableCell>
-              {permissions?.forklift_operator_master_edit == true && (
-                <TableCell
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "200px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
                   sx={{
-                    textAlign: "left",
-                    minWidth: "80px",
-                    verticalAlign: "middle",
                     color: "white",
-                    position: "sticky",
-                    right: 0,
-                    height: "58px",
-                    zIndex: 1,
-                    bgcolor: "#7352C7",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
                   }}
                 >
-                  Action
-                </TableCell>
-              )}
+                  Source Location
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "200px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Source Bin
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "250px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Destination Storage Type
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "200px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Destination Location
+                </TableSortLabel>
+              </TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "left",
+                  minWidth: "180px",
+                  verticalAlign: "middle",
+                  color: "white",
+                }}
+              >
+                <TableSortLabel
+                  active={sortBy === "status"}
+                  direction={sort}
+                  onClick={() => handleSort("status")}
+                  sx={{
+                    color: "white",
+                    "&:hover": { color: "white" },
+                    "&.MuiTableSortLabel-root.Mui-active": {
+                      color: "white", // Set the color for the active state
+                    },
+                  }}
+                >
+                  Destination Bin
+                </TableSortLabel>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {forkliftOperator?.map((row, i) => (
+            {transaction?.map((row, i) => (
               <TableRow key={i}>
                 <TableCell
                   sx={{
                     textAlign: "left",
                   }}
                 >
-                  {displayDateFun(row?.date)}
+                  {displayDateFun(row.date)}
                 </TableCell>
                 <TableCell
                   sx={{
                     textAlign: "left",
                   }}
                 >
-                  {row?.production_line_details?.production_line_name}
+                  {row.transfer_order}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.process_order_qty}
+                  {row.transaction_type}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.process_order}
+                  {row.process_order}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row?.sku_code}</TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.sku_description}
+                  {row.sku_code || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row.sku_description || "-"}
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.sut || "-"}
                 </TableCell>
-                <TableCell sx={{ textAlign: "left" }}>{row?.uom}</TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.transfer_order}
+                  {row?.uom || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.pallet_qty || "-"}
+                  {row?.uom || "-"}
                 </TableCell>
-                {isAdmin ? (
-                  <TableCell sx={{ textAlign: "left" }}>
-                    {`${row?.assigned_user.first_name} ${row?.assigned_user.last_name}` ||
-                      "-"}
-                  </TableCell>
-                ) : (
-                  ""
-                )}
-
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.material_details?.item_life || "-"}
+                </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
                   {row?.batch || "-"}
                 </TableCell>
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.bin || "-"}
+                  {row?.uom || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.pallet_qty || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.process_order_qty}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.uom || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.uom || "-"}
                 </TableCell>
 
                 <TableCell sx={{ textAlign: "left" }}>
-                  {row?.status || "-"}
+                  {`${row?.assigned_user.first_name} ${row?.assigned_user.last_name}`}
                 </TableCell>
-                {permissions?.forklift_operator_master_edit == true && (
-                  <TableCell
-                    sx={{
-                      textAlign: "left",
-                      px: 1,
-                      position: "sticky",
-                      right: 0,
-                      zIndex: 1,
-                      bgcolor: "white",
-                    }}
-                  >
-                    <JumboDdMenu
-                      icon={<MoreHorizIcon />}
-                      menuItems={[
-                        {
-                          icon: <CheckIcon />,
-                          title: "Confirm",
-                          action: "confirm",
-                          data: row,
-                        },
 
-                        {
-                          icon: <EditIcon />,
-                          title: "Edit",
-                          action: "edit",
-                          data: row,
-                        },
-                      ]}
-                      onClickCallback={handleItemAction}
-                    />
-                  </TableCell>
-                )}
-                {selectedRow && (
-                  <BinNumberModal
-                    open={modalOpen}
-                    rawData={selectedRow}
-                    onClose={() => {
-                      setModalOpen(false);
-                      setSelectedRow(null); // Clear state when closing
-                    }}
-                  />
-                )}
-                {selected && (
-                  <EditBinDetails
-                    open={open}
-                    rawData={selected}
-                    onClose={() => {
-                      setOpen(false);
-                      setSelected(null); // Clear state when closing
-                    }}
-                  />
-                )}
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.digit_3_codes === "123"
+                    ? "Overflow"
+                    : row?.bin === "Cross Dock"
+                    ? "Cross Dock"
+                    : row?.material_details?.storage_type || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.digit_3_codes === "123"
+                    ? "Overflow"
+                    : row?.bin === "Cross Dock"
+                    ? "Cross Dock"
+                    : row?.material_details?.storage_section || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.bin === "Cross Dock" ? "Cross Dock" : row?.bin || "-"}
+                </TableCell>
+
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.digit_3_codes === "123"
+                    ? "Overflow"
+                    : row?.bin === "Cross Dock"
+                    ? "Cross Dock"
+                    : row?.material_details?.storage_type || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.digit_3_codes === "123"
+                    ? "Overflow"
+                    : row?.bin === "Cross Dock"
+                    ? "Cross Dock"
+                    : row?.material_details?.storage_section || "-"}
+                </TableCell>
+                <TableCell sx={{ textAlign: "left" }}>
+                  {row?.bin === "Cross Dock" ? "Cross Dock" : row?.bin || "-"}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

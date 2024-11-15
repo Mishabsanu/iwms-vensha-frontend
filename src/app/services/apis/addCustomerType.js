@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const addProduction = async (details) => {
+export const addCustomerType = async (details) => {
   try {
     const config = {
       withCredentials: true,
@@ -9,13 +9,14 @@ export const addProduction = async (details) => {
       },
     };
     const data = await axios.post(
-      `${process.env.REACT_APP_URL}/production/add-production`,
+      `${process.env.REACT_APP_URL}/customer-type/add-customer-type-master`,
       details,
       config
     );
-    console.log(data,'data');
+    // console.log(data);
     return data;
   } catch (error) {
+    // console.log(error);
     return error.response;
   }
 };

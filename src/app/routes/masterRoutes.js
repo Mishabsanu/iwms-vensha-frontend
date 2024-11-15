@@ -48,6 +48,9 @@ import UomMiddleware from "./middleware/auth/uomMiddleware";
 import AuomMiddleware from "./middleware/auth/auomMiddleware";
 import ListAuom from "app/pages/Master/AuomMaster/ListAuom";
 import AddAuom from "app/pages/Master/AuomMaster/AddAuom";
+import CustomerTypeRouteMiddleware from "./middleware/auth/customerTypeRouteMiddleware";
+import ListCustomerType from "app/pages/Master/CustomerType/ListProductionLine";
+import AddCustomerType from "app/pages/Master/CustomerType/AddCustomerType";
 
 export const masterRoutes = [
   {
@@ -417,6 +420,34 @@ export const masterRoutes = [
       {
         path: "/master/unloading/edit",
         element: <Page component={AddUnLoading} layout={"vertical-default"} />,
+      },
+    ],
+  },
+  {
+    middleware: [
+      {
+        element: CustomerTypeRouteMiddleware,
+        fallbackPath: "/dashboard",
+      },
+    ],
+    routes: [
+      {
+        path: "/dashboard/master/customer-type",
+        element: (
+          <Page component={ListCustomerType} layout={"vertical-default"} />
+        ),
+      },
+      {
+        path: "/master/customer-type/add",
+        element: (
+          <Page component={AddCustomerType} layout={"vertical-default"} />
+        ),
+      },
+      {
+        path: "/master/customer-type/edit",
+        element: (
+          <Page component={AddCustomerType} layout={"vertical-default"} />
+        ),
       },
     ],
   },

@@ -5,6 +5,9 @@ import {
   ALL_CUSTOMER_MASTER_FAIL,
   ALL_CUSTOMER_MASTER_REQUEST,
   ALL_CUSTOMER_MASTER_SUCCESS,
+  ALL_CUSTOMER_TYPE_MASTER_FAIL,
+  ALL_CUSTOMER_TYPE_MASTER_REQUEST,
+  ALL_CUSTOMER_TYPE_MASTER_SUCCESS,
   ALL_PALLETE_MASTER_FAIL,
   ALL_PALLETE_MASTER_REQUEST,
   ALL_PALLETE_MASTER_SUCCESS,
@@ -71,9 +74,15 @@ import {
   ALL_TRANSACTION_FAIL,
   ALL_TRANSACTION_REQUEST,
   ALL_TRANSACTION_SUCCESS,
+  ALL_TRANSACTION_OUTBOND_FAIL,
+  ALL_TRANSACTION_OUTBOND_REQUEST,
+  ALL_TRANSACTION_OUTBOND_SUCCESS,
   ALL_OUTBOUND_FAIL,
   ALL_OUTBOUND_REQUEST,
   ALL_OUTBOUND_SUCCESS,
+  ALL_TRUCK_LOADING_REQUEST,
+  ALL_TRUCK_LOADING_SUCCESS,
+  ALL_TRUCK_LOADING_FAIL,
 } from "app/utils/constants/masterConstants";
 
 const INIT_STATE = {
@@ -101,7 +110,10 @@ const INIT_STATE = {
   crossDock: [],
   stockReport: [],
   transaction: [],
+  transactionOutbond: [],
   outbound: [],
+  truckLoading: [],
+  customerType: [],
   TotalPage: null,
 };
 
@@ -189,6 +201,50 @@ export const masterReducer = (state = INIT_STATE, action) => {
         ...state,
         loading: false,
         loadingMaster: [],
+        error: action.payload,
+      };
+
+    //customer Type master
+    case ALL_CUSTOMER_TYPE_MASTER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_CUSTOMER_TYPE_MASTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        customerType: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_CUSTOMER_TYPE_MASTER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        customerType: [],
+        error: action.payload,
+      };
+
+    //truckLoading
+    case ALL_TRUCK_LOADING_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_TRUCK_LOADING_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        truckLoading: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_TRUCK_LOADING_FAIL:
+      return {
+        ...state,
+        loading: false,
+        truckLoading: [],
         error: action.payload,
       };
     //binType Master
@@ -336,6 +392,28 @@ export const masterReducer = (state = INIT_STATE, action) => {
         ...state,
         loading: false,
         transaction: [],
+        error: action.payload,
+      };
+
+    //TRANSACTION Outbond master
+    case ALL_TRANSACTION_OUTBOND_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_TRANSACTION_OUTBOND_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        transactionOutbond: action.payload.data,
+        TotalPage: action.payload.totalPage,
+      };
+
+    case ALL_TRANSACTION_OUTBOND_FAIL:
+      return {
+        ...state,
+        loading: false,
+        transactionOutbond: [],
         error: action.payload,
       };
     //LAODING master
