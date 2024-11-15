@@ -1,12 +1,15 @@
 
 import { useTheme } from "@emotion/react";
-import Div from "@jumbo/shared/Div";
-import { displayDateFun } from "app/utils/constants/functions";
+import CloseIcon from '@mui/icons-material/Close';
 import {
+  Button,
   Dialog,
+  DialogActions,
   DialogContent,
+  DialogTitle,
   FormControl,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -16,21 +19,15 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography,
-  Button,
-  DialogActions,
-  IconButton,
-  DialogTitle
+  Typography
 } from "@mui/material";
 import AllApis from "app/Apis";
+import { sendToCrossDock } from "app/services/apis/sendToCrossDock";
+import { sendToDock } from "app/services/apis/sendToDock";
+import { displayDateFun } from "app/utils/constants/functions";
 import { Axios } from "index";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { DockModal } from "./DockModal";
-import { sendToCrossDock } from "app/services/apis/sendToCrossDock";
-import { sendToForklift } from "app/services/apis/sendToForklift";
-import { sendToDock } from "app/services/apis/sendToDock";
-import CloseIcon from '@mui/icons-material/Close';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -131,8 +128,11 @@ export const OutboundDetails = ({ open, setOpen, rowData, onSelect }) => {
 
 
   const handleTransferOrderSelection = async (option) => {
-   
-      try {
+    console.log('11111111111');
+    
+    
+    try {
+        console.log('11111111111');
         const data = {
           modifyList: modifyList, // Include the entire modifyList
 
@@ -145,6 +145,8 @@ export const OutboundDetails = ({ open, setOpen, rowData, onSelect }) => {
         };
   
         const response = await sendToCrossDock(data);
+        console.log(response,'response');
+        
   
         console.log("Cross Dock data sent:", data);
   

@@ -1,28 +1,30 @@
 import Div from "@jumbo/shared/Div/Div";
 import { Suspense, useEffect, useState } from "react";
 
-import { Box, Typography } from "@mui/material";
-import AllApis from "app/Apis";
-import { getAllTransaction } from "app/redux/actions/masterAction";
+import { Box, Button, Typography } from "@mui/material";
+import { getAllTruckLoading } from "app/redux/actions/masterAction";
 import SearchGlobal from "app/shared/SearchGlobal";
-import { Axios } from "index";
 import { debounce } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import ListTransferOrderTable from "./transferOrdertable";
+import ListDeliveryTable from "./deliverytable";
 
-export default function ListTransferOrderInbound() {
+export default function ListDelivery() {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const [sort, setSort] = useState("desc");
   const [sortBy, setSortBy] = useState("updated_at");
-  const [logLoader, setLogLoader] = useState(false);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const permissions = useSelector(
+    (state) => state?.userReducer?.user?.[0]?.role_id?.permissions
+  );
+
+  //debouncing for search
   const handleSearch = (value) => {
     setPage(1);
-    dispatch(getAllTransaction(value, sort, sortBy, 1));
+    dispatch(getAllTruckLoading(value, sort, sortBy, 1));
   };
 
   const debouncedHandleSearch = debounce(handleSearch, 500);
@@ -35,13 +37,13 @@ export default function ListTransferOrderInbound() {
   }, [searchTerm]);
 
   useEffect(() => {
-    dispatch(getAllTransaction(searchTerm, sort, sortBy, page));
+    dispatch(getAllTruckLoading(searchTerm, sort, sortBy, page));
   }, [sort, page]);
 
   return (
     <>
       <Div sx={{ mt: -4 }}>
-        <Typography variant="h1">Transaction Inbound</Typography>
+        <Typography variant="h1">Delivery</Typography>
         <Box
           sx={{
             display: "flex",
@@ -72,9 +74,34 @@ export default function ListTransferOrderInbound() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </Box>
+          {permissions?.delivery_create && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: { xs: "center", sm: "flex-end" },
+                width: { xs: "100%", xl: "auto" },
+                mt: { xs: 2, sm: 0, xl: 4 },
+              }}
+            >
+              <Button
+                variant="contained"
+                sx={{
+                  p: 1,
+                  pl: 4,
+                  pr: 4,
+                  width: { xs: "100%", sm: "auto" },
+                  maxWidth: { xs: "100%", sm: "200px", xl: "250px" },
+                  boxShadow: { xl: "0px 4px 6px rgba(0, 0, 0, 0.1)" },
+                }}
+                onClick={() => navigate("/warehouseexecutive/delivery/add")}
+              >
+                Add Delivery
+              </Button>
+            </Box>
+          )}
         </Box>
         <Suspense fallback={<div>Loading...</div>}>
-          <ListTransferOrderTable
+          <ListDeliveryTable
             searchTerm={searchTerm}
             page={page}
             setPage={setPage}

@@ -29,6 +29,7 @@
         "storage_search": "Storage Search",
         "storage_type": "Storage Type",
         "cross_dock": "Cross Dock",
+        "customer_type": "Customer Type",
         "employee": "Employee",
         "bin": "Bin",
         "loading": "Loading",
@@ -39,7 +40,9 @@
       },
       "WarehouseExecutive": {
         "outbound": "Outbound",
-        "inbound": "Inbound"
+        "inbound": "Inbound",
+        "delivery": "Delivery",
+        "truckLoading": "Truck Loading"
       },
       "ProductionExecutive": {
         "production": "production"

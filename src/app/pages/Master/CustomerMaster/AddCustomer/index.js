@@ -1,23 +1,26 @@
 import Div from "@jumbo/shared/Div";
+import AddIcon from "@mui/icons-material/Add";
 import { LoadingButton } from "@mui/lab";
 import {
   Button,
+  FormControl,
   Grid,
   IconButton,
-  Typography,
+  MenuItem,
   TextField,
-  FormControl,
+  Typography,
 } from "@mui/material";
 import { addCustomer, UpdateCustomer } from "app/services/apis/addCustomer";
-import { Formik, Form, FieldArray, Field } from "formik";
-import { useState } from "react";
+import { FieldArray, Form, Formik } from "formik";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
 
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 
 import Swal from "sweetalert2";
 import * as yup from "yup";
+import AllApis from "app/Apis";
+import { Axios } from "index";
 
 export default function AddCustomer() {
   const navigate = useNavigate();
@@ -27,6 +30,7 @@ export default function AddCustomer() {
 
   const customer = {
     customer_code: state?.customer_code || "",
+    customer_type: state?.customer_type || "",
     customer_name: state?.customer_name || "",
     address: state?.address || "",
     city: state?.city || "",
@@ -67,6 +71,9 @@ export default function AddCustomer() {
     customer_code: yup
       .string("Enter Customer Code")
       .required("Customer Code is required"),
+    customer_type: yup
+      .string("Enter Customer Type")
+      .required("Customer Type is required"),
     customer_name: yup
       .string("Enter Customer Name")
       .required("Customer Name is required"),
@@ -194,6 +201,11 @@ export default function AddCustomer() {
     setSubmitting(false);
   };
 
+  const [customerType, setCustomerType] = useState([]);
+  useEffect(async () => {
+    const customerResponse = await Axios.get(AllApis.dropdownList.customer_type);
+    setCustomerType(customerResponse?.data?.result);
+  }, []);
   return (
     <Div sx={{ mt: -4 }}>
       <Typography variant="h1">
@@ -225,6 +237,35 @@ export default function AddCustomer() {
                           setFieldValue("customer_code", e.target.value)
                         }
                       />
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={4} xl={4}>
+                    <FormControl fullWidth>
+                      <TextField
+                        label="Customer Type"
+                        name="customer_type"
+                        value={values.customer_type}
+                        onChange={(e) =>
+                          setFieldValue("customer_type", e.target.value)
+                        }
+                        select
+                        fullWidth
+                        error={errors.customer_type}
+                        helperText={errors.customer_type}
+                        InputLabelProps={{
+                          shrink: values.customer_type,
+                        }}
+                        SelectProps={{
+                          native: false,
+                        }}
+                      >
+                        <MenuItem value="Select">Select</MenuItem>
+                        {customerType.map((item) => (
+                          <MenuItem key={item._id} value={item._id}>
+                            {item.type}
+                          </MenuItem>
+                        ))}
+                      </TextField>
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6} md={4}>

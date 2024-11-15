@@ -14,6 +14,9 @@ import {
   ALL_PALLETE_MASTER_FAIL,
   ALL_PALLETE_MASTER_REQUEST,
   ALL_PALLETE_MASTER_SUCCESS,
+  ALL_CUSTOMER_TYPE_MASTER_FAIL,
+  ALL_CUSTOMER_TYPE_MASTER_REQUEST,
+  ALL_CUSTOMER_TYPE_MASTER_SUCCESS,
   ALL_STORAGE_TYPE_MASTER_FAIL,
   ALL_STORAGE_TYPE_MASTER_REQUEST,
   ALL_STORAGE_TYPE_MASTER_SUCCESS,
@@ -65,9 +68,15 @@ import {
   ALL_TRANSACTION_REQUEST,
   ALL_TRANSACTION_SUCCESS,
   ALL_TRANSACTION_FAIL,
+  ALL_TRANSACTION_OUTBOND_REQUEST,
+  ALL_TRANSACTION_OUTBOND_SUCCESS,
+  ALL_TRANSACTION_OUTBOND_FAIL,
   ALL_OUTBOUND_REQUEST,
   ALL_OUTBOUND_SUCCESS,
   ALL_OUTBOUND_FAIL,
+  ALL_TRUCK_LOADING_REQUEST,
+  ALL_TRUCK_LOADING_SUCCESS,
+  ALL_TRUCK_LOADING_FAIL,
 } from "app/utils/constants/masterConstants";
 import axios from "axios";
 
@@ -719,6 +728,53 @@ export const getAllGateEntryInbound =
     }
   };
 
+// TruckLoading
+export const getAllTruckLoading =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {
+        filters: {},
+      };
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_TRUCK_LOADING_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+        }/truck-loading/list-truck-loading?${urlParams.toString()}`,
+        { ...body },
+        config
+      );
+
+      dispatch({
+        type: ALL_TRUCK_LOADING_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_TRUCK_LOADING_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
 //GateEntryoutbound
 export const getAllGateEntryOutbound =
   (search_value, sort, sortBy, page) => async (dispatch) => {
@@ -811,10 +867,8 @@ export const getAllTransaction =
       });
     }
   };
-
-//outBond master
-export const getAllOutbound =
-  (search_value, sort, sortBy, page) => async (dispatch) => {
+export const getAllTransactionOutbond =
+  (search_value, sort, sortBy, page, OrderType) => async (dispatch) => {
     try {
       const body = {
         filters: {},
@@ -828,7 +882,7 @@ export const getAllOutbound =
         sort: sort,
         sortBy: sortBy,
       });
-      dispatch({ type: ALL_OUTBOUND_REQUEST });
+      dispatch({ type: ALL_TRANSACTION_OUTBOND_REQUEST });
       const config = {
         withCredentials: true,
         headers: {
@@ -836,25 +890,88 @@ export const getAllOutbound =
         },
       };
 
-      const data = await axios.post(
-        `${
-          process.env.REACT_APP_URL
-        }/outbound/list-outbound?${urlParams.toString()}`,
-        { ...body },
-        config
-      );
+      const apiUrl =
+        OrderType === "SO"
+          ? `${
+              process.env.REACT_APP_URL
+            }/production/list-transaction-outbond-so?${urlParams.toString()}`
+          : `${
+              process.env.REACT_APP_URL
+            }/production/list-transaction-outbond-sto?${urlParams.toString()}`;
+
+      // Make the API request
+      const response = await axios.post(apiUrl, body, config);
 
       dispatch({
-        type: ALL_OUTBOUND_SUCCESS,
+        type: ALL_TRANSACTION_OUTBOND_SUCCESS,
         payload: {
-          data: data?.data?.result,
-          totalPage: data?.data?.totalPages,
+          data: response?.data?.result,
+          totalPage: response?.data?.totalPages,
         },
       });
     } catch (error) {
       dispatch({
-        type: ALL_OUTBOUND_FAIL,
+        type: ALL_TRANSACTION_OUTBOND_FAIL,
         payload: error?.response?.data?.message,
+      });
+    }
+  };
+
+//outBond master
+export const getAllOutbound =
+  (search_value, sort, sortBy, page, OrderType) => async (dispatch) => {
+    try {
+      // Initialize body and set default search_value if not provided
+      const body = {
+        filters: {},
+      };
+      const trimmedSearchValue = search_value ? search_value.trim() : "";
+
+      // Create URL search parameters
+      const urlParams = new URLSearchParams({
+        search: trimmedSearchValue,
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+
+      // Dispatch request action
+      dispatch({ type: ALL_OUTBOUND_REQUEST });
+
+      // Define API URL based on OrderType
+      const apiUrl =
+        OrderType === "SO"
+          ? `${
+              process.env.REACT_APP_URL
+            }/outbound/list-outbound-so?${urlParams.toString()}`
+          : `${
+              process.env.REACT_APP_URL
+            }/outbound/list-outbound-sto?${urlParams.toString()}`;
+
+      // Set request configuration
+      const config = {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      // Make the API request
+      const response = await axios.post(apiUrl, body, config);
+
+      // Dispatch success action with payload
+      dispatch({
+        type: ALL_OUTBOUND_SUCCESS,
+        payload: {
+          data: response.data.result,
+          totalPage: response.data.totalPages,
+        },
+      });
+    } catch (error) {
+      // Dispatch failure action with error message
+      dispatch({
+        type: ALL_OUTBOUND_FAIL,
+        payload: error.response?.data?.message || "An error occurred",
       });
     }
   };
@@ -991,6 +1108,51 @@ export const getAllPallete =
     } catch (error) {
       dispatch({
         type: ALL_PALLETE_MASTER_FAIL,
+        payload: error?.response?.data?.message,
+      });
+    }
+  };
+
+//Customer Type master
+export const getAllCustomerType =
+  (search_value, sort, sortBy, page) => async (dispatch) => {
+    try {
+      const body = {};
+      if (!search_value) {
+        search_value = "";
+      }
+      const urlParams = new URLSearchParams({
+        search: search_value.trim(),
+        page: page,
+        sort: sort,
+        sortBy: sortBy,
+      });
+      dispatch({ type: ALL_CUSTOMER_TYPE_MASTER_REQUEST });
+      const config = {
+        withCredentials: true,
+        headers: {
+          withCredentials: true,
+        },
+      };
+
+      const data = await axios.post(
+        `${
+          process.env.REACT_APP_URL
+        }/customer-type/list-customer-type-master?${urlParams.toString()}`,
+        body,
+        config
+      );
+
+      dispatch({
+        type: ALL_CUSTOMER_TYPE_MASTER_SUCCESS,
+        payload: {
+          data: data?.data?.result,
+          totalPage: data?.data?.totalPages,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: ALL_CUSTOMER_TYPE_MASTER_FAIL,
         payload: error?.response?.data?.message,
       });
     }

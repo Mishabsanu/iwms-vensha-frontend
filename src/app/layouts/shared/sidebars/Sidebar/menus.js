@@ -173,6 +173,17 @@ const menus = [
         type: "nav-item",
         icon: <DirectionsCarIcon sx={{ fontSize: 20 }} />,
       },
+      {
+        uri: "/dashboard/master/customer-type",
+        label: "sidebar.menuItem.master.customer_type",
+        isActiveUri: [
+          "/master/customer-type/add",
+          "/master/customer-type/edit",
+        ],
+        permission: "customer_type_master_view",
+        type: "nav-item",
+        icon: <DirectionsCarIcon sx={{ fontSize: 20 }} />,
+      },
     ],
   },
 
@@ -217,6 +228,25 @@ const menus = [
         label: "sidebar.menuItem.WarehouseExecutive.outbound",
         isActiveUri: ["/master/outbound/add", "/master/outbound/edit"],
         permission: "outbound_master_view",
+        type: "nav-item",
+        icon: <ScaleIcon sx={{ fontSize: 20 }} />,
+      },
+      {
+        uri: "/dashboard/warehouseexecutive/delivery",
+        label: "sidebar.menuItem.WarehouseExecutive.delivery",
+        isActiveUri: ["/master/delivery/add", "/master/delivery/edit"],
+        permission: "delivery_view",
+        type: "nav-item",
+        icon: <ScaleIcon sx={{ fontSize: 20 }} />,
+      },
+      {
+        uri: "/dashboard/warehouseexecutive/truck-loading",
+        label: "sidebar.menuItem.WarehouseExecutive.truckLoading",
+        isActiveUri: [
+          "/master/truck-loading/add",
+          "/master/truck-loading/edit",
+        ],
+        permission: "truck_loading_view",
         type: "nav-item",
         icon: <ScaleIcon sx={{ fontSize: 20 }} />,
       },
